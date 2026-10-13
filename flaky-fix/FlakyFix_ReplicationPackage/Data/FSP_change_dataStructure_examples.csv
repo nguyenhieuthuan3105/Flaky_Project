@@ -1,0 +1,223 @@
+Flaky Code,Fixed Flaky Code,Auto_labels
+"@Test
+  public void testCall_withOverrideComponents() throws Exception {
+    Set<String> overrides = new HashSet<>(Arrays.asList(""mycomponent"", ""myothercomponent""));
+
+new Installer(
+            fakeSdkRoot,
+            mockInstallScriptProvider,
+            true,
+            overrides,
+            mockProgressListener,
+            mockConsoleListener,
+            mockCommandRunner)
+        .install();
+    Mockito.verify(mockCommandRunner)
+        .run(expectedCommand(true, overrides), sdkParentDirectory, fakeEnv, mockConsoleListener);
+    Mockito.verifyNoMoreInteractions(mockCommandRunner);
+  }","@Test
+  public void testCall_withOverrideComponents() throws Exception {
+    Set<String> overrides = new LinkedHashSet<>(Arrays.asList(""mycomponent"", ""myothercomponent""));
+
+new Installer(
+            fakeSdkRoot,
+            mockInstallScriptProvider,
+            true,
+            overrides,
+            mockProgressListener,
+            mockConsoleListener,
+            mockCommandRunner)
+        .install();
+    Mockito.verify(mockCommandRunner)
+        .run(expectedCommand(true, overrides), sdkParentDirectory, fakeEnv, mockConsoleListener);
+    Mockito.verifyNoMoreInteractions(mockCommandRunner);
+  }",change_data_structure
+"@Test
+  void convertToDatabaseColumn_twoElement() throws IOException {
+    Map<String, String> map = new HashMap<>(8);
+    map.put(""a"", ""1"");
+    map.put(""disableCheck"", ""true"");
+
+String expected = readAllContentOf(""json/converter/element.2.json"");
+    assertEquals(expected, this.converter.convertToDatabaseColumn(map));
+  }","@Test
+  void convertToDatabaseColumn_twoElement() throws IOException {
+    Map<String, String> map = new LinkedHashMap<>(8);
+    map.put(""a"", ""1"");
+    map.put(""disableCheck"", ""true"");
+
+String expected = readAllContentOf(""json/converter/element.2.json"");
+    assertEquals(expected, this.converter.convertToDatabaseColumn(map));
+  }",change_data_structure
+"@Test
+    public void testSendData() throws IOException, InitializationException {
+        PrometheusRecordSink sink = initTask();
+        List<RecordField> recordFields = Arrays.asList(
+                new RecordField(""field1"", RecordFieldType.INT.getDataType()),
+                new RecordField(""field2"", RecordFieldType.DECIMAL.getDecimalDataType(30, 10)),
+                new RecordField(""field3"", RecordFieldType.STRING.getDataType())
+        );
+        RecordSchema recordSchema = new SimpleRecordSchema(recordFields);
+
+Map<String, Object> row1 = new HashMap<>();
+        row1.put(""field1"", 15);
+        row1.put(""field2"", BigDecimal.valueOf(12.34567D));
+        row1.put(""field3"", ""Hello"");
+
+Map<String, Object> row2 = new HashMap<>();
+        row2.put(""field1"", 6);
+        row2.put(""field2"", BigDecimal.valueOf(0.1234567890123456789D));
+        row2.put(""field3"", ""World!"");
+        RecordSet recordSet = new ListRecordSet(recordSchema, Arrays.asList(
+                new MapRecord(recordSchema, row1),
+                new MapRecord(recordSchema, row2)
+        ));
+
+Map<String, String> attributes = new HashMap<>();
+        attributes.put(""a"", ""Hello"");
+        WriteResult writeResult = sink.sendData(recordSet, attributes, true);
+        assertNotNull(writeResult);
+        assertEquals(2, writeResult.getRecordCount());
+        assertEquals(""Hello"", writeResult.getAttributes().get(""a""));
+
+final String content = getMetrics();
+        assertTrue(content.contains(""field1{field3=\""Hello\"",} 15.0\nfield1{field3=\""World!\"",} 6.0\n""));
+        assertTrue(content.contains(""field2{field3=\""Hello\"",} 12.34567\nfield2{field3=\""World!\"",} 0.12345678901234568\n""));
+
+try {
+            sink.onStopped();
+        } catch (Exception e) {
+
+}
+    }","@Test
+    public void testSendData() throws IOException, InitializationException {
+        PrometheusRecordSink sink = initTask();
+        List<RecordField> recordFields = Arrays.asList(
+                new RecordField(""field1"", RecordFieldType.INT.getDataType()),
+                new RecordField(""field2"", RecordFieldType.DECIMAL.getDecimalDataType(30, 10)),
+                new RecordField(""field3"", RecordFieldType.STRING.getDataType())
+        );
+        RecordSchema recordSchema = new SimpleRecordSchema(recordFields);
+
+Map<String, Object> row1 = new LinkedHashMap<>();
+        row1.put(""field1"", 15);
+        row1.put(""field2"", BigDecimal.valueOf(12.34567D));
+        row1.put(""field3"", ""Hello"");
+
+Map<String, Object> row2 = new LinkedHashMap<>();
+        row2.put(""field1"", 6);
+        row2.put(""field2"", BigDecimal.valueOf(0.1234567890123456789D));
+        row2.put(""field3"", ""World!"");
+        RecordSet recordSet = new ListRecordSet(recordSchema, Arrays.asList(
+                new MapRecord(recordSchema, row1),
+                new MapRecord(recordSchema, row2)
+        ));
+
+Map<String, String> attributes = new LinkedHashMap<>();
+        attributes.put(""a"", ""Hello"");
+        WriteResult writeResult = sink.sendData(recordSet, attributes, true);
+        assertNotNull(writeResult);
+        assertEquals(2, writeResult.getRecordCount());
+        assertEquals(""Hello"", writeResult.getAttributes().get(""a""));
+
+final String content = getMetrics();
+        assertTrue(content.contains(""field1{field3=\""Hello\"",} 15.0\nfield1{field3=\""World!\"",} 6.0\n"") ||
+                   content.contains(""field1{field3=\""World!\"",} 6.0\nfield1{field3=\""Hello\"",} 15.0\n""));
+        assertTrue(content.contains(""field2{field3=\""Hello\"",} 12.34567\nfield2{field3=\""World!\"",} 0.12345678901234568\n"") ||
+                   content.contains(""field2{field3=\""World!\"",} 0.12345678901234568\nfield2{field3=\""Hello\"",} 12.34567\n""));
+
+try {
+            sink.onStopped();
+        } catch (Exception e) {
+
+}
+    }",change_data_structure
+"@Test
+  public void testWhenReleaseMsgSizeBiggerThan500() throws Exception {
+    String someMsgContent = ""msg1"";
+    List<ReleaseMessage> firstBatchReleaseMsg = new ArrayList<>(500);
+    for (int i = 0; i < 500; i++) {
+      firstBatchReleaseMsg.add(assembleReleaseMsg(i + 1, someMsgContent));
+    }
+    String antherMsgContent = ""msg2"";
+    ReleaseMessage antherMsg = assembleReleaseMsg(501, antherMsgContent);
+    when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(0L))
+        .thenReturn(firstBatchReleaseMsg);
+    when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(500L))
+        .thenReturn(Collections.singletonList(antherMsg));
+    releaseMessageServiceWithCache.afterPropertiesSet();
+    verify(releaseMessageRepository, times(1)).findFirst500ByIdGreaterThanOrderByIdAsc(500L);
+    ReleaseMessage latestReleaseMsg =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessageForMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
+    assertNotNull(latestReleaseMsg);
+    assertEquals(501, latestReleaseMsg.getId());
+    assertEquals(antherMsgContent, latestReleaseMsg.getMessage());
+
+List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessagesGroupByMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
+
+assertEquals(2, latestReleaseMsgGroupByMsgContent.size());
+    assertEquals(500, latestReleaseMsgGroupByMsgContent.get(1).getId());
+    assertEquals(501, latestReleaseMsgGroupByMsgContent.get(0).getId());
+  }","@Test
+  public void testWhenReleaseMsgSizeBiggerThan500() throws Exception {
+    String someMsgContent = ""msg1"";
+    List<ReleaseMessage> firstBatchReleaseMsg = new ArrayList<>(500);
+    for (int i = 0; i < 500; i++) {
+      firstBatchReleaseMsg.add(assembleReleaseMsg(i + 1, someMsgContent));
+    }
+    String antherMsgContent = ""msg2"";
+    ReleaseMessage antherMsg = assembleReleaseMsg(501, antherMsgContent);
+    when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(0L))
+        .thenReturn(firstBatchReleaseMsg);
+    when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(500L))
+        .thenReturn(Collections.singletonList(antherMsg));
+    releaseMessageServiceWithCache.afterPropertiesSet();
+    verify(releaseMessageRepository, times(1)).findFirst500ByIdGreaterThanOrderByIdAsc(500L);
+    ReleaseMessage latestReleaseMsg =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessageForMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
+    assertNotNull(latestReleaseMsg);
+    assertEquals(501, latestReleaseMsg.getId());
+    assertEquals(antherMsgContent, latestReleaseMsg.getMessage());
+
+List<String> msgContentList = Arrays.asList(someMsgContent, antherMsgContent);
+    List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessagesGroupByMessages(Sets.newLinkedHashSet(msgContentList));
+
+assertEquals(2, latestReleaseMsgGroupByMsgContent.size());
+    assertEquals(500, latestReleaseMsgGroupByMsgContent.get(0).getId());
+    assertEquals(501, latestReleaseMsgGroupByMsgContent.get(1).getId());
+  }",change_data_structure
+"@Test
+    public void testDefaultValueWithAliasValue() {
+        final List<RecordField> fields = new ArrayList<>();
+        fields.add(new RecordField(""foo"", RecordFieldType.STRING.getDataType(), ""hello"", set(""bar"", ""baz"")));
+
+final RecordSchema schema = new SimpleRecordSchema(fields);
+        final Map<String, Object> values = new HashMap<>();
+        values.put(""baz"", 1);
+        values.put(""bar"", 33);
+
+final Record record = new MapRecord(schema, values);
+        assertEquals(33, record.getValue(""foo""));
+        assertEquals(33, record.getValue(""bar""));
+        assertEquals(33, record.getValue(""baz""));
+    }","@Test
+    public void testDefaultValueWithAliasValue() {
+        final List<RecordField> fields = new ArrayList<>();
+        fields.add(new RecordField(""foo"", RecordFieldType.STRING.getDataType(), ""hello"", set(""bar"", ""baz"")));
+
+final RecordSchema schema = new SimpleRecordSchema(fields);
+        final Map<String, Object> values = new LinkedHashMap<>();
+        values.put(""baz"", 1);
+        values.put(""bar"", 33);
+
+final Record record = new MapRecord(schema, values);
+        assertEquals(33, record.getValue(""foo""));
+        assertEquals(33, record.getValue(""bar""));
+        assertEquals(33, record.getValue(""baz""));
+    }",change_data_structure

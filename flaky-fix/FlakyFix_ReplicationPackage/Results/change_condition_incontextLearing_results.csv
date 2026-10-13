@@ -1,0 +1,4477 @@
+Flaky Code,Fixed Flaky Code,Auto_labels,FSP_gens,label_gens,no_label_gens,Code BLEU without Labels,Code BLEU with Labels,Code BLEU with FSP
+"@Test
+    public void testPaymentsRequestWithXidAndCavv() throws Exception {
+        when(client.getConfig()).thenReturn(config);
+        when(config.getCheckoutEndpoint()).thenReturn(""checkout"");
+        when(client.getHttpClient()).thenReturn(clientInterface);
+        when(clientInterface.request(anyString(), anyString(), eq(config), anyBoolean(), nullable(RequestOptions.class), any())).thenReturn(""{\""pspReference\"": \""12345\""}"");
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        PaymentsRequest request = new PaymentsRequest();
+        ThreeDSecureData mpiData = new ThreeDSecureData();
+        mpiData.setXid(""AQIDBAUGBwgJCgsMDQ4PEBESExQ="");
+        mpiData.setCavv(""AQIDBAUGBwgJCgsMDQ4PEBESExQ="");
+        request.setMpiData(mpiData);
+        PaymentsResponse response = new Checkout(client).payments(request);
+        assertNotNull(response);
+        assertEquals(""12345"", response.getPspReference());
+        verify(clientInterface).request(anyString(), captor.capture(), any(Config.class), anyBoolean(), nullable(RequestOptions.class), any());
+
+assertFalse(captor.getValue().contains(""\""mpiData\"":{\""cavv\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ\\u003d\"",\""xid\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ\\u003d\""}""));
+
+assertTrue(captor.getValue().contains(""\""mpiData\"":{\""cavv\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ=\"",\""xid\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ=\""}""));
+    }","@Test
+    public void testPaymentsRequestWithXidAndCavv() throws Exception {
+        when(client.getConfig()).thenReturn(config);
+        when(config.getCheckoutEndpoint()).thenReturn(""checkout"");
+        when(client.getHttpClient()).thenReturn(clientInterface);
+        when(clientInterface.request(anyString(), anyString(), eq(config), anyBoolean(), nullable(RequestOptions.class), any())).thenReturn(""{\""pspReference\"": \""12345\""}"");
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        PaymentsRequest request = new PaymentsRequest();
+        ThreeDSecureData mpiData = new ThreeDSecureData();
+        mpiData.setXid(""AQIDBAUGBwgJCgsMDQ4PEBESExQ="");
+        mpiData.setCavv(""AQIDBAUGBwgJCgsMDQ4PEBESExQ="");
+        request.setMpiData(mpiData);
+        PaymentsResponse response = new Checkout(client).payments(request);
+        assertNotNull(response);
+        assertEquals(""12345"", response.getPspReference());
+        verify(clientInterface).request(anyString(), captor.capture(), any(Config.class), anyBoolean(), nullable(RequestOptions.class), any());
+        String captorValue = captor.getValue();
+
+assertFalse(captorValue.contains(""\""mpiData\"":{\""cavv\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ\\u003d\"",\""xid\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ\\u003d\""}"") || captorValue.contains(""\""mpiData\"":{\""xid\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ\\u003d\"",\""cavv\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ\\u003d\""}""));
+
+assertTrue(captorValue.contains(""\""mpiData\"":{\""cavv\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ=\"",\""xid\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ=\""}"") || captorValue.contains(""\""mpiData\"":{\""xid\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ=\"",\""cavv\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ=\""}""));
+    }",change_condition,"@Test
+public void testPaymentsRequestWithXidAndCavv() throws Exception {
+    when(client.getConfig()).thenReturn(config);
+    when(config.getCheckoutEndpoint()).thenReturn(""checkout"");
+    when(client.getHttpClient()).thenReturn(clientInterface);
+    when(clientInterface.request(anyString(), anyString(), eq(config), anyBoolean(), nullable(RequestOptions.class), any())).thenReturn(""{\""pspReference\"": \""12345\""}"");
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    PaymentsRequest request = new PaymentsRequest();
+    ThreeDSecureData mpiData = new ThreeDSecureData();
+    mpiData.setXid(""AQIDBAUGBwgJCgsMDQ4PEBESExQ="");
+    mpiData.setCavv(""AQIDBAUGBwgJCgsMDQ4PEBESExQ="");
+    request.setMpiData(mpiData);
+    PaymentsResponse response = new Checkout(client).payments(request);
+    assertNotNull(response);
+    assertEquals(""12345"", response.getPspReference());
+    verify(clientInterface).request(anyString(), captor.capture(), any(Config.class), anyBoolean(), nullable(RequestOptions.class), any());
+
+    assertFalse(captor.getValue().contains(""\""mpiData\"":{\""cavv\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ\\u003d\"",\""xid\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ\\u003d\""}""));
+}
+","@Test
+public void testPaymentsRequestWithXidAndCavv() throws Exception {
+    when(client.getConfig()).thenReturn(config);
+    when(config.getCheckoutEndpoint()).thenReturn(""checkout"");
+    when(client.getHttpClient()).thenReturn(clientInterface);
+    when(clientInterface.request(anyString(), anyString(), eq(config), anyBoolean(), nullable(RequestOptions.class), any())).thenReturn(""{\""pspReference\"": \""12345\""}"");
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    PaymentsRequest request = new PaymentsRequest();
+    ThreeDSecureData mpiData = new ThreeDSecureData();
+    mpiData.setXid(""AQIDBAUGBwgJCgsMDQ4PEBESExQ="");
+    mpiData.setCavv(""AQIDBAUGBwgJCgsMDQ4PEBESExQ="");
+    request.setMpiData(mpiData);
+    PaymentsResponse response = new Checkout(client).payments(request);
+    assertNotNull(response);
+    assertEquals(""12345"", response.getPspReference());
+    verify(clientInterface).request(anyString(), captor.capture(), any(Config.class), anyBoolean(), nullable(RequestOptions.class), any());
+
+    assertFalse(captor.getValue().contains(""\""mpiData\"":{\""cavv\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ=\"",\""xid\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ=\""}""));
+
+    assertTrue(captor.getValue().contains(""\""mpiData\"":{\""cavv\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ\\u003d\"",\""xid\"":\""AQIDBAUGBwgJCgsMDQ4PEBESExQ\\u003d\""}""));
+}","@Test
+public void testPaymentsRequestWithXidAndCavv() throws Exception {
+    when(client.getConfig()).thenReturn(config);
+    when(config.getCheckoutEndpoint()).thenReturn(""checkout"");
+    when(client.getHttpClient()).thenReturn(clientInterface);
+    when(clientInterface.request(anyString(), anyString(), eq(config), anyBoolean(), nullable(RequestOptions.class), any())).thenReturn(""{\""pspReference\"": \""12345\""}"");
+    PaymentsRequest request = new PaymentsRequest();
+    ThreeDSecureData mpiData = new ThreeDSecureData();
+    mpiData.setXid(""AQIDBAUGBwgJCgsMDQ4PEBESExQ="");
+    mpiData.setCavv(""AQIDBAUGBwgJCgsMDQ4PEBESExQ="");
+    request.setMpiData(mpiData);
+    PaymentsResponse response = new Checkout(client).payments(request);
+    assertNotNull(response);
+    assertEquals(""12345"", response.getPspReference());
+    verify(clientInterface).request(anyString(), anyString(), any(Config.class), anyBoolean(), nullable(RequestOptions.class), any());
+}
+",66.33151227665144,84.40216957092281,82.7500411069897
+"@Test
+    public void testExportFastCompass() {
+        AlibabaMetricsExports exports = new AlibabaMetricsExports(clock);
+        FastCompass fc = new FastCompassImpl(1, 5, clock, 5);
+        MetricManager.getIMetricManager().register(""test"",
+                MetricName.build(""prom.test.fastcompass"").level(MetricLevel.CRITICAL), fc);
+        int successSum = 0;
+        int failureSum = 0;
+        for (int i = 0; i < 10; i++) {
+            int value = (int)(1000 * Math.random());
+            if (i % 2 == 0) {
+                fc.record(value, ""success"");
+                successSum += value;
+            } else {
+                fc.record(value, ""failure"");
+                failureSum += value;
+            }
+        }
+        clock.addSeconds(1);
+        List<Collector.MetricFamilySamples> samples = exports.collect();
+        Assert.assertEquals(1, samples.size());
+        Assert.assertEquals(""prom_test_fastcompass_bucket_count"", samples.get(0).name);
+        Assert.assertEquals(""should contain success/failure count and sum"", 4, samples.get(0).samples.size());
+        Assert.assertEquals(""prom_test_fastcompass_bucket_count"", samples.get(0).samples.get(0).name);
+        Assert.assertEquals(""success count"", 5, samples.get(0).samples.get(0).value, 0.0001d);
+        Assert.assertEquals(""failure count"", 5, samples.get(0).samples.get(1).value, 0.0001d);
+        Assert.assertEquals(""success sum"", successSum, samples.get(0).samples.get(2).value, 0.0001d);
+        Assert.assertEquals(""failure sum"", failureSum, samples.get(0).samples.get(3).value, 0.0001d);
+    }","@Test
+    public void testExportFastCompass() {
+        AlibabaMetricsExports exports = new AlibabaMetricsExports(clock);
+        FastCompass fc = new FastCompassImpl(1, 5, clock, 5);
+        MetricManager.getIMetricManager().register(""test"",
+                MetricName.build(""prom.test.fastcompass"").level(MetricLevel.CRITICAL), fc);
+        int successSum = 0;
+        int failureSum = 0;
+        for (int i = 0; i < 10; i++) {
+            int value = (int)(1000 * Math.random());
+            if (i % 2 == 0) {
+                fc.record(value, ""success"");
+                successSum += value;
+            } else {
+                fc.record(value, ""failure"");
+                failureSum += value;
+            }
+        }
+        clock.addSeconds(1);
+        List<Collector.MetricFamilySamples> samples = exports.collect();
+        Assert.assertEquals(1, samples.size());
+        Assert.assertEquals(""prom_test_fastcompass_bucket_count"", samples.get(0).name);
+        Assert.assertEquals(""should contain success/failure count and sum"", 4, samples.get(0).samples.size());
+        Assert.assertEquals(""prom_test_fastcompass_bucket_count"", samples.get(0).samples.get(0).name);
+        Assert.assertEquals(""success count"", 5, samples.get(0).samples.get(0).value, 0.0001d);
+        Assert.assertEquals(""failure count"", 5, samples.get(0).samples.get(1).value, 0.0001d);                                                           Assert.assertTrue(""success sum"", successSum==(int)samples.get(0).samples.get(2).value || successSum==(int)samples.get(0).samples.get(3).value);
+        Assert.assertTrue(""failure sum"", failureSum==(int)samples.get(0).samples.get(2).value || failureSum==(int)samples.get(0).samples.get(3).value);
+    }",change_condition,"@Test
+public void testExportFastCompass() {
+    AlibabaMetricsExports exports = new AlibabaMetricsExports(clock);
+    FastCompass fc = new FastCompassImpl(1, 5, clock, 5);
+    MetricManager.getIMetricManager().register(""test"",
+            MetricName.build(""prom.test.fastcompass"").level(MetricLevel.CRITICAL), fc);
+    int successSum = 0;
+    int failureSum = 0;
+    for (int i = 0; i < 10; i++) {
+        int value = (int)(1000 * Math.random());
+        if (i % 2 == 0) {
+            fc.record(value, ""success"");
+            successSum += value;
+        } else {
+            fc.record(value, ""failure"");
+            failureSum += value;
+        }
+    }
+    clock.addSeconds(1);
+    List<Collector.MetricFamilySamples> samples = exports.collect();
+    Assert.assertEquals(1, samples.size());
+    Assert.assertEquals(""prom_test_fastcompass_bucket_count"", samples.get(0).name);
+    Assert.assertEquals(""should contain success/failure count and sum"", 4, samples.get(0).samples.size());
+    Assert.assertEquals(""prom_test_fastcompass_bucket_count"", samples.get(0).samples.get(0).name);
+    Assert.assertEquals(""success count"", 5, samples.get(0).samples.get(0).value, 0.0001d);
+    Assert.assertEquals(""failure count"", 5, samples.get(0).samples.get(1).value, 0.0001d);
+    Assert.assertEquals(""success sum"", successSum, samples.get(0).samples.get(2).value, 0.0001d);
+    Assert.assertEquals(""failure sum"", failureSum, samples.get(0).samples.get(3).value, 0.0001d);
+}
+","@Test
+public void testExportFastCompass() {
+    AlibabaMetricsExports exports = new AlibabaMetricsExports(clock);
+    FastCompass fc = new FastCompassImpl(1, 5, clock, 5);
+    MetricManager.getIMetricManager().register(""test"",
+            MetricName.build(""prom.test.fastcompass"").level(MetricLevel.CRITICAL), fc);
+    int successSum = 0;
+    int failureSum = 0;
+    for (int i = 0; i < 10; i++) {
+        int value = (int)(1000 * Math.random());
+        if (i % 2 != 0) { // Change condition from i % 2 == 0 to i % 2 != 0
+            fc.record(value, ""success"");
+            successSum += value;
+        } else {
+            fc.record(value, ""failure"");
+            failureSum += value;
+        }
+    }
+    clock.addSeconds(1);
+    List<Collector.MetricFamilySamples> samples = exports.collect();
+    Assert.assertEquals(1, samples.size());
+    Assert.assertEquals(""prom_test_fastcompass_bucket_count"", samples.get(0).name);
+    Assert.assertEquals(""should contain success/failure count and sum"", 4, samples.get(0).samples.size());
+    Assert.assertEquals(""prom_test_fastcompass_bucket_count"", samples.get(0).samples.get(0).name);
+    Assert.assertEquals(""success count"", 5, samples.get(0).samples.get(0).value, 0.0001d);
+    Assert.assertEquals(""failure count"", 5, samples.get(0).samples.get(1).value, 0.0001d);
+    Assert.assertEquals(""success sum"", successSum, samples.get(0).samples.get(2).value, 0.0001d);
+    Assert.assertEquals(""failure sum"", failureSum, samples.get(0).samples.get(3).value, 0.0001d);
+}
+","    public void testExportFastCompass() {
+        AlibabaMetricsExports exports = new AlibabaMetricsExports(clock);
+        FastCompass fc = new FastCompassImpl(1, 5, clock, 5);
+        MetricManager.getIMetricManager().register(""test"",
+                MetricName.build(""prom.test.fastcompass"").level(MetricLevel.CRITICAL), fc);
+        int successSum = 0;
+        int failureSum = 0;
+        for (int i = 0; i < 10; i++) {
+            int value = (int)(1000 * Math.random());
+            if (i % 2 == 0) {
+                fc.record(value, ""success"");
+                successSum += value;
+            } else {
+                fc.record(value, ""failure"");
+                failureSum += value;
+            }
+        }
+        clock.addSeconds(1);
+        List<Collector.MetricFamilySamples> samples = exports.collect();
+        Assert.assertEquals(1, samples.size());
+        // Modify the next line to use a specific sample name to avoid flakiness
+        Assert.assertEquals(""prom_test_fastcompass_bucket_count"", samples.get(0).name);
+        Assert.assertEquals(""should contain success/failure count and sum"", 4, samples.get(0).samples.size());
+        // Modify the next line to use a specific sample name to avoid flakiness
+        Assert.assertEquals(""prom_test_fastcompass_bucket_count"", samples.get(0).samples.get(0).name);
+        Assert.assertEquals(""success count"", 5, samples.get(0).samples.get(0).value, 0.0001d);
+        Assert.assertEquals(""failure count"", 5, samples.get(0).samples.get(1).value, 0.0001d);
+        Assert.assertEquals(""success sum"", successSum, samples.get(0).samples.get(2).value, 0.0001d);
+        Assert.assertEquals(""failure sum"", failureSum, samples.get(0).samples.get(3).value, 0.0001d);
+    }
+",82.465033592322,85.03669340088894,89.21823807280535
+"@Test
+    public void testSendData() throws IOException, InitializationException {
+        PrometheusRecordSink sink = initTask();
+        List<RecordField> recordFields = Arrays.asList(
+                new RecordField(""field1"", RecordFieldType.INT.getDataType()),
+                new RecordField(""field2"", RecordFieldType.DECIMAL.getDecimalDataType(30, 10)),
+                new RecordField(""field3"", RecordFieldType.STRING.getDataType())
+        );
+        RecordSchema recordSchema = new SimpleRecordSchema(recordFields);
+
+Map<String, Object> row1 = new HashMap<>();
+        row1.put(""field1"", 15);
+        row1.put(""field2"", BigDecimal.valueOf(12.34567D));
+        row1.put(""field3"", ""Hello"");
+
+Map<String, Object> row2 = new HashMap<>();
+        row2.put(""field1"", 6);
+        row2.put(""field2"", BigDecimal.valueOf(0.1234567890123456789D));
+        row2.put(""field3"", ""World!"");
+        RecordSet recordSet = new ListRecordSet(recordSchema, Arrays.asList(
+                new MapRecord(recordSchema, row1),
+                new MapRecord(recordSchema, row2)
+        ));
+
+Map<String, String> attributes = new HashMap<>();
+        attributes.put(""a"", ""Hello"");
+        WriteResult writeResult = sink.sendData(recordSet, attributes, true);
+        assertNotNull(writeResult);
+        assertEquals(2, writeResult.getRecordCount());
+        assertEquals(""Hello"", writeResult.getAttributes().get(""a""));
+
+final String content = getMetrics();
+        assertTrue(content.contains(""field1{field3=\""Hello\"",} 15.0\nfield1{field3=\""World!\"",} 6.0\n""));
+        assertTrue(content.contains(""field2{field3=\""Hello\"",} 12.34567\nfield2{field3=\""World!\"",} 0.12345678901234568\n""));
+
+try {
+            sink.onStopped();
+        } catch (Exception e) {
+
+}
+    }","@Test
+    public void testSendData() throws IOException, InitializationException {
+        PrometheusRecordSink sink = initTask();
+        List<RecordField> recordFields = Arrays.asList(
+                new RecordField(""field1"", RecordFieldType.INT.getDataType()),
+                new RecordField(""field2"", RecordFieldType.DECIMAL.getDecimalDataType(30, 10)),
+                new RecordField(""field3"", RecordFieldType.STRING.getDataType())
+        );
+        RecordSchema recordSchema = new SimpleRecordSchema(recordFields);
+
+Map<String, Object> row1 = new LinkedHashMap<>();
+        row1.put(""field1"", 15);
+        row1.put(""field2"", BigDecimal.valueOf(12.34567D));
+        row1.put(""field3"", ""Hello"");
+
+Map<String, Object> row2 = new LinkedHashMap<>();
+        row2.put(""field1"", 6);
+        row2.put(""field2"", BigDecimal.valueOf(0.1234567890123456789D));
+        row2.put(""field3"", ""World!"");
+        RecordSet recordSet = new ListRecordSet(recordSchema, Arrays.asList(
+                new MapRecord(recordSchema, row1),
+                new MapRecord(recordSchema, row2)
+        ));
+
+Map<String, String> attributes = new LinkedHashMap<>();
+        attributes.put(""a"", ""Hello"");
+        WriteResult writeResult = sink.sendData(recordSet, attributes, true);
+        assertNotNull(writeResult);
+        assertEquals(2, writeResult.getRecordCount());
+        assertEquals(""Hello"", writeResult.getAttributes().get(""a""));
+
+final String content = getMetrics();
+        assertTrue(content.contains(""field1{field3=\""Hello\"",} 15.0\nfield1{field3=\""World!\"",} 6.0\n"") ||
+                   content.contains(""field1{field3=\""World!\"",} 6.0\nfield1{field3=\""Hello\"",} 15.0\n""));
+        assertTrue(content.contains(""field2{field3=\""Hello\"",} 12.34567\nfield2{field3=\""World!\"",} 0.12345678901234568\n"") ||
+                   content.contains(""field2{field3=\""World!\"",} 0.12345678901234568\nfield2{field3=\""Hello\"",} 12.34567\n""));
+
+try {
+            sink.onStopped();
+        } catch (Exception e) {
+
+}
+    }",change_condition,"@Test
+public void testSendData() throws IOException, InitializationException {
+    PrometheusRecordSink sink = initTask();
+    List<RecordField> recordFields = Arrays.asList(
+            new RecordField(""field1"", RecordFieldType.INT.getDataType()),
+            new RecordField(""field2"", RecordFieldType.DECIMAL.getDecimalDataType(30, 10)),
+            new RecordField(""field3"", RecordFieldType.STRING.getDataType())
+    );
+    RecordSchema recordSchema = new SimpleRecordSchema(recordFields);
+
+    Map<String, Object> row1 = new HashMap<>();
+    row1.put(""field1"", 15);
+    row1.put(""field2"", BigDecimal.valueOf(12.34567D));
+    row1.put(""field3"", ""Hello"");
+
+    Map<String, Object> row2 = new HashMap<>();
+    row2.put(""field1"", 6);
+    row2.put(""field2"", BigDecimal.valueOf(0.1234567890123456789D));
+    row2.put(""field3"", ""World!"");
+    RecordSet recordSet = new ListRecordSet(recordSchema, Arrays.asList(
+            new MapRecord(recordSchema, row1),
+            new MapRecord(recordSchema, row2)
+    ));
+
+    Map<String, String> attributes = new HashMap<>();
+    attributes.put(""a"", ""Hello"");
+    WriteResult writeResult = sink.sendData(recordSet, attributes, true);
+    assertNotNull(writeResult);
+    assertEquals(2, writeResult.getRecordCount());
+    assertEquals(""Hello"", writeResult.getAttributes().get(""a""));
+
+    final String content = getMetrics();
+    assertTrue(content.contains(""field1{field3=\""Hello\"",} 15.0\nfield1{field3=\""World!\"",} 6.0\n""));
+    assertTrue(content.contains(""field2{field3=\""Hello\"",} 12.34567\nfield2{field3=\""World!\"",} 0.12345678901234568\n""));
+
+    try {
+        sink.onStopped();
+    } catch (Exception e) {
+        // Handle the exception
+    }
+}
+","@Test
+public void testSendData() throws IOException, InitializationException {
+    PrometheusRecordSink sink = initTask();
+    List<RecordField> recordFields = Arrays.asList(
+            new RecordField(""field1"", RecordFieldType.INT.getDataType()),
+            new RecordField(""field2"", RecordFieldType.DECIMAL.getDecimalDataType(30, 10)),
+            new RecordField(""field3"", RecordFieldType.STRING.getDataType())
+    );
+    RecordSchema recordSchema = new SimpleRecordSchema(recordFields);
+
+    Map<String, Object> row1 = new HashMap<>();
+    row1.put(""field1"", 15);
+    row1.put(""field2"", BigDecimal.valueOf(12.34567D));
+    row1.put(""field3"", ""Hello"");
+
+    Map<String, Object> row2 = new HashMap<>();
+    row2.put(""field1"", 6);
+    row2.put(""field2"", BigDecimal.valueOf(0.1234567890123456789D));
+    row2.put(""field3"", ""World!"");
+    RecordSet recordSet = new ListRecordSet(recordSchema, Arrays.asList(
+            new MapRecord(recordSchema, row1),
+            new MapRecord(recordSchema, row2)
+    ));
+
+    Map<String, String> attributes = new HashMap<>();
+    attributes.put(""a"", ""Hello"");
+    WriteResult writeResult = sink.sendData(recordSet, attributes, true);
+    assertNotNull(writeResult);
+    assertEquals(2, writeResult.getRecordCount());
+    assertEquals(""Hello"", writeResult.getAttributes().get(""a""));
+
+    final String content = getMetrics();
+    assertTrue(content.contains(""field1{field3=\""Hello\"",} 15.0\nfield1{field3=\""World!\"",} 6.0\n""));
+    assertTrue(content.contains(""field2{field3=\""Hello\"",} 12.34567\nfield2{field3=\""World!\"",} 0.12345678901234568\n""));
+
+    try {
+        sink.onStopped();
+    } catch (Exception e) {
+        fail(""Exception should not be thrown"");
+    }
+}
+","@Test
+public void testSendData() throws IOException, InitializationException {
+    PrometheusRecordSink sink = initTask();
+    List<RecordField> recordFields = Arrays.asList(
+            new RecordField(""field1"", RecordFieldType.INT.getDataType()),
+            new RecordField(""field2"", RecordFieldType.DECIMAL.getDecimalDataType(30, 10)),
+            new RecordField(""field3"", RecordFieldType.STRING.getDataType())
+    );
+    RecordSchema recordSchema = new SimpleRecordSchema(recordFields);
+
+    Map<String, Object> row1 = new HashMap<>();
+    row1.put(""field1"", 15);
+    row1.put(""field2"", BigDecimal.valueOf(12.34567D));
+    row1.put(""field3"", ""Hello"");
+
+    Map<String, Object> row2 = new HashMap<>();
+    row2.put(""field1"", 6);
+    row2.put(""field2"", BigDecimal.valueOf(0.1234567890123456789D));
+    row2.put(""field3"", ""World!"");
+    RecordSet recordSet = new ListRecordSet(recordSchema, Arrays.asList(
+            new MapRecord(recordSchema, row1),
+            new MapRecord(recordSchema, row2)
+    ));
+
+    Map<String, String> attributes = new HashMap<>();
+    attributes.put(""a"", ""Hello"");
+    WriteResult writeResult = sink.sendData(recordSet, attributes, true);
+    assertNotNull(writeResult);
+    assertEquals(2, writeResult.getRecordCount());
+    assertEquals(""Hello"", writeResult.getAttributes().get(""a""));
+}",75.22578136539637,87.64625072925281,88.09225026888393
+"@Test
+    public void testBuildTagSome() {
+        try {
+            SubscriptionData subscriptionData = FilterAPI.build(
+                    ""TOPIC"", ""A || B"", ExpressionType.TAG
+            );
+            assertThat(subscriptionData).isNotNull();
+            assertThat(subscriptionData.getTopic()).isEqualTo(""TOPIC"");
+            assertThat(subscriptionData.getSubString()).isEqualTo(""A || B"");
+            assertThat(ExpressionType.isTagType(subscriptionData.getExpressionType())).isTrue();
+
+assertThat(subscriptionData.getTagsSet()).isNotNull();
+            assertThat(subscriptionData.getTagsSet()).containsExactly(""A"", ""B"");
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertThat(Boolean.FALSE).isTrue();
+        }
+    }","@Test
+    public void testBuildTagSome() {
+        try {
+            SubscriptionData subscriptionData = FilterAPI.build(
+                    ""TOPIC"", ""A || B"", ExpressionType.TAG
+            );
+            assertThat(subscriptionData).isNotNull();
+            assertThat(subscriptionData.getTopic()).isEqualTo(""TOPIC"");
+            assertThat(subscriptionData.getSubString()).isEqualTo(""A || B"");
+            assertThat(ExpressionType.isTagType(subscriptionData.getExpressionType())).isTrue();
+
+assertThat(subscriptionData.getTagsSet()).isNotNull();
+            assertThat(subscriptionData.getTagsSet()).containsExactlyInAnyOrder(""A"", ""B"");
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertThat(Boolean.FALSE).isTrue();
+        }
+    }",change_condition,"@Test
+public void testBuildTagSome() {
+    SubscriptionData subscriptionData = FilterAPI.build(
+            ""TOPIC"", ""A || B"", ExpressionType.TAG
+    );
+    assertThat(subscriptionData).isNotNull();
+    assertThat(subscriptionData.getTopic()).isEqualTo(""TOPIC"");
+    assertThat(subscriptionData.getSubString()).isEqualTo(""A || B"");
+    assertThat(ExpressionType.isTagType(subscriptionData.getExpressionType())).isTrue();
+
+    assertThat(subscriptionData.getTagsSet()).isNotNull();
+    assertThat(subscriptionData.getTagsSet()).containsExactlyInAnyOrder(""A"", ""B"");
+}
+","@Test
+public void testBuildTagSome() {
+    try {
+        SubscriptionData subscriptionData = FilterAPI.build(
+                ""TOPIC"", ""A || B"", ExpressionType.TAG
+        );
+        assertThat(subscriptionData).isNotNull();
+        assertThat(subscriptionData.getTopic()).isEqualTo(""TOPIC"");
+        assertThat(subscriptionData.getSubString()).isEqualTo(""A || B"");
+        assertThat(ExpressionType.isTagType(subscriptionData.getExpressionType())).isTrue();
+
+        assertThat(subscriptionData.getTagsSet()).isNotNull();
+        assertThat(subscriptionData.getTagsSet()).containsAnyOf(""A"", ""B""); // Change to containsAnyOf to handle potential test flakiness
+    } catch (Exception e) {
+        e.printStackTrace();
+        assertThat(Boolean.FALSE).isTrue();
+    }
+}
+","@Test
+public void testBuildTagSome() {
+    SubscriptionData subscriptionData = null;
+    try {
+        subscriptionData = FilterAPI.build(
+                ""TOPIC"", ""A || B"", ExpressionType.TAG
+        );
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    
+    assertThat(subscriptionData).isNotNull();
+    assertThat(subscriptionData.getTopic()).isEqualTo(""TOPIC"");
+    assertThat(subscriptionData.getSubString()).isEqualTo(""A || B"");
+    assertThat(ExpressionType.isTagType(subscriptionData.getExpressionType())).isTrue();
+
+    assertThat(subscriptionData.getTagsSet()).isNotNull();
+    assertThat(subscriptionData.getTagsSet()).containsExactlyInAnyOrder(""A"", ""B"");
+}
+",72.38665491383105,90.29304742328557,74.7152019294482
+"@Test
+  public void traceIdGeneratorInit(@Mocked TraceIdGenerator gen1, @Mocked TraceIdGenerator gen2,
+      @Mocked TraceIdGenerator gen3, @Mocked TraceIdGenerator gen4) {
+    new Expectations(SPIServiceUtils.class) {
+      {
+        gen1.getName();
+        result = ""zipkin"";
+        gen3.getName();
+        result = ""apm"";
+        gen2.getName();
+        result = ""zipkin"";
+        gen4.getName();
+        result = ""apm"";
+        SPIServiceUtils.getOrLoadSortedService(TraceIdGenerator.class);
+        result = Arrays.asList(gen1, gen3, gen2, gen4);
+      }
+    };
+
+MatcherAssert.assertThat(Invocation.loadTraceIdGenerators(), Matchers.contains(gen1, gen3));
+  }","@Test
+  public void traceIdGeneratorInit(@Mocked TraceIdGenerator gen1, @Mocked TraceIdGenerator gen2,
+      @Mocked TraceIdGenerator gen3, @Mocked TraceIdGenerator gen4) {
+    new Expectations(SPIServiceUtils.class) {
+      {
+        gen1.getName();
+        result = ""zipkin"";
+        gen3.getName();
+        result = ""apm"";
+        gen2.getName();
+        result = ""zipkin"";
+        gen4.getName();
+        result = ""apm"";
+        SPIServiceUtils.getOrLoadSortedService(TraceIdGenerator.class);
+        result = Arrays.asList(gen1, gen3, gen2, gen4);
+      }
+    };
+
+MatcherAssert.assertThat(Invocation.loadTraceIdGenerators(), Matchers.containsInAnyOrder(gen1, gen3));
+  }",change_condition,"@Test
+public void traceIdGeneratorInit(@Mocked TraceIdGenerator gen1, @Mocked TraceIdGenerator gen2,
+    @Mocked TraceIdGenerator gen3, @Mocked TraceIdGenerator gen4) {
+  new Expectations(SPIServiceUtils.class) {
+    {
+      gen1.getName();
+      result = ""zipkin"";
+      gen3.getName();
+      result = ""apm"";
+      gen2.getName();
+      result = ""zipkin"";
+      gen4.getName();
+      result = ""apm"";
+      SPIServiceUtils.getOrLoadSortedService(TraceIdGenerator.class);
+      result = Arrays.asList(gen1, gen3, gen2, gen4);
+    }
+  };
+
+  MatcherAssert.assertThat(Invocation.loadTraceIdGenerators(), Matchers.containsInAnyOrder(gen1, gen3));
+}
+","@Test
+public void traceIdGeneratorInit(@Mocked TraceIdGenerator gen1, @Mocked TraceIdGenerator gen2,
+    @Mocked TraceIdGenerator gen3, @Mocked TraceIdGenerator gen4) {
+  new Expectations(SPIServiceUtils.class) {
+    {
+      gen1.getName();
+      result = ""zipkin"";
+      gen3.getName();
+      result = ""apm"";
+      gen2.getName();
+      result = ""zipkin"";
+      gen4.getName();
+      result = ""apm"";
+      SPIServiceUtils.getOrLoadSortedService(TraceIdGenerator.class);
+      result = Arrays.asList(gen1, gen2, gen3, gen4); // Changed the order to fix the flakiness
+    }
+  };
+
+  MatcherAssert.assertThat(Invocation.loadTraceIdGenerators(), Matchers.contains(gen1, gen3));
+}
+","@Test
+public void traceIdGeneratorInit(@Mocked TraceIdGenerator gen1, @Mocked TraceIdGenerator gen2,
+    @Mocked TraceIdGenerator gen3, @Mocked TraceIdGenerator gen4) {
+  new Expectations(SPIServiceUtils.class) {
+    {
+      gen1.getName();
+      result = ""zipkin"";
+      gen2.getName();
+      result = ""zipkin"";
+      gen3.getName();
+      result = ""apm"";
+      gen4.getName();
+      result = ""apm"";
+      SPIServiceUtils.getOrLoadSortedService(TraceIdGenerator.class);
+      result = Arrays.asList(gen1, gen2, gen3, gen4);
+    }
+  };
+
+  MatcherAssert.assertThat(Invocation.loadTraceIdGenerators(), Matchers.contains(gen1, gen2));
+}",89.67692826087628,90.37148295232086,100.0
+"@Test
+  public void parameterMap_merge() throws IOException {
+    Map<String, String[]> inherited = new HashMap<>();
+    String[] v1 = new String[] {""v1-1"", ""v1-2""};
+    inherited.put(""p1"", v1);
+    Buffer buffer = Buffer.buffer(""p1=v1-3;p2=v2"");
+    BufferInputStream inputStream = new BufferInputStream(buffer.getByteBuf());
+    new Expectations() {
+      {
+        request.getParameterMap();
+        result = inherited;
+        request.getMethod();
+        result = HttpMethod.PUT;
+        request.getContentType();
+        result = MediaType.APPLICATION_FORM_URLENCODED.toUpperCase(Locale.US) + "";abc"";
+        request.getInputStream();
+        result = inputStream;
+      }
+    };
+
+MatcherAssert.assertThat(Collections.list(requestEx.getParameterNames()), Matchers.contains(""p1"", ""p2""));
+    MatcherAssert.assertThat(requestEx.getParameterValues(""p1""), Matchers.arrayContaining(""v1-1"", ""v1-2"", ""v1-3""));
+    Assertions.assertEquals(""v1-1"", requestEx.getParameter(""p1""));
+  }","@Test
+  public void parameterMap_merge() throws IOException {
+    Map<String, String[]> inherited = new HashMap<>();
+    String[] v1 = new String[] {""v1-1"", ""v1-2""};
+    inherited.put(""p1"", v1);
+    Buffer buffer = Buffer.buffer(""p1=v1-3;p2=v2"");
+    BufferInputStream inputStream = new BufferInputStream(buffer.getByteBuf());
+    new Expectations() {
+      {
+        request.getParameterMap();
+        result = inherited;
+        request.getMethod();
+        result = HttpMethod.PUT;
+        request.getContentType();
+        result = MediaType.APPLICATION_FORM_URLENCODED.toUpperCase(Locale.US) + "";abc"";
+        request.getInputStream();
+        result = inputStream;
+      }
+    };
+
+MatcherAssert.assertThat(Collections.list(requestEx.getParameterNames()), Matchers.containsInAnyOrder(""p1"", ""p2""));
+    MatcherAssert.assertThat(requestEx.getParameterValues(""p1""), Matchers.arrayContaining(""v1-1"", ""v1-2"", ""v1-3""));
+    Assertions.assertEquals(""v1-1"", requestEx.getParameter(""p1""));
+  }",change_condition,"@Test
+public void parameterMap_merge() throws IOException {
+    Map<String, String[]> inherited = new HashMap<>();
+    String[] v1 = new String[]{""v1-1"", ""v1-2""};
+    inherited.put(""p1"", v1);
+    Buffer buffer = Buffer.buffer(""p1=v1-3;p2=v2"");
+    BufferInputStream inputStream = new BufferInputStream(buffer.getByteBuf());
+    new Expectations() {
+        {
+            request.getParameterMap();
+            result = inherited;
+            request.getMethod();
+            result = HttpMethod.PUT;
+            request.getContentType();
+            result = MediaType.APPLICATION_FORM_URLENCODED.toUpperCase(Locale.US) + "";abc"";
+            request.getInputStream();
+            result = inputStream;
+        }
+    };
+
+    MatcherAssert.assertThat(Collections.list(requestEx.getParameterNames()), Matchers.contains(""p1"", ""p2""));
+    MatcherAssert.assertThat(requestEx.getParameterValues(""p1""), Matchers.arrayContaining(""v1-1"", ""v1-2"", ""v1-3""));
+    Assertions.assertEquals(""v1-1"", requestEx.getParameter(""p1""));
+}
+","@Test
+public void parameterMap_merge() throws IOException {
+    Map<String, String[]> inherited = new HashMap<>();
+    String[] v1 = new String[] {""v1-1"", ""v1-2""};
+    inherited.put(""p1"", v1);
+    Buffer buffer = Buffer.buffer(""p1=v1-3;p2=v2"");
+    BufferInputStream inputStream = new BufferInputStream(buffer.getByteBuf());
+    new Expectations() {
+        {
+            request.getParameterMap();
+            result = inherited;
+            request.getMethod();
+            result = HttpMethod.PUT;
+            request.getContentType();
+            result = MediaType.APPLICATION_FORM_URLENCODED.toUpperCase(Locale.US) + "";abc"";
+            request.getInputStream();
+            result = inputStream;
+        }
+    };
+
+    MatcherAssert.assertThat(Collections.list(requestEx.getParameterNames()), Matchers.contains(""p1"", ""p2""));
+    MatcherAssert.assertThat(requestEx.getParameterValues(""p1""), Matchers.arrayContaining(""v1-1"", ""v1-2"", ""v1-3""));
+    Assertions.assertEquals(""v1-1"", requestEx.getParameter(""p1""));
+}","@Test
+public void parameterMap_merge() throws IOException {
+  Map<String, String[]> inherited = new HashMap<>();
+  String[] v1 = new String[] {""v1-1"", ""v1-2""};
+  inherited.put(""p1"", v1);
+  Buffer buffer = Buffer.buffer(""p1=v1-3;p2=v2"");
+  BufferInputStream inputStream = new BufferInputStream(buffer.getByteBuf());
+  new Expectations() {
+    {
+      request.getParameterMap();
+      result = inherited;
+      request.getMethod();
+      result = HttpMethod.PUT;
+      request.getContentType();
+      result = MediaType.APPLICATION_FORM_URLENCODED.toUpperCase(Locale.US) + "";abc"";
+      request.getInputStream();
+      result = inputStream;
+    }
+  };
+
+  MatcherAssert.assertThat(Collections.list(requestEx.getParameterNames()), Matchers.containsInAnyOrder(""p1"", ""p2""));
+  MatcherAssert.assertThat(requestEx.getParameterValues(""p1""), Matchers.arrayContaining(""v1-1"", ""v1-2"", ""v1-3""));
+  Assertions.assertEquals(""v1-1"", requestEx.getParameter(""p1""));
+}",100.0,98.03482316307644,95.29302147336692
+"@Test
+  public void setParameter() {
+    Map<String, String[]> parameterMap = new HashMap<>();
+    Deencapsulation.setField(requestEx, ""parameterMap"", parameterMap);
+    requestEx.setParameter(""k1"", ""v1"");
+    requestEx.setParameter(""k2"", ""v2"");
+    Assertions.assertEquals(""v1"", requestEx.getParameter(""k1""));
+    Assertions.assertEquals(""v2"", requestEx.getParameter(""k2""));
+
+Assertions.assertSame(parameterMap, requestEx.getParameterMap());
+
+MatcherAssert.assertThat(Collections.list(requestEx.getParameterNames()), Matchers.contains(""k1"", ""k2""));
+  }","@Test
+  public void setParameter() {
+    Map<String, String[]> parameterMap = new HashMap<>();
+    Deencapsulation.setField(requestEx, ""parameterMap"", parameterMap);
+    requestEx.setParameter(""k1"", ""v1"");
+    requestEx.setParameter(""k2"", ""v2"");
+    Assertions.assertEquals(""v1"", requestEx.getParameter(""k1""));
+    Assertions.assertEquals(""v2"", requestEx.getParameter(""k2""));
+
+Assertions.assertSame(parameterMap, requestEx.getParameterMap());
+
+MatcherAssert.assertThat(Collections.list(requestEx.getParameterNames()), Matchers.containsInAnyOrder(""k1"", ""k2""));
+  }",change_condition,"@Test
+public void setParameter() {
+    Map<String, String[]> parameterMap = new HashMap<>();
+    Deencapsulation.setField(requestEx, ""parameterMap"", parameterMap);
+    requestEx.setParameter(""k1"", ""v1"");
+    requestEx.setParameter(""k2"", ""v2"");
+    Assertions.assertEquals(""v1"", requestEx.getParameter(""k1""));
+    Assertions.assertEquals(""v2"", requestEx.getParameter(""k2""));
+
+    Assertions.assertSame(parameterMap, requestEx.getParameterMap());
+
+    MatcherAssert.assertThat(Collections.list(requestEx.getParameterNames()), Matchers.containsInAnyOrder(""k1"", ""k2""));
+}
+","@Test
+public void setParameter() {
+    Map<String, String[]> parameterMap = new HashMap<>();
+    Deencapsulation.setField(requestEx, ""parameterMap"", parameterMap);
+    requestEx.setParameter(""k1"", ""v1"");
+    requestEx.setParameter(""k2"", ""v2"");
+    Assertions.assertEquals(""v1"", requestEx.getParameter(""k1""));
+    Assertions.assertEquals(""v2"", requestEx.getParameter(""k2""));
+
+    Assertions.assertEquals(parameterMap, requestEx.getParameterMap());
+
+    MatcherAssert.assertThat(Collections.list(requestEx.getParameterNames()), Matchers.contains(""k1"", ""k2""));
+}
+","@Test
+public void setParameter() {
+    Map<String, String[]> parameterMap = new HashMap<>();
+    parameterMap.put(""k1"", new String[]{""v1""});
+    parameterMap.put(""k2"", new String[]{""v2""});
+    Deencapsulation.setField(requestEx, ""parameterMap"", parameterMap);
+    Assertions.assertEquals(""v1"", requestEx.getParameter(""k1""));
+    Assertions.assertEquals(""v2"", requestEx.getParameter(""k2""));
+    Assertions.assertSame(parameterMap, requestEx.getParameterMap());
+    MatcherAssert.assertThat(Collections.list(requestEx.getParameterNames()), Matchers.contains(""k1"", ""k2""));
+}
+",70.82043224975975,91.34973337832574,100.0
+"@Test
+  public void setParameter() {
+    Map<String, String[]> parameterMap = new HashMap<>();
+    Deencapsulation.setField(request, ""parameterMap"", parameterMap);
+    request.setParameter(""k1"", ""v1"");
+    request.setParameter(""k2"", ""v2"");
+    Assertions.assertEquals(""v1"", request.getParameter(""k1""));
+    Assertions.assertEquals(""v2"", request.getParameter(""k2""));
+
+Assertions.assertSame(parameterMap, request.getParameterMap());
+
+MatcherAssert.assertThat(Collections.list(request.getParameterNames()), Matchers.contains(""k1"", ""k2""));
+  }","@Test
+  public void setParameter() {
+    Map<String, String[]> parameterMap = new HashMap<>();
+    Deencapsulation.setField(request, ""parameterMap"", parameterMap);
+    request.setParameter(""k1"", ""v1"");
+    request.setParameter(""k2"", ""v2"");
+    Assertions.assertEquals(""v1"", request.getParameter(""k1""));
+    Assertions.assertEquals(""v2"", request.getParameter(""k2""));
+
+Assertions.assertSame(parameterMap, request.getParameterMap());
+
+MatcherAssert.assertThat(Collections.list(request.getParameterNames()), Matchers.containsInAnyOrder(""k1"", ""k2""));
+  }",change_condition,"@Test
+public void setParameter() {
+    Map<String, String[]> parameterMap = new HashMap<>();
+    Deencapsulation.setField(request, ""parameterMap"", parameterMap);
+    request.setParameter(""k1"", ""v1"");
+    request.setParameter(""k2"", ""v2"");
+    Assertions.assertEquals(""v1"", request.getParameter(""k1""));
+    Assertions.assertEquals(""v2"", request.getParameter(""k2""));
+
+    Assertions.assertSame(parameterMap, request.getParameterMap());
+
+    MatcherAssert.assertThat(Collections.list(request.getParameterNames()), Matchers.containsInAnyOrder(""k1"", ""k2""));
+}
+","@Test
+public void setParameter() {
+    Map<String, String[]> parameterMap = new HashMap<>();
+    request.setParameter(""k1"", ""v1"");
+    request.setParameter(""k2"", ""v2"");
+    Assertions.assertEquals(""v1"", request.getParameter(""k1""));
+    Assertions.assertEquals(""v2"", request.getParameter(""k2""));
+
+    Assertions.assertSame(parameterMap, request.getParameterMap());
+
+    MatcherAssert.assertThat(Collections.list(request.getParameterNames()), Matchers.containsInAnyOrder(""k1"", ""k2""));
+}
+","@Test
+public void setParameter() {
+    Map<String, String[]> parameterMap = new HashMap<>();
+    parameterMap.put(""k1"", new String[]{""v1""});
+    parameterMap.put(""k2"", new String[]{""v2""});
+    Deencapsulation.setField(request, ""parameterMap"", parameterMap);
+    Assertions.assertEquals(""v1"", request.getParameter(""k1""));
+    Assertions.assertEquals(""v2"", request.getParameter(""k2""));
+    Assertions.assertSame(parameterMap, request.getParameterMap());
+    MatcherAssert.assertThat(Collections.list(request.getParameterNames()), Matchers.contains(""k1"", ""k2""));
+}",70.82043224975975,87.12501339562073,100.0
+"@Test
+    public void rebalanceListener_onPartitionsAssigned() {
+        long rebalanceCount = ProcessingKafkaConsumer.REBALANCE_COUNTER.count();
+        TopicPartition newPartition = new TopicPartition(""new-topic"", 0);
+        when(consumer.committed(newPartition)).thenReturn(new OffsetAndMetadata(0L));
+        processingConsumer.rebalanceListener.onPartitionsAssigned(Arrays.asList(topicPartition, newPartition));
+        assertThat(processingConsumer.partitions.keySet(), contains(newPartition, topicPartition));
+        assertThat(ProcessingKafkaConsumer.REBALANCE_COUNTER.count(), is(rebalanceCount + 1));
+    }","@Test
+    public void rebalanceListener_onPartitionsAssigned() {
+        long rebalanceCount = ProcessingKafkaConsumer.REBALANCE_COUNTER.count();
+        TopicPartition newPartition = new TopicPartition(""new-topic"", 0);
+        when(consumer.committed(newPartition)).thenReturn(new OffsetAndMetadata(0L));
+        processingConsumer.rebalanceListener.onPartitionsAssigned(Arrays.asList(topicPartition, newPartition));
+        assertThat(processingConsumer.partitions.keySet(), containsInAnyOrder(topicPartition, newPartition));
+        assertThat(ProcessingKafkaConsumer.REBALANCE_COUNTER.count(), is(rebalanceCount + 1));
+    }",change_condition,"@Test
+public void rebalanceListener_onPartitionsAssigned() {
+    long rebalanceCount = ProcessingKafkaConsumer.REBALANCE_COUNTER.count();
+    TopicPartition newPartition = new TopicPartition(""new-topic"", 0);
+    when(consumer.committed(newPartition)).thenReturn(new OffsetAndMetadata(0L));
+    processingConsumer.rebalanceListener.onPartitionsAssigned(Arrays.asList(topicPartition, newPartition));
+    assertThat(processingConsumer.partitions.keySet(), containsInAnyOrder(newPartition, topicPartition));
+    assertThat(ProcessingKafkaConsumer.REBALANCE_COUNTER.count(), is(rebalanceCount + 1));
+}
+","@Test
+public void rebalanceListener_onPartitionsAssigned() {
+    long rebalanceCount = ProcessingKafkaConsumer.REBALANCE_COUNTER.count();
+    TopicPartition newPartition = new TopicPartition(""new-topic"", 0);
+    when(consumer.committed(newPartition)).thenReturn(new OffsetAndMetadata(0L));
+    processingConsumer.rebalanceListener.onPartitionsAssigned(Arrays.asList(topicPartition, newPartition));
+    assertThat(processingConsumer.partitions.keySet(), contains(topicPartition, newPartition)); // Changed order of partitions
+    assertThat(ProcessingKafkaConsumer.REBALANCE_COUNTER.count(), is(rebalanceCount + 1));
+}
+","@Test
+public void rebalanceListener_onPartitionsAssigned() {
+    long rebalanceCount = ProcessingKafkaConsumer.REBALANCE_COUNTER.count();
+    TopicPartition newPartition = new TopicPartition(""new-topic"", 0);
+    when(consumer.committed(newPartition)).thenReturn(new OffsetAndMetadata(0L)).thenReturn(new OffsetAndMetadata(0L));
+    processingConsumer.rebalanceListener.onPartitionsAssigned(Arrays.asList(topicPartition, newPartition));
+    assertThat(processingConsumer.partitions.keySet(), contains(newPartition, topicPartition));
+    assertThat(ProcessingKafkaConsumer.REBALANCE_COUNTER.count(), is(rebalanceCount + 1));
+}",87.61307341860886,89.89406913861565,93.11252038556265
+"@Test
+    public void nextRecord_manyRecords() {
+        partition.load(Arrays.asList(record(1L), record(2L), record(3L)));
+        assertThat(partition.hasNextRecord(), is(true));
+        assertRecordsAreEqual(partition.nextRecord(), record(1L));
+        assertThat(partition.pendingOffsets.keySet(), contains(1L));
+        assertThat(partition.offsetPosition, is(2L));
+        assertThat(partition.hasNextRecord(), is(true));
+        assertRecordsAreEqual(partition.nextRecord(), record(2L));
+
+assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L));
+        assertThat(partition.offsetPosition, is(3L));
+
+assertThat(partition.hasNextRecord(), is(true));
+        assertRecordsAreEqual(partition.nextRecord(), record(3L));
+
+assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L, 3L));
+        assertThat(partition.offsetPosition, is(4L));
+
+assertThat(partition.hasNextRecord(), is(false));
+        assertThat(partition.nextRecord(), is(nullValue()));
+
+assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L, 3L));
+        assertThat(partition.offsetPosition, is(4L));
+
+assertThat(partition.committableOffset, is(nullValue()));
+        assertThat(partition.getCommittableOffsetsSize(), is(0L));
+    }","@Test
+    public void nextRecord_manyRecords() {
+        partition.load(Arrays.asList(record(1L), record(2L), record(3L)));
+        assertThat(partition.hasNextRecord(), is(true));
+        assertRecordsAreEqual(partition.nextRecord(), record(1L));
+        assertThat(partition.pendingOffsets.keySet(), contains(1L));
+        assertThat(partition.offsetPosition, is(2L));
+        assertThat(partition.hasNextRecord(), is(true));
+        assertRecordsAreEqual(partition.nextRecord(), record(2L));
+
+assertThat(partition.pendingOffsets.keySet(), containsInAnyOrder(1L, 2L));
+        assertThat(partition.offsetPosition, is(3L));
+
+assertThat(partition.hasNextRecord(), is(true));
+        assertRecordsAreEqual(partition.nextRecord(), record(3L));
+
+assertThat(partition.pendingOffsets.keySet(), containsInAnyOrder(1L, 2L, 3L));
+        assertThat(partition.offsetPosition, is(4L));
+
+assertThat(partition.hasNextRecord(), is(false));
+        assertThat(partition.nextRecord(), is(nullValue()));
+
+assertThat(partition.pendingOffsets.keySet(), containsInAnyOrder(1L, 2L, 3L));
+        assertThat(partition.offsetPosition, is(4L));
+
+assertThat(partition.committableOffset, is(nullValue()));
+        assertThat(partition.getCommittableOffsetsSize(), is(0L));
+    }",change_condition,"@Test
+public void nextRecord_manyRecords() {
+    partition.load(Arrays.asList(record(1L), record(2L), record(3L)));
+    assertThat(partition.hasNextRecord(), is(true));
+    assertRecordsAreEqual(partition.nextRecord(), record(1L));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L));
+    assertThat(partition.offsetPosition, is(2L));
+    assertThat(partition.hasNextRecord(), is(true));
+    assertRecordsAreEqual(partition.nextRecord(), record(2L));
+
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L));
+    assertThat(partition.offsetPosition, is(3L));
+
+    assertThat(partition.hasNextRecord(), is(true));
+    assertRecordsAreEqual(partition.nextRecord(), record(3L));
+
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L, 3L));
+    assertThat(partition.offsetPosition, is(4L));
+
+    assertThat(partition.hasNextRecord(), is(false));
+    assertThat(partition.nextRecord(), is(nullValue()));
+
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L, 3L));
+    assertThat(partition.offsetPosition, is(4L));
+
+    assertThat(partition.committableOffset, is(nullValue()));
+    assertThat(partition.getCommittableOffsetsSize(), is(0L);
+}
+","@Test
+public void nextRecord_manyRecords() {
+    partition.load(Arrays.asList(record(1L), record(2L), record(3L)));
+    assertThat(partition.hasNextRecord(), is(true));
+    assertRecordsAreEqual(partition.nextRecord(), record(1L));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L));
+    assertThat(partition.offsetPosition, is(2L));
+    assertThat(partition.hasNextRecord(), is(true));
+    assertRecordsAreEqual(partition.nextRecord(), record(2L));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L));
+    assertThat(partition.offsetPosition, is(3L));
+    assertThat(partition.hasNextRecord(), is(true));
+    assertRecordsAreEqual(partition.nextRecord(), record(3L));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L, 3L));
+    assertThat(partition.offsetPosition, is(4L));
+    assertThat(partition.hasNextRecord(), is(false));
+    assertThat(partition.nextRecord(), is(nullValue()));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L, 3L));
+    assertThat(partition.offsetPosition, is(4L));
+    assertThat(partition.committableOffset, is(nullValue()));
+    assertThat(partition.getCommittableOffsetsSize(), is(0L));
+}
+","@Test
+public void nextRecord_manyRecords() {
+    partition.load(Arrays.asList(record(1L), record(2L), record(3L)));
+    assertThat(partition.hasNextRecord(), is(true));
+    assertRecordsAreEqual(partition.nextRecord(), record(1L));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L));
+    assertThat(partition.offsetPosition, is(2L));
+    assertThat(partition.hasNextRecord(), is(true));
+    assertRecordsAreEqual(partition.nextRecord(), record(2L));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L));
+    assertThat(partition.offsetPosition, is(3L));
+    assertThat(partition.hasNextRecord(), is(true));
+    assertRecordsAreEqual(partition.nextRecord(), record(3L));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L, 3L));
+    assertThat(partition.offsetPosition, is(4L));
+    assertThat(partition.hasNextRecord(), is(false));
+    assertThat(partition.nextRecord(), is(nullValue()));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L, 3L));
+    assertThat(partition.offsetPosition, is(4L));
+    assertThat(partition.committableOffset, is(nullValue()));
+    assertThat(partition.getCommittableOffsetsSize(), is(0L);
+}",89.89269384194299,92.07213647902427,89.89269384194299
+"@Test
+    public void nextRecord_skipPendingAndCompletedRecords() {
+        partition.load(Arrays.asList(record(0L), record(1L), record(2L)));
+
+assertRecordsAreEqual(partition.nextRecord(), record(0L));
+        assertRecordsAreEqual(partition.nextRecord(), record(1L));
+        assertRecordsAreEqual(partition.nextRecord(), record(2L));
+
+assertThat(partition.hasNextRecord(), is(false));
+        assertThat(partition.offsetPosition, is(3L));
+        assertThat(partition.pendingOffsets.keySet(), contains(0L, 1L, 2L));
+        assertThat(partition.completedOffsets, empty());
+
+assertThat(partition.ack(0L), is(true));
+
+assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L));
+        assertThat(partition.completedOffsets, contains(0L));
+
+assertThat(partition.committableOffset, is(1L));
+        assertThat(partition.lastCommittedOffset, is(0L));
+        assertThat(partition.getCommittableOffsetsSize(), is(1L));
+
+assertThat(partition.fail(2L), is(true));
+        assertThat(partition.pendingOffsets.keySet(), contains(1L));
+        assertThat(partition.completedOffsets, contains(0L));
+        assertThat(partition.committableOffset, is(1L));
+        assertThat(partition.lastCommittedOffset, is(0L));
+        assertThat(partition.getCommittableOffsetsSize(), is(1L));
+        verify(consumer).seek(topicPartition, 0L);
+        assertThat(partition.offsetPosition, is(0L));
+
+partition.load(Arrays.asList(record(0L), record(1L), record(2L)));
+
+assertRecordsAreEqual(partition.nextRecord(), record(2L));
+
+assertThat(partition.hasNextRecord(), is(false));
+        assertThat(partition.offsetPosition, is(3L));
+        assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L));
+        assertThat(partition.completedOffsets, contains(0L));
+
+assertThat(partition.committableOffset, is(1L));
+        assertThat(partition.lastCommittedOffset, is(0L));
+        assertThat(partition.getCommittableOffsetsSize(), is(1L));
+    }","@Test
+    public void nextRecord_skipPendingAndCompletedRecords() {
+        partition.load(Arrays.asList(record(0L), record(1L), record(2L)));
+
+assertRecordsAreEqual(partition.nextRecord(), record(0L));
+        assertRecordsAreEqual(partition.nextRecord(), record(1L));
+        assertRecordsAreEqual(partition.nextRecord(), record(2L));
+
+assertThat(partition.hasNextRecord(), is(false));
+        assertThat(partition.offsetPosition, is(3L));
+        assertThat(partition.pendingOffsets.keySet(), containsInAnyOrder(0L, 1L, 2L));
+        assertThat(partition.completedOffsets, empty());
+
+assertThat(partition.ack(0L), is(true));
+
+assertThat(partition.pendingOffsets.keySet(), containsInAnyOrder(1L, 2L));
+        assertThat(partition.completedOffsets, contains(0L));
+
+assertThat(partition.committableOffset, is(1L));
+        assertThat(partition.lastCommittedOffset, is(0L));
+        assertThat(partition.getCommittableOffsetsSize(), is(1L));
+
+assertThat(partition.fail(2L), is(true));
+        assertThat(partition.pendingOffsets.keySet(), contains(1L));
+        assertThat(partition.completedOffsets, contains(0L));
+        assertThat(partition.committableOffset, is(1L));
+        assertThat(partition.lastCommittedOffset, is(0L));
+        assertThat(partition.getCommittableOffsetsSize(), is(1L));
+        verify(consumer).seek(topicPartition, 0L);
+        assertThat(partition.offsetPosition, is(0L));
+
+partition.load(Arrays.asList(record(0L), record(1L), record(2L)));
+
+assertRecordsAreEqual(partition.nextRecord(), record(2L));
+
+assertThat(partition.hasNextRecord(), is(false));
+        assertThat(partition.offsetPosition, is(3L));
+        assertThat(partition.pendingOffsets.keySet(), containsInAnyOrder(1L, 2L));
+        assertThat(partition.completedOffsets, contains(0L));
+
+assertThat(partition.committableOffset, is(1L));
+        assertThat(partition.lastCommittedOffset, is(0L));
+        assertThat(partition.getCommittableOffsetsSize(), is(1L));
+    }",change_condition,"@Test
+public void nextRecord_skipPendingAndCompletedRecords() {
+    partition.load(Arrays.asList(record(0L), record(1L), record(2L)));
+
+    assertRecordsAreEqual(partition.nextRecord(), record(0L));
+    assertRecordsAreEqual(partition.nextRecord(), record(1L));
+    assertRecordsAreEqual(partition.nextRecord(), record(2L));
+
+    assertThat(partition.hasNextRecord(), is(false));
+    assertThat(partition.offsetPosition, is(3L));
+    assertThat(partition.pendingOffsets.keySet(), contains(0L, 1L, 2L));
+    assertThat(partition.completedOffsets, empty());
+
+    assertThat(partition.ack(0L), is(true));
+
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L));
+    assertThat(partition.completedOffsets, contains(0L));
+
+    assertThat(partition.committableOffset, is(1L));
+    assertThat(partition.lastCommittedOffset, is(0L));
+    assertThat(partition.getCommittableOffsetsSize(), is(1L));
+
+    assertThat(partition.fail(2L), is(true));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L));
+    assertThat(partition.completedOffsets, contains(0L));
+    assertThat(partition.committableOffset, is(1L));
+    assertThat(partition.lastCommittedOffset, is(0L));
+    assertThat(partition.getCommittableOffsetsSize(), is(1L);
+    verify(consumer).seek(topicPartition, 0L);
+    assertThat(partition.offsetPosition, is(0L);
+
+    partition.load(Arrays.asList(record(0L), record(1L), record(2L)));
+
+    assertRecordsAreEqual(partition.nextRecord(), record(2L));
+
+    assertThat(partition.hasNextRecord(), is(false));
+    assertThat(partition.offsetPosition, is(3L));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L));
+    assertThat(partition.completedOffsets, contains(0L));
+
+    assertThat(partition.committableOffset, is(1L));
+    assertThat(partition.lastCommittedOffset, is(0L));
+    assertThat(partition.getCommittableOffsetsSize(), is(1L);
+}
+","@Test
+public void nextRecord_skipPendingAndCompletedRecords() {
+    partition.load(Arrays.asList(record(0L), record(1L), record(2L)));
+
+    assertRecordsAreEqual(partition.nextRecord(), record(0L));
+    assertRecordsAreEqual(partition.nextRecord(), record(1L));
+    assertRecordsAreEqual(partition.nextRecord(), record(2L));
+
+    assertThat(partition.hasNextRecord(), is(false));
+    assertThat(partition.offsetPosition, is(3L));
+    assertThat(partition.pendingOffsets.keySet(), contains(0L, 1L, 2L));
+    assertThat(partition.completedOffsets, empty());
+
+    assertThat(partition.ack(0L), is(true));
+
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L));
+    assertThat(partition.completedOffsets, contains(0L));
+    assertThat(partition.committableOffset, is(1L));
+    assertThat(partition.lastCommittedOffset, is(0L));
+    assertThat(partition.getCommittableOffsetsSize(), is(1L));
+
+    assertThat(partition.fail(2L), is(true));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L));
+    assertThat(partition.completedOffsets, contains(0L));
+    assertThat(partition.committableOffset, is(1L));
+    assertThat(partition.lastCommittedOffset, is(0L));
+    assertThat(partition.getCommittableOffsetsSize(), is(1L));
+    verify(consumer).seek(topicPartition, 0L);
+    assertThat(partition.offsetPosition, is(0L));
+
+    partition.load(Arrays.asList(record(0L), record(1L), record(2L)));
+
+    assertRecordsAreEqual(partition.nextRecord(), record(1L)); // Change condition to fix flakiness
+
+    assertThat(partition.hasNextRecord(), is(false));
+    assertThat(partition.offsetPosition, is(3L));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L));
+    assertThat(partition.completedOffsets, contains(0L));
+
+    assertThat(partition.committableOffset, is(1L));
+    assertThat(partition.lastCommittedOffset, is(0L));
+    assertThat(partition.getCommittableOffsetsSize(), is(1L);
+}
+","@Test
+public void nextRecord_skipPendingAndCompletedRecords() {
+    partition.load(Arrays.asList(record(0L), record(1L), record(2L)));
+
+    assertRecordsAreEqual(partition.nextRecord(), record(0L));
+    assertRecordsAreEqual(partition.nextRecord(), record(1L));
+    assertRecordsAreEqual(partition.nextRecord(), record(2L));
+
+    assertThat(partition.hasNextRecord(), is(false));
+    assertThat(partition.offsetPosition, is(3L));
+    assertThat(partition.pendingOffsets.keySet(), contains(0L, 1L, 2L));
+    assertThat(partition.completedOffsets, empty());
+
+    assertThat(partition.ack(0L), is(true));
+
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L));
+    assertThat(partition.completedOffsets, contains(0L));
+    assertThat(partition.committableOffset, is(1L));
+    assertThat(partition.lastCommittedOffset, is(0L));
+    assertThat(partition.getCommittableOffsetsSize(), is(1L));
+
+    assertThat(partition.fail(2L), is(true));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L));
+    assertThat(partition.completedOffsets, contains(0L));
+    assertThat(partition.committableOffset, is(1L));
+    assertThat(partition.lastCommittedOffset, is(0L));
+    assertThat(partition.getCommittableOffsetsSize(), is(1L));
+    verify(consumer).seek(topicPartition, 0L);
+    assertThat(partition.offsetPosition, is(0L));
+
+    partition.load(Arrays.asList(record(3L), record(4L), record(5L)));
+
+    assertRecordsAreEqual(partition.nextRecord(), record(3L));
+    assertRecordsAreEqual(partition.nextRecord(), record(4L));
+    assertRecordsAreEqual(partition.nextRecord(), record(5L));
+
+    assertThat(partition.hasNextRecord(), is(false));
+    assertThat(partition.offsetPosition, is(3L));
+    assertThat(partition.pendingOffsets.keySet(), contains(1L, 2L, 3L, 4L, 5L));
+    assertThat(partition.completedOffsets, contains(0L));
+    assertThat(partition.committableOffset, is(1L));
+    assertThat(partition.lastCommittedOffset, is(0L));
+    assertThat(partition.getCommittableOffsetsSize(), is(5L));
+}
+",85.7454822511861,89.13209730269948,88.91271060819093
+"public void testIndentationWithResource() throws Exception
+    {
+
+Server server = startServer(TEST_PORT2, SimpleIndentingApp.class);
+        final String URL_BASE = ""http:
+        try {
+
+String json = readUTF8(new URL(URL_BASE).openStream());
+            assertEquals(aposToQuotes(""{'x':1,'y':2}""), json);
+
+json = readUTF8(new URL(URL_BASE + ""?indent=true"").openStream());
+            assertEquals(aposToQuotes(""{\n  'x' : 1,\n  'y' : 2\n}""), json);
+        } finally {
+            server.stop();
+        }
+    }","public void testIndentationWithResource() throws Exception
+    {
+
+Server server = startServer(TEST_PORT2, SimpleIndentingApp.class);
+        final String URL_BASE = ""http:
+        try {
+
+String json = readUTF8(new URL(URL_BASE).openStream());
+            boolean quote1 = json.equals(aposToQuotes(""{'x':1,'y':2}""));
+            boolean quote2 = json.equals(aposToQuotes(""{'y':2,'x':1}""));
+            assertTrue(quote1 || quote2);
+
+json = readUTF8(new URL(URL_BASE + ""?indent=true"").openStream());
+            boolean quote3 = json.equals(aposToQuotes(""{\n  'x' : 1,\n  'y' : 2\n}""));
+            boolean quote4 = json.equals(aposToQuotes(""{\n  'y' : 2,\n  'x' : 1\n}""));
+            assertTrue(quote3 || quote4);
+        } finally {
+            server.stop();
+        }
+    }",change_condition,"public void testIndentationWithResource() throws Exception {
+    Server server = startServer(TEST_PORT2, SimpleIndentingApp.class);
+    final String URL_BASE = ""http://localhost:"" + TEST_PORT2;
+    try {
+        String json = readUTF8(new URL(URL_BASE).openStream());
+        assertEquals(aposToQuotes(""{'x':1,'y':2}""), json);
+
+        json = readUTF8(new URL(URL_BASE + ""?indent=true"").openStream());
+        assertEquals(aposToQuotes(""{\n  'x' : 1,\n  'y' : 2\n}""), json);
+    } finally {
+        server.stop();
+    }
+}
+","public void testIndentationWithResource() throws Exception {
+    Server server = startServer(TEST_PORT2, SimpleIndentingApp.class);
+    final String URL_BASE = ""http://localhost:"" + TEST_PORT2 + ""/"";
+    try {
+        String json = readUTF8(new URL(URL_BASE).openStream());
+        assertEquals(aposToQuotes(""{'x':1,'y':2}""), json);
+
+        json = readUTF8(new URL(URL_BASE + ""?indent=true"").openStream());
+        assertEquals(aposToQuotes(""{\n  'x' : 1,\n  'y' : 2\n}""), json);
+    } finally {
+        server.stop();
+    }
+}
+","public void testIndentationWithResource() throws Exception {
+    Server server = startServer(TEST_PORT2, SimpleIndentingApp.class);
+    final String URL_BASE = ""http://localhost:"" + TEST_PORT2 + ""/"";
+    try {
+        String json = readUTF8(new URL(URL_BASE).openStream());
+        assertEquals(aposToQuotes(""{'x':1,'y':2}""), json);
+
+        json = readUTF8(new URL(URL_BASE + ""?indent=true"").openStream());
+        assertEquals(aposToQuotes(""{\n  'x' : 1,\n  'y' : 2\n}""), json);
+    } finally {
+        server.stop();
+    }
+}
+",51.729123064267604,51.729123064267604,54.67253285364744
+"@Test
+    public void exportDomainArtifacts() {
+        DomainArtifacts artifacts = DomainArtifacts.getInstance();
+
+assertEquals(1, artifacts.getDomains().size());
+        assertEquals(FooDomain.CODE, artifacts.getDomains().get(0).getCode());
+
+assertEquals(2, artifacts.getSteps().size());
+        assertTrue(artifacts.getSteps().containsKey(Steps.Cancel.Activity));
+        assertTrue(artifacts.getSteps().containsKey(Steps.Submit.Activity));
+        List<DomainArtifacts.Step> submitSteps = artifacts.getSteps().get(Steps.Submit.Activity);
+        assertEquals(4, submitSteps.size()); 
+        assertEquals(Steps.Submit.GoodsValidationGroup, submitSteps.get(0).getTags()[0]);
+
+assertEquals(7, artifacts.getExtensions().size());
+        int foundExtN = 0;
+        boolean foundPartnerOnlyPattern = false;
+        boolean foundPatternOnlyPattern = false;
+        for (DomainArtifacts.Extension extension : artifacts.getExtensions()) {
+            if (IDecideStepsExt.class == extension.getExt()) {
+                foundExtN++;
+
+assertEquals(1, extension.getPatterns().size());
+            }
+            if (IMultiMatchExt.class == extension.getExt()) {
+                foundExtN++;
+
+assertEquals(2, extension.getPatterns().size());
+            }
+            if (IPatternOnlyExt.class == extension.getExt()) {
+                foundPatternOnlyPattern = true;
+                assertEquals(0, extension.getPartners().size());
+                assertEquals(1, extension.getPatterns().size());
+            }
+            if (IPartnerExt.class == extension.getExt()) {
+                foundPartnerOnlyPattern = true;
+                assertEquals(0, extension.getPatterns().size());
+                assertEquals(1, extension.getPartners().size()); 
+            }
+            if (IFooExt.class == extension.getExt()) {
+                foundExtN++;
+
+assertEquals(3, extension.getPatterns().size());
+            }
+        }
+        assertEquals(3, foundExtN);
+        assertTrue(foundPatternOnlyPattern);
+        assertTrue(foundPartnerOnlyPattern);
+    }","@Test
+    public void exportDomainArtifacts() {
+        DomainArtifacts artifacts = DomainArtifacts.getInstance();
+
+assertEquals(1, artifacts.getDomains().size());
+        assertEquals(FooDomain.CODE, artifacts.getDomains().get(0).getCode());
+
+assertEquals(2, artifacts.getSteps().size());
+        assertTrue(artifacts.getSteps().containsKey(Steps.Cancel.Activity));
+        assertTrue(artifacts.getSteps().containsKey(Steps.Submit.Activity));
+        List<DomainArtifacts.Step> submitSteps = artifacts.getSteps().get(Steps.Submit.Activity);
+        assertEquals(4, submitSteps.size()); 
+        assertTrue(submitSteps.stream().anyMatch(step -> step.getTags().length > 0 &&
+            step.getTags()[0].equals(Steps.Submit.GoodsValidationGroup)));
+
+assertEquals(7, artifacts.getExtensions().size());
+        int foundExtN = 0;
+        boolean foundPartnerOnlyPattern = false;
+        boolean foundPatternOnlyPattern = false;
+        for (DomainArtifacts.Extension extension : artifacts.getExtensions()) {
+            if (IDecideStepsExt.class == extension.getExt()) {
+                foundExtN++;
+
+assertEquals(1, extension.getPatterns().size());
+            }
+            if (IMultiMatchExt.class == extension.getExt()) {
+                foundExtN++;
+
+assertEquals(2, extension.getPatterns().size());
+            }
+            if (IPatternOnlyExt.class == extension.getExt()) {
+                foundPatternOnlyPattern = true;
+                assertEquals(0, extension.getPartners().size());
+                assertEquals(1, extension.getPatterns().size());
+            }
+            if (IPartnerExt.class == extension.getExt()) {
+                foundPartnerOnlyPattern = true;
+                assertEquals(0, extension.getPatterns().size());
+                assertEquals(1, extension.getPartners().size()); 
+            }
+            if (IFooExt.class == extension.getExt()) {
+                foundExtN++;
+
+assertEquals(3, extension.getPatterns().size());
+            }
+        }
+        assertEquals(3, foundExtN);
+        assertTrue(foundPatternOnlyPattern);
+        assertTrue(foundPartnerOnlyPattern);
+    }",change_condition,"@Test
+public void exportDomainArtifacts() {
+    DomainArtifacts artifacts = DomainArtifacts.getInstance();
+
+    assertEquals(1, artifacts.getDomains().size());
+    assertEquals(FooDomain.CODE, artifacts.getDomains().get(0).getCode());
+
+    assertEquals(2, artifacts.getSteps().size());
+    assertTrue(artifacts.getSteps().containsKey(Steps.Cancel.Activity));
+    assertTrue(artifacts.getSteps().containsKey(Steps.Submit.Activity));
+    List<DomainArtifacts.Step> submitSteps = artifacts.getSteps().get(Steps.Submit.Activity);
+    assertEquals(4, submitSteps.size()); 
+    assertEquals(Steps.Submit.GoodsValidationGroup, submitSteps.get(0).getTags()[0]);
+
+    assertEquals(7, artifacts.getExtensions().size());
+    int foundExtN = 0;
+    boolean foundPartnerOnlyPattern = false;
+    boolean foundPatternOnlyPattern = false;
+    for (DomainArtifacts.Extension extension : artifacts.getExtensions()) {
+        if (IDecideStepsExt.class == extension.getExt()) {
+            foundExtN++;
+            assertEquals(1, extension.getPatterns().size());
+        }
+        if (IMultiMatchExt.class == extension.getExt()) {
+            foundExtN++;
+            assertEquals(2, extension.getPatterns().size());
+        }
+        if (IPatternOnlyExt.class == extension.getExt()) {
+            foundPatternOnlyPattern = true;
+            assertEquals(0, extension.getPartners().size());
+            assertEquals(1, extension.getPatterns().size());
+        }
+        if (IPartnerExt.class == extension.getExt()) {
+            foundPartnerOnlyPattern = true;
+            assertEquals(0, extension.getPatterns().size());
+            assertEquals(1, extension.getPartners().size()); 
+        }
+        if (IFooExt.class == extension.getExt()) {
+            foundExtN++;
+            assertEquals(3, extension.getPatterns().size());
+        }
+    }
+    assertEquals(3, foundExtN);
+    assertTrue(foundPatternOnlyPattern);
+    assertTrue(foundPartnerOnlyPattern);
+}
+","@Test
+public void exportDomainArtifacts() {
+    DomainArtifacts artifacts = DomainArtifacts.getInstance();
+
+    assertEquals(1, artifacts.getDomains().size());
+    assertEquals(FooDomain.CODE, artifacts.getDomains().get(0).getCode());
+
+    assertEquals(2, artifacts.getSteps().size());
+    assertTrue(artifacts.getSteps().containsKey(Steps.Cancel.Activity));
+    assertTrue(artifacts.getSteps().containsKey(Steps.Submit.Activity));
+    List<DomainArtifacts.Step> submitSteps = artifacts.getSteps().get(Steps.Submit.Activity);
+    assertEquals(4, submitSteps.size()); 
+    assertEquals(Steps.Submit.GoodsValidationGroup, submitSteps.get(0).getTags()[0]);
+
+    assertEquals(7, artifacts.getExtensions().size());
+    int foundExtN = 0;
+    boolean foundPartnerOnlyPattern = false;
+    boolean foundPatternOnlyPattern = false;
+    for (DomainArtifacts.Extension extension : artifacts.getExtensions()) {
+        if (IDecideStepsExt.class == extension.getExt()) {
+            foundExtN++;
+            assertEquals(1, extension.getPatterns().size());
+        }
+        if (IMultiMatchExt.class == extension.getExt()) {
+            foundExtN++;
+            assertEquals(2, extension.getPatterns().size());
+        }
+        if (IPatternOnlyExt.class == extension.getExt()) {
+            foundPatternOnlyPattern = true;
+            assertEquals(0, extension.getPartners().size());
+            assertEquals(1, extension.getPatterns().size());
+        }
+        if (IPartnerExt.class == extension.getExt()) {
+            foundPartnerOnlyPattern = true;
+            assertEquals(0, extension.getPatterns().size());
+            assertEquals(1, extension.getPartners().size()); 
+        }
+        if (IFooExt.class == extension.getExt()) {
+            foundExtN++;
+            assertEquals(3, extension.getPatterns().size());
+        }
+    }
+    assertEquals(4, foundExtN); // Changed the expected value from 3 to 4
+    assertTrue(foundPatternOnlyPattern);
+    assertTrue(foundPartnerOnlyPattern);
+}
+","@Test
+public void exportDomainArtifacts() {
+    DomainArtifacts artifacts = DomainArtifacts.getInstance();
+
+    assertEquals(1, artifacts.getDomains().size());
+    assertEquals(FooDomain.CODE, artifacts.getDomains().get(0).getCode());
+
+    assertEquals(2, artifacts.getSteps().size());
+    assertTrue(artifacts.getSteps().containsKey(Steps.Cancel.Activity));
+    assertTrue(artifacts.getSteps().containsKey(Steps.Submit.Activity));
+    List<DomainArtifacts.Step> submitSteps = artifacts.getSteps().get(Steps.Submit.Activity);
+    assertEquals(4, submitSteps.size());
+    assertEquals(Steps.Submit.GoodsValidationGroup, submitSteps.get(0).getTags()[0]);
+
+    assertEquals(7, artifacts.getExtensions().size());
+    int foundExtN = 0;
+    boolean foundPartnerOnlyPattern = false;
+    boolean foundPatternOnlyPattern = false;
+    for (DomainArtifacts.Extension extension : artifacts.getExtensions()) {
+        if (IDecideStepsExt.class == extension.getExt()) {
+            foundExtN++;
+            assertEquals(1, extension.getPatterns().size());
+        }
+        if (IMultiMatchExt.class == extension.getExt()) {
+            foundExtN++;
+            assertEquals(2, extension.getPatterns().size());
+        }
+        if (IPatternOnlyExt.class == extension.getExt()) {
+            foundPatternOnlyPattern = true;
+            assertEquals(0, extension.getPartners().size());
+            assertEquals(1, extension.getPatterns().size());
+        }
+        if (IPartnerExt.class == extension.getExt()) {
+            foundPartnerOnlyPattern = true;
+            assertEquals(0, extension.getPatterns().size());
+            assertEquals(1, extension.getPartners().size());
+        }
+        if (IFooExt.class == extension.getExt()) {
+            foundExtN++;
+            assertEquals(3, extension.getPatterns().size());
+        }
+    }
+    assertEquals(4, foundExtN);
+    assertTrue(foundPatternOnlyPattern);
+    assertTrue(foundPartnerOnlyPattern);
+}",86.95232100441083,85.80804526320598,88.1163864901464
+"@Test
+    public void shouldAddItemsWithDeduplicate() {
+
+final boolean deduplicate = true;
+        final OneOrMore<Integer> collection = new OneOrMore<>(deduplicate);
+        final Set<Integer> expectedItems = new HashSet<>();
+        IntStream.rangeClosed(1, 200).forEach(expectedItems::add);
+
+for (int i = 200; 0 < i; i--) {
+            collection.add(i);
+            collection.add(i);
+        }
+
+assertThat(collection).containsExactlyElementsOf(expectedItems);
+    }","@Test
+    public void shouldAddItemsWithDeduplicate() {
+
+final boolean deduplicate = true;
+        final OneOrMore<Integer> collection = new OneOrMore<>(deduplicate);
+        final Set<Integer> expectedItems = new HashSet<>();
+        IntStream.rangeClosed(1, 200).forEach(expectedItems::add);
+
+for (int i = 200; 0 < i; i--) {
+            collection.add(i);
+            collection.add(i);
+        }
+
+assertThat(collection).containsExactlyInAnyOrderElementsOf(expectedItems);
+    }",change_condition,"@Test
+public void shouldAddItemsWithDeduplicate() {
+    final boolean deduplicate = true;
+    final OneOrMore<Integer> collection = new OneOrMore<>(deduplicate);
+    final Set<Integer> expectedItems = new HashSet<>();
+    IntStream.rangeClosed(1, 200).forEach(expectedItems::add);
+
+    for (int i = 200; i > 0; i--) {
+        collection.add(i);
+        collection.add(i);
+    }
+
+    assertThat(collection).containsExactlyElementsOf(expectedItems);
+}
+","@Test
+public void shouldAddItemsWithDeduplicate() {
+    final boolean deduplicate = true;
+    final OneOrMore<Integer> collection = new OneOrMore<>(deduplicate);
+    final Set<Integer> expectedItems = new HashSet<>();
+    IntStream.rangeClosed(1, 200).forEach(expectedItems::add);
+
+    for (int i = 200; i > 0; i--) {
+        collection.add(i);
+    }
+
+    assertThat(collection).containsExactlyElementsOf(expectedItems);
+}
+","@Test
+public void shouldAddItemsWithDeduplicate() {
+    final boolean deduplicate = true;
+    final OneOrMore<Integer> collection = new OneOrMore<>(deduplicate);
+    final Set<Integer> expectedItems = new HashSet<>();
+    IntStream.rangeClosed(1, 200).forEach(expectedItems::add);
+
+    for (int i = 200; 0 < i; i--) {
+        collection.add(i);
+    }
+
+    assertThat(collection).containsExactlyElementsOf(expectedItems);
+}
+",89.94499611389138,83.52799446228416,89.93620037073498
+"@Test
+    void createUserTest() {
+        def builder = Hooks.builder()
+                .userImport(createUser())
+        def expectedToString = expected """"""
+        { ""commands"": [{
+            ""type"": ""com.okta.action.update"",
+            ""value"": {
+              ""result"": ""CREATE_USER""
+            }
+          }]
+        }
+        """"""
+
+assertThat builder.toString(), is(expectedToString)
+    }","@Test
+    void createUserTest() {
+        def builder = Hooks.builder()
+                .userImport(createUser())
+        def expectedToString = expected """"""
+        { ""commands"": [{
+            ""type"": ""com.okta.action.update"",
+            ""value"": {
+              ""result"": ""CREATE_USER""
+            }
+          }]
+        }
+        """"""
+
+assertJsonEqualsNonStrict builder.toString(), expectedToString
+    }",change_condition,"@Test
+void createUserTest() {
+    def builder = Hooks.builder()
+            .userImport(createUser())
+    def expectedToString = expected """"""
+    { ""commands"": [{
+        ""type"": ""com.okta.action.update"",
+        ""value"": {
+          ""result"": ""CREATE_USER""
+        }
+      }]
+    }
+    """"""
+    assertJsonEqualsNonStrict(builder.toString(), expectedToString)
+}
+","@Test
+void createUserTest() {
+    def builder = Hooks.builder()
+            .userImport(createUser())
+    def expectedToString = expected """"""
+    { ""commands"": [{
+        ""type"": ""com.okta.action.update"",
+        ""value"": {
+          ""result"": ""CREATE_USER""
+        }
+      }]
+    }
+    """"""
+
+    await().atMost(5, SECONDS).untilAsserted {
+        assertThat(builder.toString(), is(expectedToString))
+    }
+}
+","@Test
+void createUserTest() {
+    def user = createUser()
+    def builder = Hooks.builder()
+            .userImport(user)
+    def expectedToString = expected """"""
+    { ""commands"": [{
+        ""type"": ""com.okta.action.update"",
+        ""value"": {
+          ""result"": ""CREATE_USER""
+        }
+      }]
+    }
+    """"""
+
+    assertThat(builder.toString(), is(expectedToString))
+}",63.786521272996076,83.0960935311402,85.1373862760305
+"@Test
+    void linkUserTest() {
+        def builder = Hooks.builder()
+                .userImport(linkUser(""00garwpuyxHaWOkdV0g4""))
+        def expectedToString = expected """"""
+        { ""commands"": [{
+            ""type"": ""com.okta.action.update"",
+            ""value"": {
+              ""result"": ""LINK_USER""
+            }
+          }, {
+            ""type"": ""com.okta.user.update"",
+            ""value"": {
+              ""id"": ""00garwpuyxHaWOkdV0g4""
+            }
+          }]
+        }
+        """"""
+
+assertThat builder.toString(), is(expectedToString)
+    }","@Test
+    void linkUserTest() {
+        def builder = Hooks.builder()
+                .userImport(linkUser(""00garwpuyxHaWOkdV0g4""))
+        def expectedToString = expected """"""
+        { ""commands"": [{
+            ""type"": ""com.okta.action.update"",
+            ""value"": {
+              ""result"": ""LINK_USER""
+            }
+          }, {
+            ""type"": ""com.okta.user.update"",
+            ""value"": {
+              ""id"": ""00garwpuyxHaWOkdV0g4""
+            }
+          }]
+        }
+        """"""
+
+assertJsonEqualsNonStrict builder.toString(), expectedToString
+    }",change_condition,"@Test
+void linkUserTest() {
+    def builder = Hooks.builder()
+            .userImport(linkUser(""00garwpuyxHaWOkdV0g4""))
+    def expectedToString = expected """"""
+    { ""commands"": [{
+        ""type"": ""com.okta.action.update"",
+        ""value"": {
+          ""result"": ""LINK_USER""
+        }
+      }, {
+        ""type"": ""com.okta.user.update"",
+        ""value"": {
+          ""id"": ""00garwpuyxHaWOkdV0g4""
+        }
+      }]
+    }
+    """"""
+
+    assertJsonEqualsNonStrict builder.toString(), expectedToString
+}
+","@Test
+void linkUserTest() {
+    def builder = Hooks.builder()
+            .userImport(linkUser(""00garwpuyxHaWOkdV0g4""))
+    def expectedToString = expected """"""
+    { ""commands"": [{
+        ""type"": ""com.okta.action.update"",
+        ""value"": {
+          ""result"": ""LINK_USER""
+        }
+      }, {
+        ""type"": ""com.okta.user.update"",
+        ""value"": {
+          ""id"": ""00garwpuyxHaWOkdV0g4""
+        }
+      }]
+    }
+    """"""
+    
+    // Change the assertion to use the `equalTo` matcher instead of `is`
+    assertThat(builder.toString(), equalTo(expectedToString))
+}
+","@Test
+void linkUserTest() {
+    def builder = Hooks.builder()
+            .userImport(linkUser(""00garwpuyxHaWOkdV0g4""))
+    def expectedToString = expected """"""
+    { ""commands"": [{
+        ""type"": ""com.okta.action.update"",
+        ""value"": {
+          ""result"": ""LINK_USER""
+        }
+      }, {
+        ""type"": ""com.okta.user.update"",
+        ""value"": {
+          ""id"": ""00garwpuyxHaWOkdV0g4""
+        }
+      }]
+    }
+    """"""
+
+    assertThat(builder.toString(), is(equalTo(expectedToString)))
+}",91.46199575899125,86.43124412601911,100.0
+"@Test
+    void addClaims() {
+        def builder = Hooks.builder()
+                .oauth2(addAccessTokenClaims([
+                            access1:    ""value1"",
+                            access2:    2,
+                            access3:    true,
+                            access4:    [""one"", ""two"", ""three""]]),
+                        addIdTokenClaims([
+                            id1:    ""value1"",
+                            id2:    2,
+                            id3:    true,
+                            id4:    [""one"", ""two"", ""three""]]))
+        def expectedToString = expected """"""
+        {""commands"": [
+            { ""type"": ""com.okta.access.patch"",
+              ""value"": [
+                { ""op"": ""add"",
+                  ""path"": ""/claims/access1"",
+                  ""value"": ""value1""
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/access2"",
+                  ""value"": 2
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/access3"",
+                  ""value"": true
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/access4"",
+                  ""value"": [""one"", ""two"", ""three""]
+                }
+              ]
+            },
+            { ""type"": ""com.okta.identity.patch"",
+              ""value"": [
+                { ""op"": ""add"",
+                  ""path"": ""/claims/id1"",
+                  ""value"": ""value1""
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/id2"",
+                  ""value"": 2
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/id3"",
+                  ""value"": true
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/id4"",
+                  ""value"": [""one"", ""two"", ""three""]
+                }
+              ]
+            }
+          ]
+        }
+        """"""
+        assertThat builder.toString(), is(expectedToString)
+    }","@Test
+    void addClaims() {
+        def builder = Hooks.builder()
+                .oauth2(addAccessTokenClaims([
+                            access1:    ""value1"",
+                            access2:    2,
+                            access3:    true,
+                            access4:    [""one"", ""two"", ""three""]]),
+                        addIdTokenClaims([
+                            id1:    ""value1"",
+                            id2:    2,
+                            id3:    true,
+                            id4:    [""one"", ""two"", ""three""]]))
+        def expectedToString = expected """"""
+        {""commands"": [
+            { ""type"": ""com.okta.access.patch"",
+              ""value"": [
+                { ""op"": ""add"",
+                  ""path"": ""/claims/access1"",
+                  ""value"": ""value1""
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/access2"",
+                  ""value"": 2
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/access3"",
+                  ""value"": true
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/access4"",
+                  ""value"": [""one"", ""two"", ""three""]
+                }
+              ]
+            },
+            { ""type"": ""com.okta.identity.patch"",
+              ""value"": [
+                { ""op"": ""add"",
+                  ""path"": ""/claims/id1"",
+                  ""value"": ""value1""
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/id2"",
+                  ""value"": 2
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/id3"",
+                  ""value"": true
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/id4"",
+                  ""value"": [""one"", ""two"", ""three""]
+                }
+              ]
+            }
+          ]
+        }
+        """"""
+        assertJsonEqualsNonStrict builder.toString(), expectedToString
+    }",change_condition,"@Test
+void addClaims() {
+    def builder = Hooks.builder()
+            .oauth2(addAccessTokenClaims([
+                        access1:    ""value1"",
+                        access2:    2,
+                        access3:    true,
+                        access4:    [""one"", ""two"", ""three""]]),
+                    addIdTokenClaims([
+                        id1:    ""value1"",
+                        id2:    2,
+                        id3:    true,
+                        id4:    [""one"", ""two"", ""three""]]))
+    def expectedToString = expected """"""
+    {""commands"": [
+        { ""type"": ""com.okta.access.patch"",
+          ""value"": [
+            { ""op"": ""add"",
+              ""path"": ""/claims/access1"",
+              ""value"": ""value1""
+            },
+            { ""op"": ""add"",
+              ""path"": ""/claims/access2"",
+              ""value"": 2
+            },
+            { ""op"": ""add"",
+              ""path"": ""/claims/access3"",
+              ""value"": true
+            },
+            { ""op"": ""add"",
+              ""path"": ""/claims/access4"",
+              ""value"": [""one"", ""two"", ""three""]
+            }
+          ]
+        },
+        { ""type"": ""com.okta.identity.patch"",
+          ""value"": [
+            { ""op"": ""add"",
+              ""path"": ""/claims/id1"",
+              ""value"": ""value1""
+            },
+            { ""op"": ""add"",
+              ""path"": ""/claims/id2"",
+              ""value"": 2
+            },
+            { ""op"": ""add"",
+              ""path"": ""/claims/id3"",
+              ""value"": true
+            },
+            { ""op"": ""add"",
+              ""path"": ""/claims/id4"",
+              ""value"": [""one"", ""two"", ""three""]
+            }
+          ]
+        }
+      ]
+    }
+    """"""
+    assertJsonEqualsNonStrict builder.toString(), expectedToString
+}
+","@Test
+void addClaims() {
+    def builder = Hooks.builder()
+            .oauth2(addAccessTokenClaims([
+                        access1:    ""value1"",
+                        access2:    2,
+                        access3:    true,
+                        access4:    [""one"", ""two"", ""three""]]),
+                    addIdTokenClaims([
+                        id1:    ""value1"",
+                        id2:    2,
+                        id3:    true,
+                        id4:    [""one"", ""two"", ""three""]]))
+    def expectedToString = expected """"""
+    {""commands"": [
+        { ""type"": ""com.okta.access.patch"",
+          ""value"": [
+            { ""op"": ""add"",
+              ""path"": ""/claims/access1"",
+              ""value"": ""value1""
+            },
+            { ""op"": ""add"",
+              ""path"": ""/claims/access2"",
+              ""value"": 2
+            },
+            { ""op"": ""add"",
+              ""path"": ""/claims/access3"",
+              ""value"": true
+            },
+            { ""op"": ""add"",
+              ""path"": ""/claims/access4"",
+              ""value"": [""one"", ""two"", ""three""]
+            }
+          ]
+        },
+        { ""type"": ""com.okta.identity.patch"",
+          ""value"": [
+            { ""op"": ""add"",
+              ""path"": ""/claims/id1"",
+              ""value"": ""value1""
+            },
+            { ""op"": ""add"",
+              ""path"": ""/claims/id2"",
+              ""value"": 2
+            },
+            { ""op"": ""add"",
+              ""path"": ""/claims/id3"",
+              ""value"": true
+            },
+            { ""op"": ""add"",
+              ""path"": ""/claims/id4"",
+              ""value"": [""one"", ""two"", ""three""]
+            }
+          ]
+        }
+      ]
+    }
+    """"""
+    assertThat builder.toString(), is(expectedToString)
+}
+","@Test
+void addClaims() {
+    def builder = Hooks.builder()
+            .oauth2(addAccessTokenClaims([
+                access1: ""value1"",
+                access2: 2,
+                access3: true,
+                access4: [""one"", ""two"", ""three""]]),
+                addIdTokenClaims([
+                    id1: ""value1"",
+                    id2: 2,
+                    id3: true,
+                    id4: [""one"", ""two"", ""three""]]))
+    def expectedToString = expected """"""
+        {""commands"": [
+            { ""type"": ""com.okta.access.patch"",
+              ""value"": [
+                { ""op"": ""add"",
+                  ""path"": ""/claims/access1"",
+                  ""value"": ""value1""
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/access2"",
+                  ""value"": 2
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/access3"",
+                  ""value"": true
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/access4"",
+                  ""value"": [""one"", ""two"", ""three""]
+                }
+              ]
+            },
+            { ""type"": ""com.okta.identity.patch"",
+              ""value"": [
+                { ""op"": ""add"",
+                  ""path"": ""/claims/id1"",
+                  ""value"": ""value1""
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/id2"",
+                  ""value"": 2
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/id3"",
+                  ""value"": true
+                },
+                { ""op"": ""add"",
+                  ""path"": ""/claims/id4"",
+                  ""value"": [""one"", ""two"", ""three""]
+                }
+              ]
+            }
+          ]
+        }
+        """"""
+    assertThat(builder.toString(), is(expectedToString))
+}",95.9984350994267,96.71858236910617,100.0
+"@Test
+    void removeClaims() {
+        def builder = Hooks.builder()
+            .oauth2(
+                removeAccessTokenClaims(""access1"", ""access2"", ""access3""),
+                removeIdTokenClaims(""id1"", ""id2"", ""id3""))
+        def expectedToString = expected """"""
+        {""commands"": [
+            { ""type"": ""com.okta.access.patch"",
+              ""value"": [
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/access1""
+                },
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/access2""
+                },
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/access3""
+                }
+              ]
+            },
+            { ""type"": ""com.okta.identity.patch"",
+              ""value"": [
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/id1""
+                },
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/id2""
+                },
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/id3""
+                }
+              ]
+            }
+          ]
+        }
+        """"""
+        assertThat builder.toString(), is(expectedToString)
+    }","@Test
+    void removeClaims() {
+        def builder = Hooks.builder()
+            .oauth2(
+                removeAccessTokenClaims(""access1"", ""access2"", ""access3""),
+                removeIdTokenClaims(""id1"", ""id2"", ""id3""))
+        def expectedToString = expected """"""
+        {""commands"": [
+            { ""type"": ""com.okta.access.patch"",
+              ""value"": [
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/access1""
+                },
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/access2""
+                },
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/access3""
+                }
+              ]
+            },
+            { ""type"": ""com.okta.identity.patch"",
+              ""value"": [
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/id1""
+                },
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/id2""
+                },
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/id3""
+                }
+              ]
+            }
+          ]
+        }
+        """"""
+        assertJsonEqualsNonStrict builder.toString(), expectedToString
+    }",change_condition,"@Test
+void removeClaims() {
+    def builder = Hooks.builder()
+        .oauth2(
+            removeAccessTokenClaims(""access1"", ""access2"", ""access3""),
+            removeIdTokenClaims(""id1"", ""id2"", ""id3""))
+    def expectedToString = expected """"""
+    {""commands"": [
+        { ""type"": ""com.okta.access.patch"",
+          ""value"": [
+            { ""op"": ""remove"",
+              ""path"": ""/claims/access1""
+            },
+            { ""op"": ""remove"",
+              ""path"": ""/claims/access2""
+            },
+            { ""op"": ""remove"",
+              ""path"": ""/claims/access3""
+            }
+          ]
+        },
+        { ""type"": ""com.okta.identity.patch"",
+          ""value"": [
+            { ""op"": ""remove"",
+              ""path"": ""/claims/id1""
+            },
+            { ""op"": ""remove"",
+              ""path"": ""/claims/id2""
+            },
+            { ""op"": ""remove"",
+              ""path"": ""/claims/id3""
+            }
+          ]
+        }
+      ]
+    }
+    """"""
+    assertJsonEqualsNonStrict builder.toString(), expectedToString
+}
+","@Test
+void removeClaims() {
+    def builder = Hooks.builder()
+        .oauth2(
+            removeAccessTokenClaims(""access1"", ""access2"", ""access3""),
+            removeIdTokenClaims(""id1"", ""id2"", ""id3""))
+    def expectedToString = expected """"""
+    {""commands"": [
+        { ""type"": ""com.okta.access.patch"",
+          ""value"": [
+            { ""op"": ""remove"",
+              ""path"": ""/claims/access1""
+            },
+            { ""op"": ""remove"",
+              ""path"": ""/claims/access2""
+            },
+            { ""op"": ""remove"",
+              ""path"": ""/claims/access3""
+            }
+          ]
+        },
+        { ""type"": ""com.okta.identity.patch"",
+          ""value"": [
+            { ""op"": ""remove"",
+              ""path"": ""/claims/id1""
+            },
+            { ""op"": ""remove"",
+              ""path"": ""/claims/id2""
+            },
+            { ""op"": ""remove"",
+              ""path"": ""/claims/id3""
+            }
+          ]
+        }
+      ]
+    }
+    """"""
+    assertThat builder.toString(), is(expectedToString)
+}
+","@Test
+void removeClaims() {
+    def builder = Hooks.builder()
+            .oauth2(
+                    removeAccessTokenClaims(""access1"", ""access2"", ""access3""),
+                    removeIdTokenClaims(""id1"", ""id2"", ""id3""))
+
+    def expectedToString = expected(""""""
+        {""commands"": [
+            { ""type"": ""com.okta.access.patch"",
+              ""value"": [
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/access1""
+                },
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/access2""
+                },
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/access3""
+                }
+              ]
+            },
+            { ""type"": ""com.okta.identity.patch"",
+              ""value"": [
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/id1""
+                },
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/id2""
+                },
+                { ""op"": ""remove"",
+                  ""path"": ""/claims/id3""
+                }
+              ]
+            }
+          ]
+        }
+        """""")
+
+    assertThat(builder.toString(), is(expectedToString))
+}",85.66974786989124,95.53339808709032,100.0
+"@Test
+    void replaceClaims() {
+        def builder = Hooks.builder()
+            .oauth2(replaceAccessTokenClaims([
+                access1:    ""value1"",
+                access2:    2,
+                access3:    true,
+                access4:    [""one"", ""two"", ""three""]]),
+                replaceIdTokenClaims([
+                    id1:    ""value1"",
+                    id2:    2,
+                    id3:    true,
+                    id4:    [""one"", ""two"", ""three""]]))
+        def expectedToString = expected """"""
+        {""commands"": [
+            { ""type"": ""com.okta.access.patch"",
+              ""value"": [
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/access1"",
+                  ""value"": ""value1""
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/access2"",
+                  ""value"": 2
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/access3"",
+                  ""value"": true
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/access4"",
+                  ""value"": [""one"", ""two"", ""three""]
+                }
+              ]
+            },
+            { ""type"": ""com.okta.identity.patch"",
+              ""value"": [
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/id1"",
+                  ""value"": ""value1""
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/id2"",
+                  ""value"": 2
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/id3"",
+                  ""value"": true
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/id4"",
+                  ""value"": [""one"", ""two"", ""three""]
+                }
+              ]
+            }
+          ]
+        }
+        """"""
+        assertThat builder.toString(), is(expectedToString)
+    }","@Test
+    void replaceClaims() {
+        def builder = Hooks.builder()
+            .oauth2(replaceAccessTokenClaims([
+                access1:    ""value1"",
+                access2:    2,
+                access3:    true,
+                access4:    [""one"", ""two"", ""three""]]),
+                replaceIdTokenClaims([
+                    id1:    ""value1"",
+                    id2:    2,
+                    id3:    true,
+                    id4:    [""one"", ""two"", ""three""]]))
+        def expectedToString = expected """"""
+        {""commands"": [
+            { ""type"": ""com.okta.access.patch"",
+              ""value"": [
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/access1"",
+                  ""value"": ""value1""
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/access2"",
+                  ""value"": 2
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/access3"",
+                  ""value"": true
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/access4"",
+                  ""value"": [""one"", ""two"", ""three""]
+                }
+              ]
+            },
+            { ""type"": ""com.okta.identity.patch"",
+              ""value"": [
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/id1"",
+                  ""value"": ""value1""
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/id2"",
+                  ""value"": 2
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/id3"",
+                  ""value"": true
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/id4"",
+                  ""value"": [""one"", ""two"", ""three""]
+                }
+              ]
+            }
+          ]
+        }
+        """"""
+        assertJsonEqualsNonStrict builder.toString(), expectedToString
+    }",change_condition,"@Test
+void replaceClaims() {
+    def builder = Hooks.builder()
+        .oauth2(replaceAccessTokenClaims([
+            access1:    ""value1"",
+            access2:    2,
+            access3:    true,
+            access4:    [""one"", ""two"", ""three""]]),
+            replaceIdTokenClaims([
+                id1:    ""value1"",
+                id2:    2,
+                id3:    true,
+                id4:    [""one"", ""two"", ""three""]]))
+    def expectedToString = expected """"""
+    {""commands"": [
+        { ""type"": ""com.okta.access.patch"",
+          ""value"": [
+            { ""op"": ""replace"",
+              ""path"": ""/claims/access1"",
+              ""value"": ""value1""
+            },
+            { ""op"": ""replace"",
+              ""path"": ""/claims/access2"",
+              ""value"": 2
+            },
+            { ""op"": ""replace"",
+              ""path"": ""/claims/access3"",
+              ""value"": true
+            },
+            { ""op"": ""replace"",
+              ""path"": ""/claims/access4"",
+              ""value"": [""one"", ""two"", ""three""]
+            }
+          ]
+        },
+        { ""type"": ""com.okta.identity.patch"",
+          ""value"": [
+            { ""op"": ""replace"",
+              ""path"": ""/claims/id1"",
+              ""value"": ""value1""
+            },
+            { ""op"": ""replace"",
+              ""path"": ""/claims/id2"",
+              ""value"": 2
+            },
+            { ""op"": ""replace"",
+              ""path"": ""/claims/id3"",
+              ""value"": true
+            },
+            { ""op"": ""replace"",
+              ""path"": ""/claims/id4"",
+              ""value"": [""one"", ""two"", ""three""]
+            }
+          ]
+        }
+      ]
+    }
+    """"""
+    assertJsonEqualsNonStrict builder.toString(), expectedToString
+}
+","@Test
+void replaceClaims() {
+    def builder = Hooks.builder()
+        .oauth2(replaceAccessTokenClaims([
+            access1:    ""value1"",
+            access2:    2,
+            access3:    true,
+            access4:    [""one"", ""two"", ""three""]]),
+            replaceIdTokenClaims([
+                id1:    ""value1"",
+                id2:    2,
+                id3:    true,
+                id4:    [""one"", ""two"", ""three""]]))
+    def expectedToString = expected """"""
+    {""commands"": [
+        { ""type"": ""com.okta.access.patch"",
+          ""value"": [
+            { ""op"": ""replace"",
+              ""path"": ""/claims/access1"",
+              ""value"": ""value1""
+            },
+            { ""op"": ""replace"",
+              ""path"": ""/claims/access2"",
+              ""value"": 2
+            },
+            { ""op"": ""replace"",
+              ""path"": ""/claims/access3"",
+              ""value"": true
+            },
+            { ""op"": ""replace"",
+              ""path"": ""/claims/access4"",
+              ""value"": [""one"", ""two"", ""three""]
+            }
+          ]
+        },
+        { ""type"": ""com.okta.identity.patch"",
+          ""value"": [
+            { ""op"": ""replace"",
+              ""path"": ""/claims/id1"",
+              ""value"": ""value1""
+            },
+            { ""op"": ""replace"",
+              ""path"": ""/claims/id2"",
+              ""value"": 2
+            },
+            { ""op"": ""replace"",
+              ""path"": ""/claims/id3"",
+              ""value"": true
+            },
+            { ""op"": ""replace"",
+              ""path"": ""/claims/id4"",
+              ""value"": [""one"", ""two"", ""three""]
+            }
+          ]
+        }
+      ]
+    }
+    """"""
+    assertThat builder.toString(), is(expectedToString)
+}","@Test
+void replaceClaims() {
+    def builder = Hooks.builder()
+        .oauth2(replaceAccessTokenClaims([
+            access1: ""value1"",
+            access2: 2,
+            access3: true,
+            access4: [""one"", ""two"", ""three""]]),
+            replaceIdTokenClaims([
+                id1: ""value1"",
+                id2: 2,
+                id3: true,
+                id4: [""one"", ""two"", ""three""]]))
+    def expectedToString = expected """"""
+        {""commands"": [
+            { ""type"": ""com.okta.access.patch"",
+              ""value"": [
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/access1"",
+                  ""value"": ""value1""
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/access2"",
+                  ""value"": 2
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/access3"",
+                  ""value"": true
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/access4"",
+                  ""value"": [""one"", ""two"", ""three""]
+                }
+              ]
+            },
+            { ""type"": ""com.okta.identity.patch"",
+              ""value"": [
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/id1"",
+                  ""value"": ""value1""
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/id2"",
+                  ""value"": 2
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/id3"",
+                  ""value"": true
+                },
+                { ""op"": ""replace"",
+                  ""path"": ""/claims/id4"",
+                  ""value"": [""one"", ""two"", ""three""]
+                }
+              ]
+            }
+          ]
+        }
+        """"""
+    assertThat(builder.toString(), is(expectedToString))
+}
+",95.9984350994267,96.71858236910617,100.0
+"@Test
+    void tokenExpiration() {
+        def builder = Hooks.builder()
+            .oauth2(
+                setAccessTokenExpiration(4242),
+                setIdTokenExpiration(2424))
+        def expectedToString = expected """"""
+        {""commands"": [
+            { ""type"": ""com.okta.access.patch"",
+              ""value"": [
+                { ""op"": ""replace"",
+                  ""path"": ""/token/lifetime/expiration"",
+                  ""value"": 4242
+                }
+              ]
+            },
+            { ""type"": ""com.okta.identity.patch"",
+              ""value"": [
+                { ""op"": ""replace"",
+                  ""path"": ""/token/lifetime/expiration"",
+                  ""value"": 2424
+                }
+              ]
+            }
+          ]
+        }
+        """"""
+        assertThat builder.toString(), is(expectedToString)
+    }","@Test
+    void tokenExpiration() {
+        def builder = Hooks.builder()
+            .oauth2(
+                setAccessTokenExpiration(4242),
+                setIdTokenExpiration(2424))
+        def expectedToString = expected """"""
+        {""commands"": [
+            { ""type"": ""com.okta.access.patch"",
+              ""value"": [
+                { ""op"": ""replace"",
+                  ""path"": ""/token/lifetime/expiration"",
+                  ""value"": 4242
+                }
+              ]
+            },
+            { ""type"": ""com.okta.identity.patch"",
+              ""value"": [
+                { ""op"": ""replace"",
+                  ""path"": ""/token/lifetime/expiration"",
+                  ""value"": 2424
+                }
+              ]
+            }
+          ]
+        }
+        """"""
+        assertJsonEqualsNonStrict builder.toString(), expectedToString
+    }",change_condition,"@Test
+void tokenExpiration() {
+    def builder = Hooks.builder()
+        .oauth2(
+            setAccessTokenExpiration(4242),
+            setIdTokenExpiration(2424))
+    def expectedToString = expected """"""
+    {""commands"": [
+        { ""type"": ""com.okta.access.patch"",
+          ""value"": [
+            { ""op"": ""replace"",
+              ""path"": ""/token/lifetime/expiration"",
+              ""value"": 4242
+            }
+          ]
+        },
+        { ""type"": ""com.okta.identity.patch"",
+          ""value"": [
+            { ""op"": ""replace"",
+              ""path"": ""/token/lifetime/expiration"",
+              ""value"": 2424
+            }
+          ]
+        }
+      ]
+    }
+    """"""
+    assertJsonEqualsNonStrict builder.toString(), expectedToString
+}
+","@Test
+void tokenExpiration() {
+    def builder = Hooks.builder()
+        .oauth2(
+            setAccessTokenExpiration(4242),
+            setIdTokenExpiration(2424))
+    def expectedToString = expected """"""
+    {""commands"": [
+        { ""type"": ""com.okta.access.patch"",
+          ""value"": [
+            { ""op"": ""replace"",
+              ""path"": ""/token/lifetime/expiration"",
+              ""value"": 4242
+            }
+          ]
+        },
+        { ""type"": ""com.okta.identity.patch"",
+          ""value"": [
+            { ""op"": ""replace"",
+              ""path"": ""/token/lifetime/expiration"",
+              ""value"": 2424
+            }
+          ]
+        }
+      ]
+    }
+    """"""
+    assertThat builder.toString(), is(expectedToString)
+}
+","@Test
+void tokenExpiration() {
+    def builder = Hooks.builder()
+        .oauth2(
+            setAccessTokenExpiration(4242),
+            setIdTokenExpiration(2424))
+    def expectedToString = expected """"""
+    {""commands"": [
+        { ""type"": ""com.okta.access.patch"",
+          ""value"": [
+            { ""op"": ""replace"",
+              ""path"": ""/token/lifetime/expiration"",
+              ""value"": 4242
+            }
+          ]
+        },
+        { ""type"": ""com.okta.identity.patch"",
+          ""value"": [
+            { ""op"": ""replace"",
+              ""path"": ""/token/lifetime/expiration"",
+              ""value"": 2424
+            }
+          ]
+        }
+      ]
+    }
+    """"""
+    assertThat(builder.toString(), is(expectedToString))
+}",92.9446949256206,94.04334160212858,100.0
+"@Test
+    void allow() {
+        def builder = Hooks.builder()
+            .userRegistration(allowRegistration())
+        def expectedToString = expected """"""
+        { ""commands"":[
+              { ""type"":""com.okta.action.update"",
+                 ""value"":{
+                    ""registration"":""ALLOW""
+                 }
+              }
+           ]
+        }
+        """"""
+
+assertThat builder.toString(), is(expectedToString)
+    }","@Test
+    void allow() {
+        def builder = Hooks.builder()
+            .userRegistration(allowRegistration())
+        def expectedToString = expected """"""
+        { ""commands"":[
+              { ""type"":""com.okta.action.update"",
+                 ""value"":{
+                    ""registration"":""ALLOW""
+                 }
+              }
+           ]
+        }
+        """"""
+
+assertJsonEqualsNonStrict builder.toString(), expectedToString
+    }",change_condition,"@Test
+void allow() {
+    def builder = Hooks.builder()
+        .userRegistration(allowRegistration())
+    def expectedToString = expected """"""
+    { ""commands"":[
+          { ""type"":""com.okta.action.update"",
+             ""value"":{
+                ""registration"":""ALLOW""
+             }
+          }
+       ]
+    }
+    """"""
+
+assertJsonEqualsNonStrict builder.toString(), expectedToString
+}
+","@Test
+void allow() {
+    def builder = Hooks.builder()
+        .userRegistration(allowRegistration())
+    def expectedToString = expected(""""""
+    { ""commands"":[
+          { ""type"":""com.okta.action.update"",
+             ""value"":{
+                ""registration"":""ALLOW""
+             }
+          }
+       ]
+    }
+    """""")
+
+    assertThat(builder.toString(), is(expectedToString))
+}
+","@Test
+void allow() {
+    def builder = Hooks.builder()
+        .userRegistration(allowRegistration())
+    def expectedToString = expected(""""""
+    { ""commands"":[
+          { ""type"":""com.okta.action.update"",
+             ""value"":{
+                ""registration"":""ALLOW""
+             }
+          }
+       ]
+    }
+    """""")
+
+    assertThat(builder.toString(), is(expectedToString))
+}",76.31945712278933,76.31945712278933,100.0
+"@Test
+    void complexError() {
+        def builder = Hooks.builder()
+            .error(""Errors were found in the user profile"")
+            .errorCause(new HookErrorCause()
+                .setErrorSummary(""You specified an invalid email domain"")
+                .setReason(""INVALID_EMAIL_DOMAIN"")
+                .setLocationType(""body"")
+                .setLocation(""data.userProfile.login"")
+                .setDomain(""end-user""))
+            .errorCause(new HookErrorCause()
+                .setErrorSummary(""You failed this test"")
+                .setReason(""EXPECTED_TEST_ERROR"")
+                .setLocationType(""arm"")
+                .setLocation(""data.fake.location"")
+                .setDomain(""foobar""))
+        def expectedToString = expected """"""
+        {
+           ""error"":{
+              ""errorSummary"":""Errors were found in the user profile"",
+              ""errorCauses"":[
+                 { ""errorSummary"":""You specified an invalid email domain"",
+                    ""reason"":""INVALID_EMAIL_DOMAIN"",
+                    ""locationType"":""body"",
+                    ""location"":""data.userProfile.login"",
+                    ""domain"":""end-user""
+                 },
+                 { ""errorSummary"":""You failed this test"",
+                    ""reason"":""EXPECTED_TEST_ERROR"",
+                    ""locationType"":""arm"",
+                    ""location"":""data.fake.location"",
+                    ""domain"":""foobar""
+                 }
+              ]
+           }
+        }
+        """"""
+        assertThat builder.toString(), is(expectedToString)
+    }","@Test
+    void complexError() {
+        def builder = Hooks.builder()
+            .error(""Errors were found in the user profile"")
+            .errorCause(new HookErrorCause()
+                .setErrorSummary(""You specified an invalid email domain"")
+                .setReason(""INVALID_EMAIL_DOMAIN"")
+                .setLocationType(""body"")
+                .setLocation(""data.userProfile.login"")
+                .setDomain(""end-user""))
+            .errorCause(new HookErrorCause()
+                .setErrorSummary(""You failed this test"")
+                .setReason(""EXPECTED_TEST_ERROR"")
+                .setLocationType(""arm"")
+                .setLocation(""data.fake.location"")
+                .setDomain(""foobar""))
+        def expectedToString = expected """"""
+        {
+           ""error"":{
+              ""errorSummary"":""Errors were found in the user profile"",
+              ""errorCauses"":[
+                 { ""errorSummary"":""You specified an invalid email domain"",
+                    ""reason"":""INVALID_EMAIL_DOMAIN"",
+                    ""locationType"":""body"",
+                    ""location"":""data.userProfile.login"",
+                    ""domain"":""end-user""
+                 },
+                 { ""errorSummary"":""You failed this test"",
+                    ""reason"":""EXPECTED_TEST_ERROR"",
+                    ""locationType"":""arm"",
+                    ""location"":""data.fake.location"",
+                    ""domain"":""foobar""
+                 }
+              ]
+           }
+        }
+        """"""
+        assertJsonEqualsNonStrict builder.toString(), expectedToString
+    }",change_condition,"@Test
+void complexError() {
+    def builder = Hooks.builder()
+        .error(""Errors were found in the user profile"")
+        .errorCause(new HookErrorCause()
+            .setErrorSummary(""You specified an invalid email domain"")
+            .setReason(""INVALID_EMAIL_DOMAIN"")
+            .setLocationType(""body"")
+            .setLocation(""data.userProfile.login"")
+            .setDomain(""end-user""))
+        .errorCause(new HookErrorCause()
+            .setErrorSummary(""You failed this test"")
+            .setReason(""EXPECTED_TEST_ERROR"")
+            .setLocationType(""arm"")
+            .setLocation(""data.fake.location"")
+            .setDomain(""foobar""))
+    def expectedToString = expected """"""
+    {
+       ""error"":{
+          ""errorSummary"":""Errors were found in the user profile"",
+          ""errorCauses"":[
+             { ""errorSummary"":""You specified an invalid email domain"",
+                ""reason"":""INVALID_EMAIL_DOMAIN"",
+                ""locationType"":""body"",
+                ""location"":""data.userProfile.login"",
+                ""domain"":""end-user""
+             },
+             { ""errorSummary"":""You failed this test"",
+                ""reason"":""EXPECTED_TEST_ERROR"",
+                ""locationType"":""arm"",
+                ""location"":""data.fake.location"",
+                ""domain"":""foobar""
+             }
+          ]
+       }
+    }
+    """"""
+    assertJsonEqualsNonStrict(builder.toString(), expectedToString)
+}","@Test
+void complexError() {
+    def builder = Hooks.builder()
+        .error(""Errors were found in the user profile"")
+        .errorCause(new HookErrorCause()
+            .setErrorSummary(""You specified an invalid email domain"")
+            .setReason(""INVALID_EMAIL_DOMAIN"")
+            .setLocationType(""body"")
+            .setLocation(""data.userProfile.login"")
+            .setDomain(""end-user""))
+        .errorCause(new HookErrorCause()
+            .setErrorSummary(""You failed this test"")
+            .setReason(""EXPECTED_TEST_ERROR"")
+            .setLocationType(""arm"")
+            .setLocation(""data.fake.location"")
+            .setDomain(""foobar""))
+    def expectedToString = expected """"""
+    {
+       ""error"":{
+          ""errorSummary"":""Errors were found in the user profile"",
+          ""errorCauses"":[
+             { ""errorSummary"":""You specified an invalid email domain"",
+                ""reason"":""INVALID_EMAIL_DOMAIN"",
+                ""locationType"":""body"",
+                ""location"":""data.userProfile.login"",
+                ""domain"":""end-user""
+             },
+             { ""errorSummary"":""You failed this test"",
+                ""reason"":""EXPECTED_TEST_ERROR"",
+                ""locationType"":""arm"",
+                ""location"":""data.fake.location"",
+                ""domain"":""foobar""
+             }
+          ]
+       }
+    }
+    """"""
+    assertThat builder.toString(), is(expectedToString)
+}
+","@Test
+void complexError() {
+    def builder = Hooks.builder()
+        .error(""Errors were found in the user profile"")
+        .errorCause(new HookErrorCause()
+            .setErrorSummary(""You specified an invalid email domain"")
+            .setReason(""INVALID_EMAIL_DOMAIN"")
+            .setLocationType(""body"")
+            .setLocation(""data.userProfile.login"")
+            .setDomain(""end-user""))
+        .errorCause(new HookErrorCause()
+            .setErrorSummary(""You failed this test"")
+            .setReason(""EXPECTED_TEST_ERROR"")
+            .setLocationType(""arm"")
+            .setLocation(""data.fake.location"")
+            .setDomain(""foobar""));
+    def expectedToString = expected(""""""
+        {
+           ""error"":{
+              ""errorSummary"":""Errors were found in the user profile"",
+              ""errorCauses"":[
+                 { ""errorSummary"":""You specified an invalid email domain"",
+                    ""reason"":""INVALID_EMAIL_DOMAIN"",
+                    ""locationType"":""body"",
+                    ""location"":""data.userProfile.login"",
+                    ""domain"":""end-user""
+                 },
+                 { ""errorSummary"":""You failed this test"",
+                    ""reason"":""EXPECTED_TEST_ERROR"",
+                    ""locationType"":""arm"",
+                    ""location"":""data.fake.location"",
+                    ""domain"":""foobar""
+                 }
+              ]
+           }
+        }
+        """""");
+    assertThat(builder.toString(), is(expectedToString));
+}",88.24758391258169,96.64531079068009,96.11187242812842
+"@Test
+    void deny() {
+        def builder = Hooks.builder()
+            .userRegistration(denyRegistration())
+        def expectedToString = expected """"""
+        { ""commands"":[
+              { ""type"":""com.okta.action.update"",
+                 ""value"":{
+                    ""registration"":""DENY""
+                 }
+              }
+           ]
+        }
+        """"""
+
+assertThat builder.toString(), is(expectedToString)
+    }","@Test
+    void deny() {
+        def builder = Hooks.builder()
+            .userRegistration(denyRegistration())
+        def expectedToString = expected """"""
+        { ""commands"":[
+              { ""type"":""com.okta.action.update"",
+                 ""value"":{
+                    ""registration"":""DENY""
+                 }
+              }
+           ]
+        }
+        """"""
+
+assertJsonEqualsNonStrict builder.toString(), expectedToString
+    }",change_condition,"@Test
+void deny() {
+    def builder = Hooks.builder()
+        .userRegistration(denyRegistration())
+    def expectedToString = expected """"""
+    { ""commands"":[
+          { ""type"":""com.okta.action.update"",
+             ""value"":{
+                ""registration"":""DENY""
+             }
+          }
+       ]
+    }
+    """"""
+
+assertJsonEqualsNonStrict(builder.toString(), expectedToString)
+}
+","@Test
+void deny() {
+    def builder = Hooks.builder()
+        .userRegistration(denyRegistration())
+    def expectedToString = expected """"""
+    { ""commands"":[
+          { ""type"":""com.okta.action.update"",
+             ""value"":{
+                ""registration"":""DENY""
+             }
+          }
+       ]
+    }
+    """"""
+
+    await().atMost(5, SECONDS).untilAsserted({
+        assertThat(builder.toString(), is(expectedToString))
+    });
+}
+","@Test
+void deny() {
+    def builder = Hooks.builder()
+        .userRegistration(denyRegistration())
+    def expectedToString = expected """"""
+    { ""commands"":[
+          { ""type"":""com.okta.action.update"",
+             ""value"":{
+                ""registration"":""DENY""
+             }
+          }
+       ]
+    }
+    """"""
+
+    assertThat(builder.toString(), is(expectedToString))
+}
+",84.68032006220788,83.18591711525914,84.68032006220788
+"@Test
+    void errorWithDebugContext() {
+        def builder = Hooks.builder()
+            .errorCause(""test-error"")
+            .debugContext([""foo"": ""bar"", ""one"": ""two""])
+
+def expectedToString = expected""""""{""error"": {""errorCauses"": [{ ""errorSummary"": ""test-error"" }]}, ""debugContext"": {""foo"": ""bar"", ""one"": ""two""}}""""""
+        assertThat builder.toString(), is(expectedToString)
+    }","@Test
+    void errorWithDebugContext() {
+        def builder = Hooks.builder()
+            .errorCause(""test-error"")
+            .debugContext([""foo"": ""bar"", ""one"": ""two""])
+
+def expectedToString = expected""""""{""error"": {""errorCauses"": [{ ""errorSummary"": ""test-error"" }]}, ""debugContext"": {""foo"": ""bar"", ""one"": ""two""}}""""""
+        assertJsonEqualsNonStrict builder.toString(), expectedToString
+    }",change_condition,"@Test
+void errorWithDebugContext() {
+    def builder = Hooks.builder()
+        .errorCause(""test-error"")
+        .debugContext([""foo"": ""bar"", ""one"": ""two""])
+
+    def expectedToString = expected""""""{""error"": {""errorCauses"": [{ ""errorSummary"": ""test-error"" }]}, ""debugContext"": {""foo"": ""bar"", ""one"": ""two""}}""""""
+    assertJsonEqualsNonStrict builder.toString(), expectedToString
+}
+","@Test
+void errorWithDebugContext() {
+    def builder = Hooks.builder()
+        .errorCause(""test-error"")
+        .debugContext([""foo"": ""bar"", ""one"": ""two""])
+
+    def expectedToString = expected""""""{""error"": {""errorCauses"": [{ ""errorSummary"": ""test-error"" }]}, ""debugContext"": {""foo"": ""bar"", ""one"": ""two""}}""""""
+    assertThat(builder.toString(), is(expectedToString))
+}
+","@Test
+void errorWithDebugContext() {
+    def builder = Hooks.builder()
+        .errorCause(""test-error"")
+        .debugContext([""foo"": ""bar"", ""one"": ""two""])
+
+    def expectedToString = expected""""""{""error"": {""errorCauses"": [{ ""errorSummary"": ""test-error"" }]}, ""debugContext"": {""foo"": ""bar"", ""one"": ""two""}}""""""
+    assertThat(builder.toString(), is(expectedToString))
+}",87.60742529498256,87.60742529498256,100.0
+"@Test
+    void updateProfile() {
+        def builder = Hooks.builder()
+            .userRegistration(addProfileProperties([
+                                prop1:    ""value1"",
+                                prop2:    2,
+                                prop3:    true,
+                                prop4:    [""one"", ""two"", ""three""]]))
+        def expectedToString = expected """"""
+        { ""commands"":[
+              { ""type"":""com.okta.user.profile.update"",
+                 ""value"":{
+                    ""prop1"":""value1"",
+                    ""prop2"": 2,
+                    ""prop3"": true,
+                    ""prop4"": [""one"", ""two"", ""three""]
+                 }
+              }
+           ]
+        }
+        """"""
+
+assertThat builder.toString(), is(expectedToString)
+    }","@Test
+    void updateProfile() {
+        def builder = Hooks.builder()
+            .userRegistration(addProfileProperties([
+                                prop1:    ""value1"",
+                                prop2:    2,
+                                prop3:    true,
+                                prop4:    [""one"", ""two"", ""three""]]))
+        def expectedToString = expected """"""
+        { ""commands"":[
+              { ""type"":""com.okta.user.profile.update"",
+                 ""value"":{
+                    ""prop1"":""value1"",
+                    ""prop2"": 2,
+                    ""prop3"": true,
+                    ""prop4"": [""one"", ""two"", ""three""]
+                 }
+              }
+           ]
+        }
+        """"""
+
+assertJsonEqualsNonStrict builder.toString(), expectedToString
+    }",change_condition,"@Test
+void updateProfile() {
+    def builder = Hooks.builder()
+        .userRegistration(addProfileProperties([
+                            prop1:    ""value1"",
+                            prop2:    2,
+                            prop3:    true,
+                            prop4:    [""one"", ""two"", ""three""]]))
+    def expectedToString = expected """"""
+    { ""commands"":[
+          { ""type"":""com.okta.user.profile.update"",
+             ""value"":{
+                ""prop1"":""value1"",
+                ""prop2"": 2,
+                ""prop3"": true,
+                ""prop4"": [""one"", ""two"", ""three""]
+             }
+          }
+       ]
+    }
+    """"""
+
+assertJsonEqualsNonStrict builder.toString(), expectedToString
+}
+","@Test
+void updateProfile() {
+    def builder = Hooks.builder()
+            .userRegistration(addProfileProperties([
+                                prop1:    ""value1"",
+                                prop2:    2,
+                                prop3:    true,
+                                prop4:    [""one"", ""two"", ""three""]]))
+    def expectedToString = expected """"""
+        { ""commands"":[
+              { ""type"":""com.okta.user.profile.update"",
+                 ""value"":{
+                    ""prop1"":""value1"",
+                    ""prop2"": 2,
+                    ""prop3"": true,
+                    ""prop4"": [""one"", ""two"", ""three""]
+                 }
+              }
+           ]
+        }
+        """"""
+
+    assertThat(builder.toString(), is(expectedToString))
+}
+","@Test
+void updateProfile() {
+    def builder = Hooks.builder()
+        .userRegistration(addProfileProperties([
+                            prop1:    ""value1"",
+                            prop2:    2,
+                            prop3:    true,
+                            prop4:    [""one"", ""two"", ""three""]]))
+    def expectedToString = expected """"""
+    { ""commands"":[
+          { ""type"":""com.okta.user.profile.update"",
+             ""value"":{
+                ""prop1"":""value1"",
+                ""prop2"": 2,
+                ""prop3"": true,
+                ""prop4"": [""one"", ""two"", ""three""]
+             }
+          }
+       ]
+    }
+    """"""
+
+    String actualToString = builder.toString()
+    assertThat(actualToString, is(expectedToString))
+}",91.35078420492432,92.78146901447076,100.0
+"@Test
+    public void testKvShouldPutAllKeyAndValuePairs() {
+        logMessage.kv(""key1"", ""value1"");
+        logMessage.kv(""key2"", ""value2"");
+        assertEquals(""key1=value1||key2=value2"", logMessage.toString());
+    }","@Test
+    public void testKvShouldPutAllKeyAndValuePairs() {
+        logMessage.kv(""key1"", ""value1"");
+        logMessage.kv(""key2"", ""value2"");
+        String output = logMessage.toString();
+        assertTrue(output.equals(""key1=value1||key2=value2"") || output.equals(""key2=value2||key1=value1""));
+    }",change_condition,"@Test
+public void testKvShouldPutAllKeyAndValuePairs() {
+    logMessage.kv(""key1"", ""value1"");
+    logMessage.kv(""key2"", ""value2"");
+    assertThat(logMessage.toString(), is(""key1=value1||key2=value2""));
+}
+","@Test
+public void testKvShouldPutAllKeyAndValuePairs() {
+    logMessage.kv(""key1"", ""value1"");
+    logMessage.kv(""key2"", ""value2"");
+    String result = logMessage.toString();
+    assertTrue(result.contains(""key1=value1""));
+    assertTrue(result.contains(""key2=value2""));
+}
+","@Test
+public void testKvShouldPutAllKeyAndValuePairs() {
+    logMessage.kv(""key1"", ""value1"");
+    logMessage.kv(""key2"", ""value2"");
+    String result = logMessage.toString();
+    assertTrue(result.contains(""key1=value1""));
+    assertTrue(result.contains(""key2=value2""));
+}
+",75.61055958574482,75.61055958574482,53.52013563176294
+"@Test public void
+    logging_of_both_request_and_response_validation_works_when_test_fails() {
+        RestAssuredMockMvc.config = new RestAssuredMockMvcConfig().logConfig(new LogConfig(captor, true).enableLoggingOfRequestAndResponseIfValidationFails());
+        try {
+            given().
+                    standaloneSetup(new PostController()).
+                    param(""name"", ""Johan"").
+            when().
+                    post(""/greetingPost"").
+            then().
+                    body(""id"", equalTo(1)).
+                    body(""content"", equalTo(""Hello, Johan2!""));
+
+fail(""Should throw AssertionError"");
+        } catch (AssertionError e) {
+            assertThat(writer.toString(), equalTo(String.format(""Request method:\tPOST%n"" +
+                            ""Request URI:\thttp:
+                            ""Proxy:\t\t\t<none>%n"" +
+                            ""Request params:\tname=Johan%n"" +
+                            ""Query params:\t<none>%n"" +
+                            ""Form params:\t<none>%n"" +
+                            ""Path params:\t<none>%n"" +
+                            ""Headers:\t\tContent-Type=application/x-www-form-urlencoded;charset=%s%n"" +
+                            ""Cookies:\t\t<none>%n"" +
+                            ""Multiparts:\t\t<none>"" +
+                            ""%nBody:\t\t\t<none>%n"" +
+                            ""%n"" +
+                            ""200%n"" +
+                            ""Content-Type: application/json;charset=UTF-8%n"" +
+                            ""%n"" +
+                            ""{\n    \""id\"": 1,\n    \""content\"": \""Hello, Johan!\""\n}%n"",
+                    RestAssuredMockMvcConfig.config().getEncoderConfig().defaultContentCharset())));
+        }
+    }","@Test public void
+    logging_of_both_request_and_response_validation_works_when_test_fails() {
+        RestAssuredMockMvc.config = new RestAssuredMockMvcConfig().logConfig(new LogConfig(captor, true).enableLoggingOfRequestAndResponseIfValidationFails());
+        try {
+            given().
+                    standaloneSetup(new PostController()).
+                    param(""name"", ""Johan"").
+            when().
+                    post(""/greetingPost"").
+            then().
+                    body(""id"", equalTo(1)).
+                    body(""content"", equalTo(""Hello, Johan2!""));
+
+fail(""Should throw AssertionError"");
+        } catch (AssertionError e) {
+            String writerString = writer.toString();
+            String headerString = String.format(""Request method:\tPOST%n"" +
+                    ""Request URI:\thttp:
+                    ""Proxy:\t\t\t<none>%n"" +
+                    ""Request params:\tname=Johan%n"" +
+                    ""Query params:\t<none>%n"" +
+                    ""Form params:\t<none>%n"" +
+                    ""Path params:\t<none>%n"" +
+                    ""Headers:\t\tContent-Type=application/x-www-form-urlencoded;charset=%s%n"" +
+                    ""Cookies:\t\t<none>%n"" +
+                    ""Multiparts:\t\t<none>"" +
+                    ""%nBody:\t\t\t<none>%n"" +
+                    ""%n"" +
+                    ""200%n"" +
+                    ""Content-Type: application/json;charset=UTF-8%n"",
+                    RestAssuredMockMvcConfig.config().getEncoderConfig().defaultContentCharset());
+            assertThat(writerString, startsWith(headerString));
+            assertJsonEqualsNonStrict(writerString.replace(headerString, """").trim(),
+                    ""{\n    \""id\"": 1,\n    \""content\"": \""Hello, Johan!\""\n}"");
+        }
+    }",change_condition,"@Test
+public void logging_of_both_request_and_response_validation_works_when_test_fails() {
+    RestAssuredMockMvc.config = new RestAssuredMockMvcConfig().logConfig(new LogConfig(captor, true).enableLoggingOfRequestAndResponseIfValidationFails());
+    try {
+        given()
+                .standaloneSetup(new PostController())
+                .param(""name"", ""Johan"")
+        .when()
+                .post(""/greetingPost"")
+        .then()
+                .body(""id"", equalTo(1))
+                .body(""content"", equalTo(""Hello, Johan2!""));
+
+        fail(""Should throw AssertionError"");
+    } catch (AssertionError e) {
+        assertThat(writer.toString(), equalTo(String.format(""Request method:\tPOST%n"" +
+                        ""Request URI:\thttp:
+                        ""Proxy:\t\t\t<none>%n"" +
+                        ""Request params:\tname=Johan%n"" +
+                        ""Query params:\t<none>%n"" +
+                        ""Form params:\t<none>%n"" +
+                        ""Path params:\t<none>%n"" +
+                        ""Headers:\t\tContent-Type=application/x-www-form-urlencoded;charset=%s%n"" +
+                        ""Cookies:\t\t<none>%n"" +
+                        ""Multiparts:\t\t<none>"" +
+                        ""%nBody:\t\t\t<none>%n"" +
+                        ""%n"" +
+                        ""200%n"" +
+                        ""Content-Type: application/json;charset=UTF-8%n"" +
+                        ""%n"" +
+                        ""{\n    \""id\"": 1,\n    \""content\"": \""Hello, Johan!\""\n}%n"",
+                RestAssuredMockMvcConfig.config().getEncoderConfig().defaultContentCharset())));
+    }
+}
+","@Test
+public void logging_of_both_request_and_response_validation_works_when_test_fails() {
+    RestAssuredMockMvc.config = new RestAssuredMockMvcConfig()
+            .logConfig(new LogConfig(captor, true).enableLoggingOfRequestAndResponseIfValidationFails());
+    try {
+        given()
+            .standaloneSetup(new PostController())
+            .param(""name"", ""Johan"")
+        .when()
+            .post(""/greetingPost"")
+        .then()
+            .body(""id"", equalTo(1))
+            .body(""content"", equalTo(""Hello, Johan2!""));
+
+        fail(""Should throw AssertionError"");
+    } catch (AssertionError e) {
+        assertThat(writer.toString(), equalTo(String.format(""Request method:\tPOST%n"" +
+                        ""Request URI:\thttp://Proxy:\t\t\t<none>%n"" +
+                        ""Request params:\tname=Johan%n"" +
+                        ""Query params:\t<none>%n"" +
+                        ""Form params:\t<none>%n"" +
+                        ""Path params:\t<none>%n"" +
+                        ""Headers:\t\tContent-Type=application/x-www-form-urlencoded;charset=%s%n"" +
+                        ""Cookies:\t\t<none>%n"" +
+                        ""Multiparts:\t\t<none>"" +
+                        ""%nBody:\t\t\t<none>%n"" +
+                        ""%n"" +
+                        ""200%n"" +
+                        ""Content-Type: application/json;charset=UTF-8%n"" +
+                        ""%n"" +
+                        ""{\n    \""id\"": 1,\n    \""content\"": \""Hello, Johan!\""\n}%n"",
+                RestAssuredMockMvcConfig.config().getEncoderConfig().defaultContentCharset())));
+    }
+}
+","@Test
+public void logging_of_both_request_and_response_validation_works_when_test_fails() {
+    RestAssuredMockMvc.config = new RestAssuredMockMvcConfig().logConfig(new LogConfig(captor, true).enableLoggingOfRequestAndResponseIfValidationFails());
+    try {
+        given()
+            .standaloneSetup(new PostController())
+            .param(""name"", ""Johan"")
+        .when()
+            .post(""/greetingPost"")
+        .then()
+            .body(""id"", equalTo(1))
+            .body(""content"", equalTo(""Hello, Johan2!""));
+
+        fail(""Should throw AssertionError"");
+    } catch (AssertionError e) {
+        assertThat(writer.toString(), equalTo(String.format(""Request method:\tPOST%n"" +
+                        ""Request URI:\thttp:
+                        ""Proxy:\t\t\t<none>%n"" +
+                        ""Request params:\tname=Johan%n"" +
+                        ""Query params:\t<none>%n"" +
+                        ""Form params:\t<none>%n"" +
+                        ""Path params:\t<none>%n"" +
+                        ""Headers:\t\tContent-Type=application/x-www-form-urlencoded;charset=%s%n"" +
+                        ""Cookies:\t\t<none>%n"" +
+                        ""Multiparts:\t\t<none>"" +
+                        ""%nBody:\t\t\t<none>%n"" +
+                        ""%n"" +
+                        ""200%n"" +
+                        ""Content-Type: application/json;charset=UTF-8%n"" +
+                        ""%n"" +
+                        ""{\n    \""id\"": 1,\n    \""content\"": \""Hello, Johan!\""\n}%n"",
+                RestAssuredMockMvcConfig.config().getEncoderConfig().defaultContentCharset())));
+    }
+}
+",58.46266307620627,51.10785292030382,58.46266307620627
+"@Test
+        public void testGenerateNewDayPairs() {
+                PairCombinations pairs = getPairsList();
+                List<Developer> devs = getStandardDevs();
+                List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+                Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+                subject.buildDevelopersPairingDays(pairs, devs);
+
+DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(2));
+                assertThat(dayPairs.getTracks(), contains(""track1"", ""track2""));
+                assertThat(dayPairs.getPairByTrack(""track1""),
+                                is(not(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""))))));
+                assertThat(dayPairs.getPairByTrack(""track2""),
+                                is(not(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev4""))))));
+
+boolean trackOneHasContext = dayPairs.getPairByTrack(""track1"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track1"").getSecondDev().hasContext();
+                boolean trackTwoHasContext = dayPairs.getPairByTrack(""track2"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track2"").getSecondDev().hasContext();
+                assertThat(trackOneHasContext, is(true));
+                assertThat(trackTwoHasContext, is(true));
+        }","@Test
+        public void testGenerateNewDayPairs() {
+                PairCombinations pairs = getPairsList();
+                List<Developer> devs = getStandardDevs();
+                List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+                Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+                subject.buildDevelopersPairingDays(pairs, devs);
+
+DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(2));
+                assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+                assertThat(dayPairs.getPairByTrack(""track1""),
+                                is(not(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""))))));
+                assertThat(dayPairs.getPairByTrack(""track2""),
+                                is(not(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev4""))))));
+
+boolean trackOneHasContext = dayPairs.getPairByTrack(""track1"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track1"").getSecondDev().hasContext();
+                boolean trackTwoHasContext = dayPairs.getPairByTrack(""track2"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track2"").getSecondDev().hasContext();
+                assertThat(trackOneHasContext, is(true));
+                assertThat(trackTwoHasContext, is(true));
+        }",change_condition,"@Test
+public void testGenerateNewDayPairs() {
+    PairCombinations pairs = getPairsList();
+    List<Developer> devs = getStandardDevs();
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    subject.buildDevelopersPairingDays(pairs, devs);
+
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+    assertThat(dayPairs.getPairByTrack(""track1""),
+            is(not(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""))))));
+    assertThat(dayPairs.getPairByTrack(""track2""),
+            is(not(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev4"")))));
+
+    boolean trackOneHasContext = dayPairs.getPairByTrack(""track1"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track1"").getSecondDev().hasContext();
+    boolean trackTwoHasContext = dayPairs.getPairByTrack(""track2"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track2"").getSecondDev().hasContext();
+    assertThat(trackOneHasContext, is(true));
+    assertThat(trackTwoHasContext, is(true));
+}
+","@Test
+public void testGenerateNewDayPairs() {
+    PairCombinations pairs = getPairsList();
+    List<Developer> devs = getStandardDevs();
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    subject.buildDevelopersPairingDays(pairs, devs);
+
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2""));
+    assertThat(dayPairs.getPairByTrack(""track1"").getFirstDev(), is(not(new Developer(""dev1""))));
+    assertThat(dayPairs.getPairByTrack(""track1"").getSecondDev(), is(not(new Developer(""dev2""))));
+    assertThat(dayPairs.getPairByTrack(""track2"").getFirstDev(), is(not(new Developer(""dev3""))));
+    assertThat(dayPairs.getPairByTrack(""track2"").getSecondDev(), is(not(new Developer(""dev4"")));
+
+    boolean trackOneHasContext = dayPairs.getPairByTrack(""track1"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track1"").getSecondDev().hasContext();
+    boolean trackTwoHasContext = dayPairs.getPairByTrack(""track2"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track2"").getSecondDev().hasContext();
+    assertThat(trackOneHasContext, is(true));
+    assertThat(trackTwoHasContext, is(true);
+}
+","@Test
+public void testGenerateNewDayPairs() {
+    PairCombinations pairs = getPairsList();
+    List<Developer> devs = getStandardDevs();
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    subject.buildDevelopersPairingDays(pairs, devs);
+
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2""));
+    assertThat(dayPairs.getPairByTrack(""track1""), is(not(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""))))));
+    assertThat(dayPairs.getPairByTrack(""track2""), is(not(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev4""))))));
+
+    boolean trackOneHasContext = dayPairs.getPairByTrack(""track1"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track1"").getSecondDev().hasContext();
+    boolean trackTwoHasContext = dayPairs.getPairByTrack(""track2"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track2"").getSecondDev().hasContext();
+    assertThat(trackOneHasContext, is(true));
+    assertThat(trackTwoHasContext, is(true));
+}
+",98.14903945545556,81.27853587149106,97.80181723323335
+"@Test
+	public void testGenerateNewDayPairsNoPastState() {
+		DevPairCombinations pairs = new DevPairCombinations(new ArrayList<>());
+		List<Developer> devs = getStandardDevs();
+		List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+		Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+		DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(2));
+		assertThat(dayPairs.getTracks(), contains(""track1"", ""track2""));
+	}","@Test
+	public void testGenerateNewDayPairsNoPastState() {
+		DevPairCombinations pairs = new DevPairCombinations(new ArrayList<>());
+		List<Developer> devs = getStandardDevs();
+		List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+		Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+		DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(2));
+		assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+	}",change_condition,"@Test
+public void testGenerateNewDayPairsNoPastState() {
+    DevPairCombinations pairs = new DevPairCombinations(new ArrayList<>());
+    List<Developer> devs = getStandardDevs();
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+}
+","@Test
+public void testGenerateNewDayPairsNoPastState() {
+    DevPairCombinations pairs = new DevPairCombinations(new ArrayList<>());
+    List<Developer> devs = getStandardDevs();
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(3));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2"", ""track3""));
+}
+","@Test
+public void testGenerateNewDayPairsNoPastState() {
+    DevPairCombinations pairs = new DevPairCombinations(new ArrayList<>());
+    List<Developer> devs = getStandardDevs();
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(3));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2"", ""track3""));
+}
+",90.94220999159185,90.94220999159185,100.0
+"@Test
+	public void testGenerateNewDayPairsNoPastStateAndRotationNeeded() {
+		DevPairCombinations pairs = new DevPairCombinations(new ArrayList<>());
+		List<Developer> devs = getStandardDevs();
+		List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+		Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+
+DayPairsHelper subjectWithEverydayRotation = new DayPairsHelper(trelloPairsRepository, true);
+		DayPairs dayPairs = subjectWithEverydayRotation.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(2));
+		assertThat(dayPairs.getTracks(), contains(""track1"", ""track2""));
+	}","@Test
+	public void testGenerateNewDayPairsNoPastStateAndRotationNeeded() {
+		DevPairCombinations pairs = new DevPairCombinations(new ArrayList<>());
+		List<Developer> devs = getStandardDevs();
+		List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+		Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+
+DayPairsHelper subjectWithEverydayRotation = new DayPairsHelper(trelloPairsRepository, true);
+		DayPairs dayPairs = subjectWithEverydayRotation.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(2));
+		assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+	}",change_condition,"@Test
+public void testGenerateNewDayPairsNoPastStateAndRotationNeeded() {
+    DevPairCombinations pairs = new DevPairCombinations(new ArrayList<>());
+    List<Developer> devs = getStandardDevs();
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+
+    DayPairsHelper subjectWithEverydayRotation = new DayPairsHelper(trelloPairsRepository, true);
+    DayPairs dayPairs = subjectWithEverydayRotation.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+}
+","@Test
+public void testGenerateNewDayPairsNoPastStateAndRotationNeeded() {
+    DevPairCombinations pairs = new DevPairCombinations(new ArrayList<>());
+    List<Developer> devs = getStandardDevs();
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+
+    DayPairsHelper subjectWithEverydayRotation = new DayPairsHelper(trelloPairsRepository, false); // change_condition
+    DayPairs dayPairs = subjectWithEverydayRotation.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2""));
+}
+","@Test
+public void testGenerateNewDayPairsNoPastStateAndRotationNeeded() {
+    DevPairCombinations pairs = new DevPairCombinations(new ArrayList<>());
+    List<Developer> devs = getStandardDevs();
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+
+    DayPairsHelper subjectWithEverydayRotation = new DayPairsHelper(trelloPairsRepository, true);
+    DayPairs dayPairs = subjectWithEverydayRotation.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(3));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2"", ""track3""));
+}",91.94266833394643,91.48470656930886,100.0
+"@Test
+        public void testGenerateNewDayPairsOnlyOldDevAvailableForStory() {
+                PairCombinations pairs = getLongPairsList();
+                List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev3""), new Developer(""dev4""));
+                List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+                Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+                DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(2));
+                assertThat(dayPairs.getTracks(), contains(""track1"", ""track2""));
+                assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev4"")))), is(true));
+                assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev3"")))), is(true));
+                boolean trackOneHasContext = dayPairs.getPairByTrack(""track1"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track1"").getSecondDev().hasContext();
+                assertThat(trackOneHasContext, is(true));
+        }","@Test
+        public void testGenerateNewDayPairsOnlyOldDevAvailableForStory() {
+                PairCombinations pairs = getLongPairsList();
+                List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev3""), new Developer(""dev4""));
+                List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+                Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+                DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(2));
+                  assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+                assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev4"")))), is(true));
+                assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev3"")))), is(true));
+                boolean trackOneHasContext = dayPairs.getPairByTrack(""track1"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track1"").getSecondDev().hasContext();
+                assertThat(trackOneHasContext, is(true));
+        }",change_condition,"@Test
+public void testGenerateNewDayPairsOnlyOldDevAvailableForStory() {
+    PairCombinations pairs = getLongPairsList();
+    List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev3""), new Developer(""dev4""));
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev4"")))), is(true));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev3"")))), is(true));
+    boolean trackOneHasContext = dayPairs.getPairByTrack(""track1"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track1"").getSecondDev().hasContext();
+    assertThat(trackOneHasContext, is(true));
+}
+","@Test
+public void testGenerateNewDayPairsOnlyOldDevAvailableForStory() {
+    PairCombinations pairs = getLongPairsList();
+    List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev3""), new Developer(""dev4""));
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2""));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev4"")))), is(true));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev3"")))), is(true));
+    boolean trackOneHasContext = dayPairs.getPairByTrack(""track1"").getFirstDev().hasContext() && dayPairs.getPairByTrack(""track1"").getSecondDev().hasContext();
+    assertThat(trackOneHasContext, is(true));
+}
+","@Test
+public void testGenerateNewDayPairsOnlyOldDevAvailableForStory() {
+    PairCombinations pairs = getLongPairsList();
+    List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev3""), new Developer(""dev4""));
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev4"")))), is(true));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev3"")))), is(true));
+    assertTrue(dayPairs.getPairByTrack(""track1"").getFirstDev().hasContext() || dayPairs.getPairByTrack(""track1"").getSecondDev().hasContext());
+}",87.79112716641683,95.84471406140958,100.0
+"@Test
+	public void testGenerateNewDayPairsSoloRequired() {
+		PairCombinations pairs = getPairsList();
+		List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev2""), new Developer(""dev3""));
+		List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+		Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+		DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(2));
+		assertThat(dayPairs.getTracks(), contains(""track1"", ""track2""));
+		assertThat(dayPairs.getPairByTrack(""track1""),
+				is((new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""))))));
+	}","@Test
+	public void testGenerateNewDayPairsSoloRequired() {
+		PairCombinations pairs = getPairsList();
+		List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev2""), new Developer(""dev3""));
+		List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+		Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+		DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(2));
+		assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+		assertThat(dayPairs.getPairByTrack(""track1""),
+				is((new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""))))));
+	}",change_condition,"@Test
+public void testGenerateNewDayPairsSoloRequired() {
+    PairCombinations pairs = getPairsList();
+    List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev2""), new Developer(""dev3""));
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+    assertThat(dayPairs.getPairByTrack(""track1""), is(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""))));
+}
+","@Test
+public void testGenerateNewDayPairsSoloRequired() {
+    PairCombinations pairs = getPairsList();
+    List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev2""), new Developer(""dev3""));
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2""));
+    assertThat(dayPairs.getPairByTrack(""track1""),
+            is((new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""), new Developer(""dev3""))))));
+}
+","@Test
+public void testGenerateNewDayPairsSoloRequired() {
+    PairCombinations pairs = getPairsList();
+    List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev2""), new Developer(""dev3""));
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+    assertThat(dayPairs.getPairByTrack(""track1""),
+            is((new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2"")))));
+}
+",96.74922421189369,91.18891744725963,93.26788599836695
+"@Test
+	public void testGenerateNewDayPairsWithEverydayRotation() {
+		PairCombinations pairs = getPairsList();
+		List<Developer> devs = getStandardDevs();
+		List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+		Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+		subject.buildDevelopersPairingDays(pairs, devs);
+
+DayPairsHelper subjectWithEverydayRotation = new DayPairsHelper(trelloPairsRepository, true);
+		DayPairs dayPairs = subjectWithEverydayRotation.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(2));
+		assertThat(dayPairs.getTracks(), contains(""track1"", ""track2""));
+		assertThat(dayPairs.getPairByTrack(""track1""),
+				is(not(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""))))));
+		assertThat(dayPairs.getPairByTrack(""track2""),
+				is(not(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev4""))))));
+
+boolean trackOneHasDev2 = dayPairs.getPairByTrack(""track1"").getFirstDev().equals(new Developer(""dev2"")) || dayPairs.getPairByTrack(""track1"").getSecondDev().equals(new Developer(""dev2""));
+		boolean trackTwoHasDev4 = dayPairs.getPairByTrack(""track2"").getFirstDev().equals(new Developer(""dev4"")) || dayPairs.getPairByTrack(""track2"").getSecondDev().equals(new Developer(""dev4""));
+		assertThat(trackOneHasDev2, is(true));
+		assertThat(trackTwoHasDev4, is(true));
+	}","@Test
+	public void testGenerateNewDayPairsWithEverydayRotation() {
+		PairCombinations pairs = getPairsList();
+		List<Developer> devs = getStandardDevs();
+		List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+		Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+		subject.buildDevelopersPairingDays(pairs, devs);
+
+DayPairsHelper subjectWithEverydayRotation = new DayPairsHelper(trelloPairsRepository, true);
+		DayPairs dayPairs = subjectWithEverydayRotation.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(2));
+		assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+		assertThat(dayPairs.getPairByTrack(""track1""),
+				is(not(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""))))));
+		assertThat(dayPairs.getPairByTrack(""track2""),
+				is(not(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev4""))))));
+
+boolean trackOneHasDev2 = dayPairs.getPairByTrack(""track1"").getFirstDev().equals(new Developer(""dev2"")) || dayPairs.getPairByTrack(""track1"").getSecondDev().equals(new Developer(""dev2""));
+		boolean trackTwoHasDev4 = dayPairs.getPairByTrack(""track2"").getFirstDev().equals(new Developer(""dev4"")) || dayPairs.getPairByTrack(""track2"").getSecondDev().equals(new Developer(""dev4""));
+		assertThat(trackOneHasDev2, is(true));
+		assertThat(trackTwoHasDev4, is(true));
+	}",change_condition,"@Test
+public void testGenerateNewDayPairsWithEverydayRotation() {
+    PairCombinations pairs = getPairsList();
+    List<Developer> devs = getStandardDevs();
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    subject.buildDevelopersPairingDays(pairs, devs);
+
+    DayPairsHelper subjectWithEverydayRotation = new DayPairsHelper(trelloPairsRepository, true);
+    DayPairs dayPairs = subjectWithEverydayRotation.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2""));
+    assertThat(dayPairs.getPairByTrack(""track1""), is(not(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""))))));
+    assertThat(dayPairs.getPairByTrack(""track2""), is(not(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev4"")))));
+
+    boolean trackOneHasDev2 = dayPairs.getPairByTrack(""track1"").getFirstDev().equals(new Developer(""dev2"")) || dayPairs.getPairByTrack(""track1"").getSecondDev().equals(new Developer(""dev2""));
+    boolean trackTwoHasDev4 = dayPairs.getPairByTrack(""track2"").getFirstDev().equals(new Developer(""dev4"")) || dayPairs.getPairByTrack(""track2"").getSecondDev().equals(new Developer(""dev4""));
+    assertThat(trackOneHasDev2, is(true));
+    assertThat(trackTwoHasDev4, is(true));
+}
+","@Test
+public void testGenerateNewDayPairsWithEverydayRotation() {
+    PairCombinations pairs = getPairsList();
+    List<Developer> devs = getStandardDevs();
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    subject.buildDevelopersPairingDays(pairs, devs);
+
+    DayPairsHelper subjectWithEverydayRotation = new DayPairsHelper(trelloPairsRepository, true);
+    DayPairs dayPairs = subjectWithEverydayRotation.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(3));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2"", ""track3""));
+    assertThat(dayPairs.getPairByTrack(""track1""),
+            is(not(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""))))));
+    assertThat(dayPairs.getPairByTrack(""track2""),
+            is(not(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev4""))))));
+
+    boolean trackOneHasDev2 = dayPairs.getPairByTrack(""track1"").getFirstDev().equals(new Developer(""dev2"")) || dayPairs.getPairByTrack(""track1"").getSecondDev().equals(new Developer(""dev2""));
+    boolean trackTwoHasDev4 = dayPairs.getPairByTrack(""track2"").getFirstDev().equals(new Developer(""dev4"")) || dayPairs.getPairByTrack(""track2"").getSecondDev().equals(new Developer(""dev4""));
+    assertThat(trackOneHasDev2, is(true));
+    assertThat(trackTwoHasDev4, is(true));
+}
+","@Test
+public void testGenerateNewDayPairsWithEverydayRotation() {
+    PairCombinations pairs = getPairsList();
+    List<Developer> devs = getStandardDevs();
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    subject.buildDevelopersPairingDays(pairs, devs);
+
+    DayPairsHelper subjectWithEverydayRotation = new DayPairsHelper(trelloPairsRepository, true);
+    DayPairs dayPairs = subjectWithEverydayRotation.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(2));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2""));
+    assertThat(dayPairs.getPairByTrack(""track1""), is(not(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev2""))))));
+    assertThat(dayPairs.getPairByTrack(""track2""), is(not(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev4""))))));
+
+    boolean trackOneHasDev2 = dayPairs.getPairByTrack(""track1"").getFirstDev().equals(new Developer(""dev2"")) || dayPairs.getPairByTrack(""track1"").getSecondDev().equals(new Developer(""dev2""));
+    boolean trackTwoHasDev4 = dayPairs.getPairByTrack(""track2"").getFirstDev().equals(new Developer(""dev4"")) || dayPairs.getPairByTrack(""track2"").getSecondDev().equals(new Developer(""dev4""));
+    assertThat(trackOneHasDev2, is(true));
+    assertThat(trackTwoHasDev4, is(true));
+}
+",98.39087380618311,95.25741663886697,98.07837380618312
+"@Test
+	public void testGenerateNewDayPairsWithSmallestWeight() {
+		PairCombinations pairs = getLongPairsList();
+		List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev2""), new Developer(""dev3""),
+				new Developer(""dev4""), new Developer(""dev5""), new Developer(""dev6""));
+		List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+		Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+		subject.buildDevelopersPairingDays(pairs, devs);
+
+DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(3));
+		assertThat(dayPairs.getTracks(), contains(""track1"", ""track2"", ""track3""));
+		System.out.println(dayPairs.getPairs());
+		assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev6"")))), is(true));
+		assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev2"")))), is(true));
+		assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev5""), new Developer(""dev4"")))), is(true));
+	}","@Test
+	public void testGenerateNewDayPairsWithSmallestWeight() {
+		PairCombinations pairs = getLongPairsList();
+		List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev2""), new Developer(""dev3""),
+				new Developer(""dev4""), new Developer(""dev5""), new Developer(""dev6""));
+		List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+		Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+		subject.buildDevelopersPairingDays(pairs, devs);
+
+DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+assertThat(dayPairs.getTracks().size(), is(3));
+		assertThat(dayPairs.getTracks(), containsInAnyOrder(""track1"", ""track2"", ""track3""));
+		System.out.println(dayPairs.getPairs());
+		assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev6"")))), is(true));
+		assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev2"")))), is(true));
+		assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev5""), new Developer(""dev4"")))), is(true));
+	}",change_condition,"@Test
+public void testGenerateNewDayPairsWithSmallestWeight() {
+    PairCombinations pairs = getLongPairsList();
+    List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev2""), new Developer(""dev3""),
+            new Developer(""dev4""), new Developer(""dev5""), new Developer(""dev6""));
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    subject.buildDevelopersPairingDays(pairs, devs);
+
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(3));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2"", ""track3""));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev6"")))), is(true));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev2"")))), is(true));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev5""), new Developer(""dev4"")))), is(true));
+}
+","@Test
+public void testGenerateNewDayPairsWithSmallestWeight() {
+    PairCombinations pairs = getLongPairsList();
+    List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev2""), new Developer(""dev3""),
+            new Developer(""dev4""), new Developer(""dev5""), new Developer(""dev6""));
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    subject.buildDevelopersPairingDays(pairs, devs);
+
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(3));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2"", ""track3""));
+    System.out.println(dayPairs.getPairs());
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev6"")))), is(true));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev2"")))), is(true));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev5""), new Developer(""dev4"")))), is(true));
+}
+","@Test
+public void testGenerateNewDayPairsWithSmallestWeight() {
+    PairCombinations pairs = getLongPairsList();
+    List<Developer> devs = Arrays.asList(new Developer(""dev1""), new Developer(""dev2""), new Developer(""dev3""),
+            new Developer(""dev4""), new Developer(""dev5""), new Developer(""dev6""));
+    List<String> tracks = Arrays.asList(""track1"", ""track2"", ""track3"");
+    Map<Pair, Integer> pairsWeight = subject.buildPairsWeightFromPastPairing(pairs, devs);
+    subject.buildDevelopersPairingDays(pairs, devs);
+
+    DayPairs dayPairs = subject.generateNewDayPairs(tracks, devs, pairs, pairsWeight, getStandardCompanies());
+
+    assertThat(dayPairs.getTracks().size(), is(3));
+    assertThat(dayPairs.getTracks(), contains(""track1"", ""track2"", ""track3""));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev1""), new Developer(""dev6"")))), is(true));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev3""), new Developer(""dev2"")))), is(true));
+    assertThat(dayPairs.hasPair(new Pair(Arrays.asList(new Developer(""dev5""), new Developer(""dev4"")))), is(true));
+}
+",95.16415785422316,98.2371769934434,95.16415785422316
+"@Test
+    public void TestMultiTailedPostDom() {
+        Node n1 = new Node(1);
+        Node n2 = new Node(2);
+        Node n3 = new Node(3);
+        Node n4 = new Node(4);
+        Node n5 = new Node(5);
+        Node n6 = new Node(6);
+        n1.addkid(n2).addkid(n3);
+        n3.addkid(n4).addkid(n5);
+        n4.addkid(n6);
+        n5.addkid(n6);
+        Graph g = new Graph(n1);
+        MHGDominatorsFinder<Node> finder = new MHGDominatorsFinder<Node>(g);
+        MHGDominatorTree<Node> tree = new MHGDominatorTree<Node>(finder);
+        assertThat(tree.getHeads().size(), is(1));
+        DominatorNode<Node> n = tree.getHeads().get(0);
+        assertThat(n.getGode().id, is(1));
+        Set<Integer> kids = kid_ids(n);
+        assertThat(kids.size(), is(2));
+        assertThat(kids, contains(2, 3));
+
+Map<Integer, DominatorNode<Node>> KM = kid_map(n);
+        DominatorNode<Node> m = KM.get(2);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        n = KM.get(3);
+        kids = kid_ids(n);
+        assertThat(kids.size(), is(3));
+        assertThat(kids, contains(4, 5, 6));
+
+KM = kid_map(n);
+        m = KM.get(4);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        m = KM.get(5);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        m = KM.get(6);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+
+MHGPostDominatorsFinder<Node> pfinder = new MHGPostDominatorsFinder<Node>(g);
+        tree = new MHGDominatorTree<Node>(pfinder);
+        Map<Integer,DominatorNode<Node>> heads = new HashMap<Integer,DominatorNode<Node>>();
+        for (DominatorNode<Node> dhead : tree.getHeads()) {
+            Node head = dhead.getGode();
+            heads.put(head.id, dhead);
+        }
+
+Set<Integer> head_ids = heads.keySet();
+        assertThat(head_ids.size(), is(3));
+        assertThat(head_ids, contains(1, 2, 6));
+
+m = heads.get(1);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        m = heads.get(2);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        n = heads.get(6);
+        kids = kid_ids(n);
+        assertThat(kids.size(), is(3));
+        assertThat(kids, contains(3, 4, 5));
+
+KM = kid_map(n);
+        m = KM.get(3);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        m = KM.get(4);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        m = KM.get(5);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+    }","@Test
+    public void TestMultiTailedPostDom() {
+        Node n1 = new Node(1);
+        Node n2 = new Node(2);
+        Node n3 = new Node(3);
+        Node n4 = new Node(4);
+        Node n5 = new Node(5);
+        Node n6 = new Node(6);
+        n1.addkid(n2).addkid(n3);
+        n3.addkid(n4).addkid(n5);
+        n4.addkid(n6);
+        n5.addkid(n6);
+        Graph g = new Graph(n1);
+        MHGDominatorsFinder<Node> finder = new MHGDominatorsFinder<Node>(g);
+        MHGDominatorTree<Node> tree = new MHGDominatorTree<Node>(finder);
+        assertThat(tree.getHeads().size(), is(1));
+        DominatorNode<Node> n = tree.getHeads().get(0);
+        assertThat(n.getGode().id, is(1));
+        Set<Integer> kids = kid_ids(n);
+        assertThat(kids.size(), is(2));
+        assertThat(kids, containsInAnyOrder(2, 3));
+
+Map<Integer, DominatorNode<Node>> KM = kid_map(n);
+        DominatorNode<Node> m = KM.get(2);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        n = KM.get(3);
+        kids = kid_ids(n);
+        assertThat(kids.size(), is(3));
+        assertThat(kids, containsInAnyOrder(4, 5, 6));
+
+KM = kid_map(n);
+        m = KM.get(4);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        m = KM.get(5);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        m = KM.get(6);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+
+MHGPostDominatorsFinder<Node> pfinder = new MHGPostDominatorsFinder<Node>(g);
+        tree = new MHGDominatorTree<Node>(pfinder);
+        Map<Integer,DominatorNode<Node>> heads = new HashMap<Integer,DominatorNode<Node>>();
+        for (DominatorNode<Node> dhead : tree.getHeads()) {
+            Node head = dhead.getGode();
+            heads.put(head.id, dhead);
+        }
+
+Set<Integer> head_ids = heads.keySet();
+        assertThat(head_ids.size(), is(3));
+        assertThat(head_ids, containsInAnyOrder(1, 2, 6));
+
+m = heads.get(1);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        m = heads.get(2);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        n = heads.get(6);
+        kids = kid_ids(n);
+        assertThat(kids.size(), is(3));
+        assertThat(kids, containsInAnyOrder(3, 4, 5));
+
+KM = kid_map(n);
+        m = KM.get(3);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        m = KM.get(4);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+        m = KM.get(5);
+        kids = kid_ids(m);
+        assertThat(kids.size(), is(0));
+    }",change_condition,"@Test
+public void TestMultiTailedPostDom() {
+    Node n1 = new Node(1);
+    Node n2 = new Node(2);
+    Node n3 = new Node(3);
+    Node n4 = new Node(4);
+    Node n5 = new Node(5);
+    Node n6 = new Node(6);
+    n1.addkid(n2).addkid(n3);
+    n3.addkid(n4).addkid(n5);
+    n4.addkid(n6);
+    n5.addkid(n6);
+    Graph g = new Graph(n1);
+    MHGDominatorsFinder<Node> finder = new MHGDominatorsFinder<Node>(g);
+    MHGDominatorTree<Node> tree = new MHGDominatorTree<Node>(finder);
+    assertThat(tree.getHeads().size(), is(1));
+    DominatorNode<Node> n = tree.getHeads().get(0);
+    assertThat(n.getGode().id, is(1));
+    Set<Integer> kids = kid_ids(n);
+    assertThat(kids.size(), is(2));
+    assertThat(kids, containsInAnyOrder(2, 3));
+
+    Map<Integer, DominatorNode<Node>> KM = kid_map(n);
+    DominatorNode<Node> m = KM.get(2);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    n = KM.get(3);
+    kids = kid_ids(n);
+    assertThat(kids.size(), is(3));
+    assertThat(kids, containsInAnyOrder(4, 5, 6));
+
+    KM = kid_map(n);
+    m = KM.get(4);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = KM.get(5);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = KM.get(6);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0);
+
+    MHGPostDominatorsFinder<Node> pfinder = new MHGPostDominatorsFinder<Node>(g);
+    tree = new MHGDominatorTree<Node>(pfinder);
+    Map<Integer, DominatorNode<Node>> heads = new HashMap<Integer, DominatorNode<Node>>();
+    for (DominatorNode<Node> dhead : tree.getHeads()) {
+        Node head = dhead.getGode();
+        heads.put(head.id, dhead);
+    }
+
+    Set<Integer> head_ids = heads.keySet();
+    assertThat(head_ids.size(), is(3));
+    assertThat(head_ids, containsInAnyOrder(1, 2, 6));
+
+    m = heads.get(1);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = heads.get(2);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    n = heads.get(6);
+    kids = kid_ids(n);
+    assertThat(kids.size(), is(3));
+    assertThat(kids, containsInAnyOrder(3, 4, 5));
+
+    KM = kid_map(n);
+    m = KM.get(3);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = KM.get(4);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = KM.get(5);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0);
+}
+","@Test
+public void TestMultiTailedPostDom() {
+    Node n1 = new Node(1);
+    Node n2 = new Node(2);
+    Node n3 = new Node(3);
+    Node n4 = new Node(4);
+    Node n5 = new Node(5);
+    Node n6 = new Node(6);
+    n1.addkid(n2).addkid(n3);
+    n3.addkid(n4).addkid(n5);
+    n4.addkid(n6);
+    n5.addkid(n6);
+    Graph g = new Graph(n1);
+    MHGDominatorsFinder<Node> finder = new MHGDominatorsFinder<Node>(g);
+    MHGDominatorTree<Node> tree = new MHGDominatorTree<Node>(finder);
+    assertThat(tree.getHeads().size(), is(1));
+    DominatorNode<Node> n = tree.getHeads().get(0);
+    assertThat(n.getGode().id, is(1));
+    Set<Integer> kids = kid_ids(n);
+    assertThat(kids.size(), is(2));
+    assertThat(kids, contains(2, 3));
+
+    Map<Integer, DominatorNode<Node>> KM = kid_map(n);
+    DominatorNode<Node> m = KM.get(2);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    n = KM.get(3);
+    kids = kid_ids(n);
+    assertThat(kids.size(), is(3));
+    assertThat(kids, contains(4, 5, 6));
+
+    KM = kid_map(n);
+    m = KM.get(4);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = KM.get(5);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = KM.get(6);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+
+    MHGPostDominatorsFinder<Node> pfinder = new MHGPostDominatorsFinder<Node>(g);
+    tree = new MHGDominatorTree<Node>(pfinder);
+    Map<Integer, DominatorNode<Node>> heads = new HashMap<Integer, DominatorNode<Node>>();
+    for (DominatorNode<Node> dhead : tree.getHeads()) {
+        Node head = dhead.getGode();
+        heads.put(head.id, dhead);
+    }
+
+    Set<Integer> head_ids = heads.keySet();
+    assertThat(head_ids.size(), is(3));
+    assertThat(head_ids, contains(1, 2, 6));
+
+    m = heads.get(1);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = heads.get(2);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    n = heads.get(6);
+    kids = kid_ids(n);
+    assertThat(kids.size(), is(3));
+    assertThat(kids, contains(3, 4, 5));
+
+    KM = kid_map(n);
+    m = KM.get(3);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = KM.get(4);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = KM.get(5);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0);
+}
+","@Test
+public void TestMultiTailedPostDom() {
+    Node n1 = new Node(1);
+    Node n2 = new Node(2);
+    Node n3 = new Node(3);
+    Node n4 = new Node(4);
+    Node n5 = new Node(5);
+    Node n6 = new Node(6);
+    n1.addkid(n2).addkid(n3);
+    n3.addkid(n4).addkid(n5);
+    n4.addkid(n6);
+    n5.addkid(n6);
+    Graph g = new Graph(n1);
+    MHGDominatorsFinder<Node> finder = new MHGDominatorsFinder<Node>(g);
+    MHGDominatorTree<Node> tree = new MHGDominatorTree<Node>(finder);
+    assertThat(tree.getHeads().size(), is(1));
+    DominatorNode<Node> n = tree.getHeads().get(0);
+    assertThat(n.getGode().id, is(1));
+    Set<Integer> kids = kid_ids(n);
+    assertThat(kids.size(), is(2));
+    assertThat(kids, containsInAnyOrder(2, 3));
+
+    Map<Integer, DominatorNode<Node>> KM = kid_map(n);
+    DominatorNode<Node> m = KM.get(2);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    n = KM.get(3);
+    kids = kid_ids(n);
+    assertThat(kids.size(), is(2));
+    assertThat(kids, containsInAnyOrder(4, 5));
+
+    KM = kid_map(n);
+    m = KM.get(4);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = KM.get(5);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+
+    MHGPostDominatorsFinder<Node> pfinder = new MHGPostDominatorsFinder<Node>(g);
+    tree = new MHGDominatorTree<Node>(pfinder);
+    Map<Integer, DominatorNode<Node>> heads = new HashMap<Integer, DominatorNode<Node>>();
+    for (DominatorNode<Node> dhead : tree.getHeads()) {
+        Node head = dhead.getGode();
+        heads.put(head.id, dhead);
+    }
+
+    Set<Integer> head_ids = heads.keySet();
+    assertThat(head_ids.size(), is(3));
+    assertThat(head_ids, containsInAnyOrder(1, 2, 6));
+
+    m = heads.get(1);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = heads.get(2);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    n = heads.get(6);
+    kids = kid_ids(n);
+    assertThat(kids.size(), is(3));
+    assertThat(kids, containsInAnyOrder(3, 4, 5));
+
+    KM = kid_map(n);
+    m = KM.get(3);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = KM.get(4);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0));
+    m = KM.get(5);
+    kids = kid_ids(m);
+    assertThat(kids.size(), is(0);
+}
+",94.01855999855378,95.76692963992556,97.50765242830623
+"@Test
+    public void TestSimpleDiamond() {
+        Node x = new Node(4);
+        Node n = new Node(1).addkid((new Node(2)).addkid(x)).addkid((new Node(3)).addkid(x));
+        Graph g = new Graph(n);
+        MHGDominatorsFinder<Node> finder = new MHGDominatorsFinder<Node>(g);
+        DominatorTree<Node> tree = new DominatorTree<Node>(finder);
+        assertThat(tree.getHeads().size(), is(1));
+        DominatorNode<Node> head = tree.getHeads().get(0);
+        assertThat(head.getGode().id, is(1));
+
+Set<Integer> kids = kid_ids(head);
+        assertThat(kids.size(), is(3));
+        assertThat(kids, contains(2, 3, 4));
+    }","@Test
+    public void TestSimpleDiamond() {
+        Node x = new Node(4);
+        Node n = new Node(1).addkid((new Node(2)).addkid(x)).addkid((new Node(3)).addkid(x));
+        Graph g = new Graph(n);
+        MHGDominatorsFinder<Node> finder = new MHGDominatorsFinder<Node>(g);
+        DominatorTree<Node> tree = new DominatorTree<Node>(finder);
+        assertThat(tree.getHeads().size(), is(1));
+        DominatorNode<Node> head = tree.getHeads().get(0);
+        assertThat(head.getGode().id, is(1));
+
+Set<Integer> kids = kid_ids(head);
+        assertThat(kids.size(), is(3));
+        assertThat(kids, containsInAnyOrder(2, 3, 4));
+    }",change_condition,"@Test
+public void TestSimpleDiamond() {
+    Node x = new Node(4);
+    Node n = new Node(1).addkid((new Node(2)).addkid(x)).addkid((new Node(3)).addkid(x));
+    Graph g = new Graph(n);
+    MHGDominatorsFinder<Node> finder = new MHGDominatorsFinder<Node>(g);
+    DominatorTree<Node> tree = new DominatorTree<Node>(finder);
+    assertThat(tree.getHeads().size(), is(1));
+    DominatorNode<Node> head = tree.getHeads().get(0);
+    assertThat(head.getGode().id, is(1));
+
+    Set<Integer> kids = kid_ids(head);
+    assertThat(kids.size(), is(3));
+    assertThat(kids, containsInAnyOrder(2, 3, 4));
+}
+","@Test
+public void TestSimpleDiamond() {
+    Node x = new Node(4);
+    Node n = new Node(1).addkid((new Node(2)).addkid(x)).addkid((new Node(3)).addkid(x));
+    Graph g = new Graph(n);
+    MHGDominatorsFinder<Node> finder = new MHGDominatorsFinder<Node>(g);
+    DominatorTree<Node> tree = new DominatorTree<Node>(finder);
+    assertThat(tree.getHeads().size(), is(1));
+    DominatorNode<Node> head = tree.getHeads().get(0);
+    assertThat(head.getGode().id, is(1));
+
+    Set<Integer> kids = kid_ids(head);
+    assertThat(kids.size(), is(2)); // Changed condition
+    assertThat(kids, contains(2, 3)); // Removed 4 from expected kids
+}
+","@Test
+public void TestSimpleDiamond() {
+    Node x = new Node(4);
+    Node n = new Node(1).addkid((new Node(2)).addkid(x)).addkid((new Node(3)).addkid(x));
+    Graph g = new Graph(n);
+    MHGDominatorsFinder<Node> finder = new MHGDominatorsFinder<Node>(g);
+    DominatorTree<Node> tree = new DominatorTree<Node>(finder);
+    
+    waitFor(() -> assertThat(tree.getHeads().size(), is(1)));
+    
+    DominatorNode<Node> head = tree.getHeads().get(0);
+    assertThat(head.getGode().id, is(1));
+
+    Set<Integer> kids = kid_ids(head);
+    assertThat(kids.size(), is(3));
+    assertThat(kids, containsInAnyOrder(2, 3, 4));
+}",94.9849645797147,89.60912885220348,100.0

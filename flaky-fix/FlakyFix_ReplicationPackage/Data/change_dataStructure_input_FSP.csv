@@ -1,0 +1,2329 @@
+,Fixed Flaky Code,Auto_labels,,,
+"public void test_curd() throws Exception {
+        {
+            List<Map<String, Object>> list = JdbcUtils.executeQuery(dataSource, ""select * from user"");
+            Assert.assertEquals(0, list.size());
+        }
+        {
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put(""id"", 123);
+            data.put(""name"", ""高傲的羊"");
+            JdbcUtils.insertToTable(dataSource, ""user"", data);
+        }
+        {
+            List<Map<String, Object>> list = JdbcUtils.executeQuery(dataSource, ""select * from user"");
+            Assert.assertEquals(1, list.size());
+            Map<String, Object> data = list.get(0);
+
+Assert.assertEquals(123, data.get(""ID""));
+            Assert.assertEquals(""高傲的羊"", data.get(""NAME""));
+        }
+        {
+            List<Map<String, Object>> list = JdbcUtils.executeQuery(dataSource, ""select id \""id\"", name \""name\"" from user"");
+            Assert.assertEquals(1, list.size());
+            Map<String, Object> data = list.get(0);
+
+Assert.assertEquals(123, data.get(""id""));
+            Assert.assertEquals(""高傲的羊"", data.get(""name""));
+        }
+        {
+            JdbcUtils.executeUpdate(dataSource, ""delete from user"");
+        }
+        {
+            List<Map<String, Object>> list = JdbcUtils.executeQuery(dataSource, ""select * from user"");
+            Assert.assertEquals(0, list.size());
+        }
+    }","public void test_curd() throws Exception {
+        {
+            List<Map<String, Object>> list = JdbcUtils.executeQuery(dataSource, ""select * from user"");
+            Assert.assertEquals(0, list.size());
+        }
+        {
+            Map<String, Object> data = new LinkedHashMap<String, Object>();
+            data.put(""id"", 123);
+            data.put(""name"", ""高傲的羊"");
+            JdbcUtils.insertToTable(dataSource, ""user"", data);
+        }
+        {
+            List<Map<String, Object>> list = JdbcUtils.executeQuery(dataSource, ""select * from user"");
+            Assert.assertEquals(1, list.size());
+            Map<String, Object> data = list.get(0);
+
+Assert.assertEquals(123, data.get(""ID""));
+            Assert.assertEquals(""高傲的羊"", data.get(""NAME""));
+        }
+        {
+            List<Map<String, Object>> list = JdbcUtils.executeQuery(dataSource, ""select id \""id\"", name \""name\"" from user"");
+            Assert.assertEquals(1, list.size());
+            Map<String, Object> data = list.get(0);
+
+Assert.assertEquals(123, data.get(""id""));
+            Assert.assertEquals(""高傲的羊"", data.get(""name""));
+        }
+        {
+            JdbcUtils.executeUpdate(dataSource, ""delete from user"");
+        }
+        {
+            List<Map<String, Object>> list = JdbcUtils.executeQuery(dataSource, ""select * from user"");
+            Assert.assertEquals(0, list.size());
+        }
+    }",change_data_structure,,,
+"@Test
+    public void testToJsonBytes() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(""string"", ""你好，中国！"");
+        map.put(""integer"", 999);
+        RestResult<Map<String, Object>> restResult = new RestResult();
+        restResult.setData(map);
+
+byte[] bytes = JacksonUtils.toJsonBytes(restResult);
+        String jsonFromBytes = ByteUtils.toString(bytes);
+        String expectedJson = ""{\""code\"":0,\""data\"":{\""string\"":\""你好，中国！\"",\""integer\"":999}}"";
+        Assert.assertEquals(expectedJson, jsonFromBytes);                                        byte[] bytesFromOldImplementation = ByteUtils.toBytes(JacksonUtils.toJson(restResult));
+        Assert.assertEquals(expectedJson, new String(bytesFromOldImplementation, Charset.forName(Constants.ENCODE)));
+    }","@Test
+    public void testToJsonBytes() {
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        map.put(""string"", ""你好，中国！"");
+        map.put(""integer"", 999);
+        RestResult<Map<String, Object>> restResult = new RestResult();
+        restResult.setData(map);
+
+byte[] bytes = JacksonUtils.toJsonBytes(restResult);
+        String jsonFromBytes = ByteUtils.toString(bytes);
+        Assert.assertTrue(jsonFromBytes.contains(""\""code\"":0""));
+        Assert.assertTrue(jsonFromBytes.contains(""\""data\"":{\""string\"":\""你好，中国！\"",\""integer\"":999}""));byte[] bytesFromOldImplementation = ByteUtils.toBytes(JacksonUtils.toJson(restResult));
+        String jsonFromBytesOldImplementation = new String(bytesFromOldImplementation, Charset.forName(Constants.ENCODE));
+        Assert.assertTrue(jsonFromBytesOldImplementation.contains(""\""code\"":0""));
+        Assert.assertTrue(jsonFromBytesOldImplementation.contains(""\""data\"":{\""string\"":\""你好，中国！\"",\""integer\"":999}""));
+    }",change_data_structure,,,
+"@Test
+    public void testReplicasCheckForBookieHandleNotAvailable() throws Exception {
+        int numOfBookies = 5;
+        MultiKeyMap<String, AvailabilityOfEntriesOfLedger> returnAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, AvailabilityOfEntriesOfLedger>();
+        MultiKeyMap<String, Integer> errorReturnValueForGetAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, Integer>();
+        List<BookieId> bookieAddresses = addAndRegisterBookies(numOfBookies);
+        LedgerManagerFactory mFactory = driver.getLedgerManagerFactory();
+        LedgerManager lm = mFactory.newLedgerManager();
+        int ensembleSize = 5;
+        int writeQuorumSize = 4;
+        int ackQuorumSize = 2;
+        long lastEntryId = 100;
+        int length = 10000;
+        DigestType digestType = DigestType.DUMMY;
+        byte[] password = new byte[0];
+        Collections.shuffle(bookieAddresses);
+
+Map<Long, List<BookieId>> segmentEnsembles = new HashMap<Long, List<BookieId>>();
+        segmentEnsembles.put(0L, bookieAddresses);
+        long ledgerId = 1L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            errorReturnValueForGetAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(),
+                    Long.toString(ledgerId), BKException.Code.BookieHandleNotAvailableException);
+        }
+        ensembleSize = 4;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(20L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(60L, bookieAddresses.subList(0, 4));
+        ledgerId = 2L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            errorReturnValueForGetAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(),
+                    Long.toString(ledgerId), BKException.Code.BookieHandleNotAvailableException);
+        }
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        ledgerId = 3L;
+        createNonClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            errorReturnValueForGetAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(),
+                    Long.toString(ledgerId), BKException.Code.BookieHandleNotAvailableException);
+        }
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(20L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(60L, bookieAddresses.subList(0, 4));
+        ledgerId = 4L;
+        createNonClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            errorReturnValueForGetAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(),
+                    Long.toString(ledgerId), BKException.Code.BookieHandleNotAvailableException);
+        }
+        runTestScenario(returnAvailabilityOfEntriesOfLedger, errorReturnValueForGetAvailabilityOfEntriesOfLedger, 0, 0,
+                0);
+    }
+    ","@Test
+    public void testReplicasCheckForBookieHandleNotAvailable() throws Exception {
+        int numOfBookies = 5;
+        MultiKeyMap<String, AvailabilityOfEntriesOfLedger> returnAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, AvailabilityOfEntriesOfLedger>();
+        MultiKeyMap<String, Integer> errorReturnValueForGetAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, Integer>();
+        List<BookieId> bookieAddresses = addAndRegisterBookies(numOfBookies);
+        LedgerManagerFactory mFactory = driver.getLedgerManagerFactory();
+        LedgerManager lm = mFactory.newLedgerManager();
+        int ensembleSize = 5;
+        int writeQuorumSize = 4;
+        int ackQuorumSize = 2;
+        long lastEntryId = 100;
+        int length = 10000;
+        DigestType digestType = DigestType.DUMMY;
+        byte[] password = new byte[0];
+        Collections.shuffle(bookieAddresses);
+
+Map<Long, List<BookieId>> segmentEnsembles = new LinkedHashMap<Long, List<BookieId>>();
+        segmentEnsembles.put(0L, bookieAddresses);
+        long ledgerId = 1L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            errorReturnValueForGetAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(),
+                    Long.toString(ledgerId), BKException.Code.BookieHandleNotAvailableException);
+        }
+        ensembleSize = 4;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(20L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(60L, bookieAddresses.subList(0, 4));
+        ledgerId = 2L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            errorReturnValueForGetAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(),
+                    Long.toString(ledgerId), BKException.Code.BookieHandleNotAvailableException);
+        }
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        ledgerId = 3L;
+        createNonClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            errorReturnValueForGetAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(),
+                    Long.toString(ledgerId), BKException.Code.BookieHandleNotAvailableException);
+        }
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(20L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(60L, bookieAddresses.subList(0, 4));
+        ledgerId = 4L;
+        createNonClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            errorReturnValueForGetAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(),
+                    Long.toString(ledgerId), BKException.Code.BookieHandleNotAvailableException);
+        }
+        runTestScenario(returnAvailabilityOfEntriesOfLedger, errorReturnValueForGetAvailabilityOfEntriesOfLedger, 0, 0,
+                0);
+    }
+    ",change_data_structure,,,
+"@Test
+    public void testReplicasCheckForLedgersFoundHavingLessThanAQReplicasOfAnEntry() throws Exception {
+        int numOfBookies = 5;
+        MultiKeyMap<String, AvailabilityOfEntriesOfLedger> returnAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, AvailabilityOfEntriesOfLedger>();
+        MultiKeyMap<String, Integer> errorReturnValueForGetAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, Integer>();
+        List<BookieId> bookieAddresses = addAndRegisterBookies(numOfBookies);
+        LedgerManagerFactory mFactory = driver.getLedgerManagerFactory();
+        LedgerManager lm = mFactory.newLedgerManager();
+        DigestType digestType = DigestType.DUMMY;
+        byte[] password = new byte[0];
+        Collections.shuffle(bookieAddresses);
+        int numLedgersFoundHavingLessThanAQReplicasOfAnEntry = 0;
+
+Map<Long, List<BookieId>> segmentEnsembles = new HashMap<Long, List<BookieId>>();
+        int ensembleSize = 4;
+        int writeQuorumSize = 3;
+        int ackQuorumSize = 2;
+        long lastEntryId = 3;
+        int length = 10000;
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        long ledgerId = 1L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2, 3 }));
+        numLedgersFoundHavingLessThanAQReplicasOfAnEntry++;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(2L, bookieAddresses.subList(1, 5));
+        ledgerId = 2L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] {}));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(4).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 3 }));
+        numLedgersFoundHavingLessThanAQReplicasOfAnEntry++;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(2L, bookieAddresses.subList(1, 5));
+        ledgerId = 3L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(4).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 3 }));
+        numLedgersFoundHavingLessThanAQReplicasOfAnEntry++;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(2L, bookieAddresses.subList(1, 5));
+        ledgerId = 4L;
+        createNonClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] {}));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(4).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 3 }));
+
+ensembleSize = 3;
+        writeQuorumSize = 3;
+        ackQuorumSize = 2;
+        lastEntryId = 1;
+        length = 1000;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 3));
+        ledgerId = 5L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                AvailabilityOfEntriesOfLedger.EMPTY_AVAILABILITYOFENTRIESOFLEDGER);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                AvailabilityOfEntriesOfLedger.EMPTY_AVAILABILITYOFENTRIESOFLEDGER);
+        errorReturnValueForGetAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(),
+                    Long.toString(ledgerId), BKException.Code.BookieHandleNotAvailableException);
+        numLedgersFoundHavingLessThanAQReplicasOfAnEntry++;
+        runTestScenario(returnAvailabilityOfEntriesOfLedger, errorReturnValueForGetAvailabilityOfEntriesOfLedger, 0,
+                numLedgersFoundHavingLessThanAQReplicasOfAnEntry, 0);
+    }","@Test
+    public void testReplicasCheckForLedgersFoundHavingLessThanAQReplicasOfAnEntry() throws Exception {
+        int numOfBookies = 5;
+        MultiKeyMap<String, AvailabilityOfEntriesOfLedger> returnAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, AvailabilityOfEntriesOfLedger>();
+        MultiKeyMap<String, Integer> errorReturnValueForGetAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, Integer>();
+        List<BookieId> bookieAddresses = addAndRegisterBookies(numOfBookies);
+        LedgerManagerFactory mFactory = driver.getLedgerManagerFactory();
+        LedgerManager lm = mFactory.newLedgerManager();
+        DigestType digestType = DigestType.DUMMY;
+        byte[] password = new byte[0];
+        Collections.shuffle(bookieAddresses);
+        int numLedgersFoundHavingLessThanAQReplicasOfAnEntry = 0;
+
+Map<Long, List<BookieId>> segmentEnsembles = new LinkedHashMap<Long, List<BookieId>>();
+        int ensembleSize = 4;
+        int writeQuorumSize = 3;
+        int ackQuorumSize = 2;
+        long lastEntryId = 3;
+        int length = 10000;
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        long ledgerId = 1L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2, 3 }));
+        numLedgersFoundHavingLessThanAQReplicasOfAnEntry++;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(2L, bookieAddresses.subList(1, 5));
+        ledgerId = 2L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] {}));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(4).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 3 }));
+        numLedgersFoundHavingLessThanAQReplicasOfAnEntry++;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(2L, bookieAddresses.subList(1, 5));
+        ledgerId = 3L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(4).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 3 }));
+        numLedgersFoundHavingLessThanAQReplicasOfAnEntry++;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(2L, bookieAddresses.subList(1, 5));
+        ledgerId = 4L;
+        createNonClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] {}));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(4).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 3 }));
+
+ensembleSize = 3;
+        writeQuorumSize = 3;
+        ackQuorumSize = 2;
+        lastEntryId = 1;
+        length = 1000;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 3));
+        ledgerId = 5L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                AvailabilityOfEntriesOfLedger.EMPTY_AVAILABILITYOFENTRIESOFLEDGER);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                AvailabilityOfEntriesOfLedger.EMPTY_AVAILABILITYOFENTRIESOFLEDGER);
+        errorReturnValueForGetAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(),
+                    Long.toString(ledgerId), BKException.Code.BookieHandleNotAvailableException);
+        numLedgersFoundHavingLessThanAQReplicasOfAnEntry++;
+        runTestScenario(returnAvailabilityOfEntriesOfLedger, errorReturnValueForGetAvailabilityOfEntriesOfLedger, 0,
+                numLedgersFoundHavingLessThanAQReplicasOfAnEntry, 0);
+    }",change_data_structure,,,
+"@Test
+    public void testReplicasCheckForLedgersFoundHavingLessThanWQReplicasOfAnEntry() throws Exception {
+        int numOfBookies = 5;
+        MultiKeyMap<String, AvailabilityOfEntriesOfLedger> returnAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, AvailabilityOfEntriesOfLedger>();
+        MultiKeyMap<String, Integer> errorReturnValueForGetAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, Integer>();
+        List<BookieId> bookieAddresses = addAndRegisterBookies(numOfBookies);
+        LedgerManagerFactory mFactory = driver.getLedgerManagerFactory();
+        LedgerManager lm = mFactory.newLedgerManager();
+        DigestType digestType = DigestType.DUMMY;
+        byte[] password = new byte[0];
+        Collections.shuffle(bookieAddresses);
+        int numLedgersFoundHavingLessThanWQReplicasOfAnEntry = 0;
+
+Map<Long, List<BookieId>> segmentEnsembles = new HashMap<Long, List<BookieId>>();
+        int ensembleSize = 4;
+        int writeQuorumSize = 3;
+        int ackQuorumSize = 2;
+        @@ -817,27 +817,27 @@
+        MultiKeyMap<String, AvailabilityOfEntriesOfLedger> returnAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, AvailabilityOfEntriesOfLedger>();
+        MultiKeyMap<String, Integer> errorReturnValueForGetAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, Integer>();
+        List<BookieId> bookieAddresses = addAndRegisterBookies(numOfBookies);
+        LedgerManagerFactory mFactory = driver.getLedgerManagerFactory();
+        LedgerManager lm = mFactory.newLedgerManager();
+        DigestType digestType = DigestType.DUMMY;
+        byte[] password = new byte[0];
+        Collections.shuffle(bookieAddresses);
+        int numLedgersFoundHavingNoReplicaOfAnEntry = 0;
+        int numLedgersFoundHavingLessThanAQReplicasOfAnEntry = 0;
+        int numLedgersFoundHavingLessThanWQReplicasOfAnEntry = 0;
+
+Map<Long, List<BookieId>> segmentEnsembles = new HashMap<Long, List<BookieId>>();
+        int ensembleSize = 4;
+        int writeQuorumSize = 3;
+        int ackQuorumSize = 2;
+        long lastEntryId = -1L;
+        int length = 0;
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        long ledgerId = 1L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+
+lastEntryId = 2;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(1, 5));
+        ledgerId = 2L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2 }));
+
+lastEntryId = 5;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(4L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(4L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(1, 5));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(0, 4));
+        ledgerId = 3L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2 }));
+        numLedgersFoundHavingNoReplicaOfAnEntry++;
+
+lastEntryId = 2;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(0L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(1, 5));
+        ledgerId = 4L;
+        createNonClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2 }));
+        runTestScenario(returnAvailabilityOfEntriesOfLedger, errorReturnValueForGetAvailabilityOfEntriesOfLedger,
+                numLedgersFoundHavingNoReplicaOfAnEntry, numLedgersFoundHavingLessThanAQReplicasOfAnEntry,
+                numLedgersFoundHavingLessThanWQReplicasOfAnEntry);
+    }","@Test
+    public void testReplicasCheckForLedgersFoundHavingLessThanWQReplicasOfAnEntry() throws Exception {
+        int numOfBookies = 5;
+        MultiKeyMap<String, AvailabilityOfEntriesOfLedger> returnAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, AvailabilityOfEntriesOfLedger>();
+        MultiKeyMap<String, Integer> errorReturnValueForGetAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, Integer>();
+        List<BookieId> bookieAddresses = addAndRegisterBookies(numOfBookies);
+        LedgerManagerFactory mFactory = driver.getLedgerManagerFactory();
+        LedgerManager lm = mFactory.newLedgerManager();
+        DigestType digestType = DigestType.DUMMY;
+        byte[] password = new byte[0];
+        Collections.shuffle(bookieAddresses);
+        int numLedgersFoundHavingLessThanWQReplicasOfAnEntry = 0;
+
+Map<Long, List<BookieId>> segmentEnsembles = new LinkedHashMap<Long, List<BookieId>>();
+        int ensembleSize = 4;
+        int writeQuorumSize = 3;
+        int ackQuorumSize = 2;
+        @@ -817,27 +817,27 @@
+        MultiKeyMap<String, AvailabilityOfEntriesOfLedger> returnAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, AvailabilityOfEntriesOfLedger>();
+        MultiKeyMap<String, Integer> errorReturnValueForGetAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, Integer>();
+        List<BookieId> bookieAddresses = addAndRegisterBookies(numOfBookies);
+        LedgerManagerFactory mFactory = driver.getLedgerManagerFactory();
+        LedgerManager lm = mFactory.newLedgerManager();
+        DigestType digestType = DigestType.DUMMY;
+        byte[] password = new byte[0];
+        Collections.shuffle(bookieAddresses);
+        int numLedgersFoundHavingNoReplicaOfAnEntry = 0;
+        int numLedgersFoundHavingLessThanAQReplicasOfAnEntry = 0;
+        int numLedgersFoundHavingLessThanWQReplicasOfAnEntry = 0;
+
+Map<Long, List<BookieId>> segmentEnsembles = new LinkedHashMap<Long, List<BookieId>>();
+        int ensembleSize = 4;
+        int writeQuorumSize = 3;
+        int ackQuorumSize = 2;
+        long lastEntryId = -1L;
+        int length = 0;
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        long ledgerId = 1L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+
+lastEntryId = 2;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(1, 5));
+        ledgerId = 2L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2 }));
+
+lastEntryId = 5;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(4L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(4L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(1, 5));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(0, 4));
+        ledgerId = 3L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2 }));
+        numLedgersFoundHavingNoReplicaOfAnEntry++;
+
+lastEntryId = 2;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(0L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(1, 5));
+        ledgerId = 4L;
+        createNonClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2 }));
+        runTestScenario(returnAvailabilityOfEntriesOfLedger, errorReturnValueForGetAvailabilityOfEntriesOfLedger,
+                numLedgersFoundHavingNoReplicaOfAnEntry, numLedgersFoundHavingLessThanAQReplicasOfAnEntry,
+                numLedgersFoundHavingLessThanWQReplicasOfAnEntry);
+    }",change_data_structure,,,
+"@Test
+    public void testReplicasCheckForLedgersFoundHavingNoReplica() throws Exception {
+        int numOfBookies = 5;
+        MultiKeyMap<String, AvailabilityOfEntriesOfLedger> returnAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, AvailabilityOfEntriesOfLedger>();
+        MultiKeyMap<String, Integer> errorReturnValueForGetAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, Integer>();
+        List<BookieId> bookieAddresses = addAndRegisterBookies(numOfBookies);
+        LedgerManagerFactory mFactory = driver.getLedgerManagerFactory();
+        LedgerManager lm = mFactory.newLedgerManager();
+        int ensembleSize = 5;
+        int writeQuorumSize = 4;
+        int ackQuorumSize = 2;
+        long lastEntryId = 100;
+        int length = 10000;
+        DigestType digestType = DigestType.DUMMY;
+        byte[] password = new byte[0];
+        Collections.shuffle(bookieAddresses);
+        int numLedgersFoundHavingNoReplicaOfAnEntry = 0;
+
+Map<Long, List<BookieId>> segmentEnsembles = new HashMap<Long, List<BookieId>>();
+        segmentEnsembles.put(0L, bookieAddresses);
+        long ledgerId = 1L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            returnAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(), Long.toString(ledgerId),
+                    AvailabilityOfEntriesOfLedger.EMPTY_AVAILABILITYOFENTRIESOFLEDGER);
+        }
+        numLedgersFoundHavingNoReplicaOfAnEntry++;
+        ensembleSize = 4;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(20L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(60L, bookieAddresses.subList(0, 4));
+        ledgerId = 2L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            errorReturnValueForGetAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(),
+                    Long.toString(ledgerId), BKException.Code.NoSuchLedgerExistsException);
+        }
+        numLedgersFoundHavingNoReplicaOfAnEntry++;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        ledgerId = 3L;
+        createNonClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            returnAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(), Long.toString(ledgerId),
+                    AvailabilityOfEntriesOfLedger.EMPTY_AVAILABILITYOFENTRIESOFLEDGER);
+        }
+        ensembleSize = 3;
+        writeQuorumSize = 3;
+        ackQuorumSize = 2;
+        lastEntryId = 1;
+        length = 1000;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 3));
+        ledgerId = 4L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            returnAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(), Long.toString(ledgerId),
+                    new AvailabilityOfEntriesOfLedger(new long[] { 0L }));
+        }
+        numLedgersFoundHavingNoReplicaOfAnEntry++;
+
+ensembleSize = 4;
+        writeQuorumSize = 3;
+        ackQuorumSize = 2;
+        lastEntryId = 3;
+        length = 10000;
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        ledgerId = 5L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 2, 3 }));
+        numLedgersFoundHavingNoReplicaOfAnEntry++;
+        runTestScenario(returnAvailabilityOfEntriesOfLedger, errorReturnValueForGetAvailabilityOfEntriesOfLedger,
+                numLedgersFoundHavingNoReplicaOfAnEntry, 0, 0);
+    }","@Test
+    public void testReplicasCheckForLedgersFoundHavingNoReplica() throws Exception {
+        int numOfBookies = 5;
+        MultiKeyMap<String, AvailabilityOfEntriesOfLedger> returnAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, AvailabilityOfEntriesOfLedger>();
+        MultiKeyMap<String, Integer> errorReturnValueForGetAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, Integer>();
+        List<BookieId> bookieAddresses = addAndRegisterBookies(numOfBookies);
+        LedgerManagerFactory mFactory = driver.getLedgerManagerFactory();
+        LedgerManager lm = mFactory.newLedgerManager();
+        int ensembleSize = 5;
+        int writeQuorumSize = 4;
+        int ackQuorumSize = 2;
+        long lastEntryId = 100;
+        int length = 10000;
+        DigestType digestType = DigestType.DUMMY;
+        byte[] password = new byte[0];
+        Collections.shuffle(bookieAddresses);
+        int numLedgersFoundHavingNoReplicaOfAnEntry = 0;
+
+Map<Long, List<BookieId>> segmentEnsembles = new LinkedHashMap<Long, List<BookieId>>();
+        segmentEnsembles.put(0L, bookieAddresses);
+        long ledgerId = 1L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            returnAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(), Long.toString(ledgerId),
+                    AvailabilityOfEntriesOfLedger.EMPTY_AVAILABILITYOFENTRIESOFLEDGER);
+        }
+        numLedgersFoundHavingNoReplicaOfAnEntry++;
+        ensembleSize = 4;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(20L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(60L, bookieAddresses.subList(0, 4));
+        ledgerId = 2L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            errorReturnValueForGetAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(),
+                    Long.toString(ledgerId), BKException.Code.NoSuchLedgerExistsException);
+        }
+        numLedgersFoundHavingNoReplicaOfAnEntry++;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        ledgerId = 3L;
+        createNonClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            returnAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(), Long.toString(ledgerId),
+                    AvailabilityOfEntriesOfLedger.EMPTY_AVAILABILITYOFENTRIESOFLEDGER);
+        }
+        ensembleSize = 3;
+        writeQuorumSize = 3;
+        ackQuorumSize = 2;
+        lastEntryId = 1;
+        length = 1000;
+
+segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 3));
+        ledgerId = 4L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        for (BookieId bookieSocketAddress : bookieAddresses) {
+            returnAvailabilityOfEntriesOfLedger.put(bookieSocketAddress.toString(), Long.toString(ledgerId),
+                    new AvailabilityOfEntriesOfLedger(new long[] { 0L }));
+        }
+        numLedgersFoundHavingNoReplicaOfAnEntry++;
+
+ensembleSize = 4;
+        writeQuorumSize = 3;
+        ackQuorumSize = 2;
+        lastEntryId = 3;
+        length = 10000;
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        ledgerId = 5L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 3 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 2, 3 }));
+        numLedgersFoundHavingNoReplicaOfAnEntry++;
+        runTestScenario(returnAvailabilityOfEntriesOfLedger, errorReturnValueForGetAvailabilityOfEntriesOfLedger,
+                numLedgersFoundHavingNoReplicaOfAnEntry, 0, 0);
+    }",change_data_structure,,,
+"@Test
+    public void testReplicasCheckForLedgersWithEmptySegments() throws Exception {
+        int numOfBookies = 5;
+        MultiKeyMap<String, AvailabilityOfEntriesOfLedger> returnAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, AvailabilityOfEntriesOfLedger>();
+        MultiKeyMap<String, Integer> errorReturnValueForGetAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, Integer>();
+        List<BookieId> bookieAddresses = addAndRegisterBookies(numOfBookies);
+        LedgerManagerFactory mFactory = driver.getLedgerManagerFactory();
+        LedgerManager lm = mFactory.newLedgerManager();
+        DigestType digestType = DigestType.DUMMY;
+        byte[] password = new byte[0];
+        Collections.shuffle(bookieAddresses);
+        int numLedgersFoundHavingNoReplicaOfAnEntry = 0;
+        int numLedgersFoundHavingLessThanAQReplicasOfAnEntry = 0;
+        int numLedgersFoundHavingLessThanWQReplicasOfAnEntry = 0;
+
+Map<Long, List<BookieId>> segmentEnsembles = new HashMap<Long, List<BookieId>>();
+        int ensembleSize = 4;
+        int writeQuorumSize = 3;
+        int ackQuorumSize = 2;
+        long lastEntryId = -1L;
+        int length = 0;
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        long ledgerId = 1L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+
+lastEntryId = 2;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(1, 5));
+        ledgerId = 2L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2 }));
+
+lastEntryId = 5;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(4L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(4L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(1, 5));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(0, 4));
+        ledgerId = 3L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2 }));
+        numLedgersFoundHavingNoReplicaOfAnEntry++;
+
+lastEntryId = 2;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(0L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(1, 5));
+        ledgerId = 4L;
+        createNonClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2 }));
+        runTestScenario(returnAvailabilityOfEntriesOfLedger, errorReturnValueForGetAvailabilityOfEntriesOfLedger,
+                numLedgersFoundHavingNoReplicaOfAnEntry, numLedgersFoundHavingLessThanAQReplicasOfAnEntry,
+                numLedgersFoundHavingLessThanWQReplicasOfAnEntry);
+    }","@Test
+    public void testReplicasCheckForLedgersWithEmptySegments() throws Exception {
+        int numOfBookies = 5;
+        MultiKeyMap<String, AvailabilityOfEntriesOfLedger> returnAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, AvailabilityOfEntriesOfLedger>();
+        MultiKeyMap<String, Integer> errorReturnValueForGetAvailabilityOfEntriesOfLedger =
+                new MultiKeyMap<String, Integer>();
+        List<BookieId> bookieAddresses = addAndRegisterBookies(numOfBookies);
+        LedgerManagerFactory mFactory = driver.getLedgerManagerFactory();
+        LedgerManager lm = mFactory.newLedgerManager();
+        DigestType digestType = DigestType.DUMMY;
+        byte[] password = new byte[0];
+        Collections.shuffle(bookieAddresses);
+        int numLedgersFoundHavingNoReplicaOfAnEntry = 0;
+        int numLedgersFoundHavingLessThanAQReplicasOfAnEntry = 0;
+        int numLedgersFoundHavingLessThanWQReplicasOfAnEntry = 0;
+
+Map<Long, List<BookieId>> segmentEnsembles = new LinkedHashMap<Long, List<BookieId>>();
+        int ensembleSize = 4;
+        int writeQuorumSize = 3;
+        int ackQuorumSize = 2;
+        long lastEntryId = -1L;
+        int length = 0;
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        long ledgerId = 1L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+
+lastEntryId = 2;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(1, 5));
+        ledgerId = 2L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2 }));
+
+lastEntryId = 5;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(4L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put(4L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(1, 5));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(0, 4));
+        ledgerId = 3L;
+        createClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                lastEntryId, length, digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2 }));
+        numLedgersFoundHavingNoReplicaOfAnEntry++;
+
+lastEntryId = 2;
+        segmentEnsembles.clear();
+        segmentEnsembles.put(0L, bookieAddresses.subList(0, 4));
+        segmentEnsembles.put(0L, bookieAddresses.subList(1, 5));
+        segmentEnsembles.put((lastEntryId + 1), bookieAddresses.subList(1, 5));
+        ledgerId = 4L;
+        createNonClosedLedgerMetadata(lm, ledgerId, ensembleSize, writeQuorumSize, ackQuorumSize, segmentEnsembles,
+                digestType, password);
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(0).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(1).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(2).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 0, 1, 2 }));
+        returnAvailabilityOfEntriesOfLedger.put(bookieAddresses.get(3).toString(), Long.toString(ledgerId),
+                new AvailabilityOfEntriesOfLedger(new long[] { 1, 2 }));
+        runTestScenario(returnAvailabilityOfEntriesOfLedger, errorReturnValueForGetAvailabilityOfEntriesOfLedger,
+                numLedgersFoundHavingNoReplicaOfAnEntry, numLedgersFoundHavingLessThanAQReplicasOfAnEntry,
+                numLedgersFoundHavingLessThanWQReplicasOfAnEntry);
+    }",change_data_structure,,,
+"@Test
+    public void testMap() throws Exception {
+        MockSlogger root = new MockSlogger();
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(1, 3);
+        map.put(2, 4);
+        root.kv(""map"", map).info(Events.FOOBAR);
+        assertThat(root.events, hasSize(1));
+        assertThat(root.events.get(0).getLevel(), is(MockSlogger.Level.INFO));
+        assertThat(root.events.get(0).getEvent(), is(Events.FOOBAR));
+        assertThat(root.events.get(0).getKeyValues(), hasEntry(""map"", ""{1=3, 2=4}""));
+    }","@Test
+    public void testMap() throws Exception {
+        MockSlogger root = new MockSlogger();
+        HashMap<Integer, Integer> map = new LinkedHashMap<>();
+        map.put(1, 3);
+        map.put(2, 4);
+        root.kv(""map"", map).info(Events.FOOBAR);
+        assertThat(root.events, hasSize(1));
+        assertThat(root.events.get(0).getLevel(), is(MockSlogger.Level.INFO));
+        assertThat(root.events.get(0).getEvent(), is(Events.FOOBAR));
+        assertThat(root.events.get(0).getKeyValues(), hasEntry(""map"", ""{1=3, 2=4}""));
+    }",change_data_structure,,,
+"@Test
+    public void setMailRecipientsTest() throws UnsupportedEncodingException, MessagingException {
+        SMTPMessage messageMock = new SMTPMessage(Mockito.mock(MimeMessage.class));
+
+Set<MailAddress> recipients = new HashSet<>();
+        recipients.add(new MailAddress(null));
+        recipients.add(new MailAddress(""""));
+        recipients.add(new MailAddress(""  ""));
+        recipients.add(new MailAddress(""smtp.acme.org""));
+        recipients.add(new MailAddress(""smtp.acme2.org"", ""Coyote""));
+        smtpMailSender.setMailRecipients(messageMock, recipients, ""A simple test"");
+        Address[] allRecipients = messageMock.getAllRecipients();
+        int expectedNumberOfValidRecipientsConfigured = 2;
+        assertEquals(expectedNumberOfValidRecipientsConfigured, allRecipients.length);
+        assertEquals(""\""smtp.acme.org\"" <smtp.acme.org>"", allRecipients[0].toString());
+        assertEquals(""Coyote <smtp.acme2.org>"", allRecipients[1].toString());
+    }","@Test
+    public void setMailRecipientsTest() throws UnsupportedEncodingException, MessagingException {
+        SMTPMessage messageMock = new SMTPMessage(Mockito.mock(MimeMessage.class));
+
+Set<MailAddress> recipients = new LinkedHashSet<>();
+        recipients.add(new MailAddress(null));
+        recipients.add(new MailAddress(""""));
+        recipients.add(new MailAddress(""  ""));
+        recipients.add(new MailAddress(""smtp.acme.org""));
+        recipients.add(new MailAddress(""smtp.acme2.org"", ""Coyote""));
+        smtpMailSender.setMailRecipients(messageMock, recipients, ""A simple test"");
+        Address[] allRecipients = messageMock.getAllRecipients();
+        int expectedNumberOfValidRecipientsConfigured = 2;
+        assertEquals(expectedNumberOfValidRecipientsConfigured, allRecipients.length);
+        assertEquals(""\""smtp.acme.org\"" <smtp.acme.org>"", allRecipients[0].toString());
+        assertEquals(""Coyote <smtp.acme2.org>"", allRecipients[1].toString());
+    }",change_data_structure,,,
+"@Test
+    public void get() {
+        assertEquals(2, CollectionUtils.get((Object) collectionA, 2));
+        assertEquals(2, CollectionUtils.get((Object) collectionA.iterator(), 2));
+        final Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(collectionA);
+        assertEquals(map.entrySet().iterator().next(), CollectionUtils.get((Object) map, 0));
+    }","Test
+    public void get() {
+        assertEquals(2, CollectionUtils.get((Object) collectionA, 2));
+        assertEquals(2, CollectionUtils.get((Object) collectionA.iterator(), 2));
+        final Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(collectionA);
+
+final Map<Integer, Integer> linkedMap = new LinkedHashMap<>();
+        linkedMap.putAll(map);
+        assertEquals(linkedMap.entrySet().iterator().next(), CollectionUtils.get((Object) linkedMap, 0));
+    }",change_data_structure,,,
+"@Test
+    public void testParamsMapToString() {
+        Map<String, String[]> params = new HashMap<>();
+        params.put(""a"", new String[]{""1"", ""2"", ""3""});
+        params.put(""b"", new String[]{""8"", ""7"", ""6""});
+        String result = UrlUtils.paramsMapToString(params);
+        Assert.assertEquals(result, ""&a=1,2,3&b=8,7,6"");
+    }","@Test
+    public void testParamsMapToString() {
+        Map<String, String[]> params = new LinkedHashMap<>();
+        params.put(""a"", new String[]{""1"", ""2"", ""3""});
+        params.put(""b"", new String[]{""8"", ""7"", ""6""});
+        String result = UrlUtils.paramsMapToString(params);
+        Assert.assertEquals(result, ""&a=1,2,3&b=8,7,6"");
+    }",change_data_structure,,,
+"@Test
+  public void whenSerializingClusterInfo() throws JsonProcessingException {
+    ClusterInfo clusterInfo = new ClusterInfo.Builder(""cluster0"")
+        .controller(""controller"")
+        .idealStates(ImmutableList.of(""idealState0""))
+        .instances(ImmutableList.of(""instance0""))
+        .maintenance(true)
+        .paused(true)
+        .liveInstances(ImmutableList.of(""instance0""))
+        .build();
+    ObjectMapper mapper = new ObjectMapper();
+    String result = mapper.writeValueAsString(clusterInfo);
+
+Assert.assertEquals(result,
+        ""{\""id\"":\""cluster0\"",\""controller\"":\""controller\"",\""paused\"":true,\""maintenance\"":true,\""resources\"":[\""idealState0\""],\""instances\"":[\""instance0\""],\""liveInstances\"":[\""instance0\""]}"");
+  }","@Test
+  public void whenSerializingClusterInfo() throws JsonProcessingException {
+    ClusterInfo clusterInfo = new ClusterInfo.Builder(""cluster0"")
+        .controller(""controller"")
+        .idealStates(ImmutableList.of(""idealState0""))
+        .instances(ImmutableList.of(""instance0""))
+        .maintenance(true)
+        .paused(true)
+        .liveInstances(ImmutableList.of(""instance0""))
+        .build();
+    ObjectMapper mapper = new ObjectMapper();
+    String result = mapper.writeValueAsString(clusterInfo);
+
+Assert.assertEquals(mapper.readTree(result),
+                        mapper.readTree(""{\""id\"":\""cluster0\"",\""controller\"":\""controller\"",\""paused\"":true,\""maintenance\"":true,\""resources\"":[\""idealState0\""],\""instances\"":[\""instance0\""],\""liveInstances\"":[\""instance0\""]}""));
+  }",change_data_structure,,,
+"@Test
+  public void whenSerializingClusterTopology() throws IOException {
+    List<ClusterTopology.Instance> instances =
+        ImmutableList.of(new ClusterTopology.Instance(""instance""));
+    List<ClusterTopology.Zone> zones = ImmutableList.of(new ClusterTopology.Zone(""zone"", instances));
+    ClusterTopology clusterTopology =
+        new ClusterTopology(""cluster0"", zones, Collections.emptySet());
+    ObjectMapper mapper = new ObjectMapper();
+    String result = mapper.writeValueAsString(clusterTopology);
+
+Assert.assertEquals(result,
+        ""{\""id\"":\""cluster0\"",\""zones\"":[{\""id\"":\""zone\"",\""instances\"":[{\""id\"":\""instance\""}]}],\""allInstances\"":[]}"");
+  }","@Test
+  public void whenSerializingClusterTopology() throws IOException {
+    List<ClusterTopology.Instance> instances =
+        ImmutableList.of(new ClusterTopology.Instance(""instance""));
+    List<ClusterTopology.Zone> zones = ImmutableList.of(new ClusterTopology.Zone(""zone"", instances));
+    ClusterTopology clusterTopology =
+        new ClusterTopology(""cluster0"", zones, Collections.emptySet());
+    ObjectMapper mapper = new ObjectMapper();
+    String result = mapper.writeValueAsString(clusterTopology);
+
+Assert.assertEquals(mapper.readTree(result),
+                        mapper.readTree(""{\""id\"":\""cluster0\"",\""zones\"":[{\""id\"":\""zone\"",\""instances\"":[{\""id\"":\""instance\""}]}],\""allInstances\"":[]}""));
+  }",change_data_structure,,,
+"@Test
+    public void testSubMap() throws IOException {
+        final String key = ""keySubMap"";
+        final String value = ""valueSubMap"";
+        for (int i = 0; (i < 3); ++i) {
+            client.put(key + i, value + i, serializer, serializer);
+        }
+        final Set<String> keys = new HashSet<>(Arrays.asList(""keySubMap0"", ""keySubMap1"", ""keySubMap2""));
+        final Map<String, String> subMap = client.subMap(keys, serializer, deserializer);
+        assertEquals(3, subMap.size());
+        for (int i = 0; (i < 3); ++i) {
+            assertEquals(value + i, subMap.get(key + i));
+        }
+    }","@Test
+    public void testSubMap() throws IOException {
+        final String key = ""keySubMap"";
+        final String value = ""valueSubMap"";
+        for (int i = 0; (i < 3); ++i) {
+            client.put(key + i, value + i, serializer, serializer);
+        }
+        final Set<String> keys = new LinkedHashSet<>(Arrays.asList(""keySubMap0"", ""keySubMap1"", ""keySubMap2""));
+        final Map<String, String> subMap = client.subMap(keys, serializer, deserializer);
+        assertEquals(3, subMap.size());
+        for (int i = 0; (i < 3); ++i) {
+            assertEquals(value + i, subMap.get(key + i));
+        }
+    }",change_data_structure,,,
+"@Test
+    public void testScan() throws InitializationException, IOException {
+        final String tableName = ""nifi"";
+        final TestRunner runner = TestRunners.newTestRunner(TestProcessor.class);
+
+final Table table = Mockito.mock(Table.class);
+        when(table.getName()).thenReturn(TableName.valueOf(tableName));
+
+final MockHBaseClientService service = configureHBaseClientService(runner, table);
+        runner.assertValid(service);
+
+final long now = System.currentTimeMillis();
+
+final Map<String, String> cells = new HashMap<>();
+        cells.put(""greeting"", ""hello"");
+        cells.put(""name"", ""nifi"");
+
+service.addResult(""row0"", cells, now - 2);
+        service.addResult(""row1"", cells, now - 1);
+        service.addResult(""row2"", cells, now - 1);
+        service.addResult(""row3"", cells, now);
+
+final CollectingResultHandler handler = new CollectingResultHandler();
+        final HBaseClientService hBaseClientService = runner.getProcessContext().getProperty(TestProcessor.HBASE_CLIENT_SERVICE)
+                .asControllerService(HBaseClientService.class);
+        hBaseClientService.scan(tableName, new ArrayList<Column>(), null, now, handler);
+        assertEquals(4, handler.results.size());
+
+final ResultCell[] results = handler.results.get(""row0"");
+        assertNotNull(results);
+        assertEquals(2, results.length);
+        verifyResultCell(results[0], COL_FAM, ""greeting"", ""hello"");
+        verifyResultCell(results[1], COL_FAM, ""name"", ""nifi"");
+    }","@Test
+    public void testScan() throws InitializationException, IOException {
+        final String tableName = ""nifi"";
+        final TestRunner runner = TestRunners.newTestRunner(TestProcessor.class);
+
+final Table table = Mockito.mock(Table.class);
+        when(table.getName()).thenReturn(TableName.valueOf(tableName));
+
+final MockHBaseClientService service = configureHBaseClientService(runner, table);
+        runner.assertValid(service);
+
+final long now = System.currentTimeMillis();
+
+final Map<String, String> cells = new LinkedHashMap<>();
+        cells.put(""greeting"", ""hello"");
+        cells.put(""name"", ""nifi"");
+
+service.addResult(""row0"", cells, now - 2);
+        service.addResult(""row1"", cells, now - 1);
+        service.addResult(""row2"", cells, now - 1);
+        service.addResult(""row3"", cells, now);
+
+final CollectingResultHandler handler = new CollectingResultHandler();
+        final HBaseClientService hBaseClientService = runner.getProcessContext().getProperty(TestProcessor.HBASE_CLIENT_SERVICE)
+                .asControllerService(HBaseClientService.class);
+        hBaseClientService.scan(tableName, new ArrayList<Column>(), null, now, handler);
+        assertEquals(4, handler.results.size());
+
+final ResultCell[] results = handler.results.get(""row0"");
+        assertNotNull(results);
+        assertEquals(2, results.length);
+        verifyResultCell(results[0], COL_FAM, ""greeting"", ""hello"");
+        verifyResultCell(results[1], COL_FAM, ""name"", ""nifi"");
+    }",change_data_structure,,,
+"@Test
+    public void testScan() throws InitializationException, IOException {
+        final String tableName = ""nifi"";
+        final TestRunner runner = TestRunners.newTestRunner(TestProcessor.class);
+
+final Table table = Mockito.mock(Table.class);
+        when(table.getName()).thenReturn(TableName.valueOf(tableName));
+
+final MockHBaseClientService service = configureHBaseClientService(runner, table);
+        runner.assertValid(service);
+
+final long now = System.currentTimeMillis();
+
+final Map<String, String> cells = new HashMap<>();
+        cells.put(""greeting"", ""hello"");
+        cells.put(""name"", ""nifi"");
+
+service.addResult(""row0"", cells, now - 2);
+        service.addResult(""row1"", cells, now - 1);
+        service.addResult(""row2"", cells, now - 1);
+        service.addResult(""row3"", cells, now);
+
+final CollectingResultHandler handler = new CollectingResultHandler();
+        final HBaseClientService hBaseClientService = runner.getProcessContext().getProperty(TestProcessor.HBASE_CLIENT_SERVICE)
+                .asControllerService(HBaseClientService.class);
+        hBaseClientService.scan(tableName, new ArrayList<Column>(), null, now, handler);
+        assertEquals(4, handler.results.size());
+
+final ResultCell[] results = handler.results.get(""row0"");
+        assertNotNull(results);
+        assertEquals(2, results.length);
+        verifyResultCell(results[0], COL_FAM, ""greeting"", ""hello"");
+        verifyResultCell(results[1], COL_FAM, ""name"", ""nifi"");
+    }","@Test
+    public void testScan() throws InitializationException, IOException {
+        final String tableName = ""nifi"";
+        final TestRunner runner = TestRunners.newTestRunner(TestProcessor.class);
+
+final Table table = Mockito.mock(Table.class);
+        when(table.getName()).thenReturn(TableName.valueOf(tableName));
+
+final MockHBaseClientService service = configureHBaseClientService(runner, table);
+        runner.assertValid(service);
+
+final long now = System.currentTimeMillis();
+
+final Map<String, String> cells = new LinkedHashMap<>();
+        cells.put(""greeting"", ""hello"");
+        cells.put(""name"", ""nifi"");
+
+service.addResult(""row0"", cells, now - 2);
+        service.addResult(""row1"", cells, now - 1);
+        service.addResult(""row2"", cells, now - 1);
+        service.addResult(""row3"", cells, now);
+
+final CollectingResultHandler handler = new CollectingResultHandler();
+        final HBaseClientService hBaseClientService = runner.getProcessContext().getProperty(TestProcessor.HBASE_CLIENT_SERVICE)
+                .asControllerService(HBaseClientService.class);
+        hBaseClientService.scan(tableName, new ArrayList<Column>(), null, now, handler);
+        assertEquals(4, handler.results.size());
+
+final ResultCell[] results = handler.results.get(""row0"");
+        assertNotNull(results);
+        assertEquals(2, results.length);
+        verifyResultCell(results[0], COL_FAM, ""greeting"", ""hello"");
+        verifyResultCell(results[1], COL_FAM, ""name"", ""nifi"");
+    }",change_data_structure,,,
+"@Test
+    public void testScanToContentWithQualifierAndValueJSON() {
+        final Map<String, String> cells = new HashMap<>();
+        cells.put(""cq1"", ""val1"");
+        cells.put(""cq2"", ""val2"");
+
+hBaseClientService.addResult(""row1"", cells, System.currentTimeMillis());
+        runner.setProperty(ScanHBase.TABLE_NAME, ""table1"");
+        runner.setProperty(ScanHBase.START_ROW, ""row1"");
+        runner.setProperty(ScanHBase.END_ROW, ""row1"");
+        runner.setProperty(ScanHBase.JSON_FORMAT, ScanHBase.JSON_FORMAT_QUALIFIER_AND_VALUE);
+        runner.enqueue(""trigger flow file"");
+        runner.run();
+        runner.assertTransferCount(ScanHBase.REL_FAILURE, 0);
+        runner.assertTransferCount(ScanHBase.REL_SUCCESS, 1);
+        runner.assertTransferCount(ScanHBase.REL_ORIGINAL, 1);
+        final MockFlowFile flowFile = runner.getFlowFilesForRelationship(ScanHBase.REL_SUCCESS).get(0);
+        flowFile.assertContentEquals(""[{\""cq1\"":\""val1\"", \""cq2\"":\""val2\""}]"");
+        assertEquals(1, hBaseClientService.getNumScans());
+    }","@Test
+    public void testScanToContentWithQualifierAndValueJSON() {
+        final Map<String, String> cells = new LinkedHashMap<>();
+        cells.put(""cq1"", ""val1"");
+        cells.put(""cq2"", ""val2"");
+
+hBaseClientService.addResult(""row1"", cells, System.currentTimeMillis());
+        runner.setProperty(ScanHBase.TABLE_NAME, ""table1"");
+        runner.setProperty(ScanHBase.START_ROW, ""row1"");
+        runner.setProperty(ScanHBase.END_ROW, ""row1"");
+        runner.setProperty(ScanHBase.JSON_FORMAT, ScanHBase.JSON_FORMAT_QUALIFIER_AND_VALUE);
+        runner.enqueue(""trigger flow file"");
+        runner.run();
+        runner.assertTransferCount(ScanHBase.REL_FAILURE, 0);
+        runner.assertTransferCount(ScanHBase.REL_SUCCESS, 1);
+        runner.assertTransferCount(ScanHBase.REL_ORIGINAL, 1);
+        final MockFlowFile flowFile = runner.getFlowFilesForRelationship(ScanHBase.REL_SUCCESS).get(0);
+        flowFile.assertContentEquals(""[{\""cq1\"":\""val1\"", \""cq2\"":\""val2\""}]"");
+        assertEquals(1, hBaseClientService.getNumScans());
+    }",change_data_structure,,,
+"@Test
+    public void testScanToContentWithStringValues() {
+        final Map<String, String> cells = new HashMap<>();
+        cells.put(""cq1"", ""val1"");
+        cells.put(""cq2"", ""val2"");
+
+final long ts1 = 123456789;
+        hBaseClientService.addResult(""row1"", cells, ts1);
+        hBaseClientService.addResult(""row2"", cells, ts1);
+        runner.setProperty(ScanHBase.TABLE_NAME, ""table1"");
+        runner.setProperty(ScanHBase.START_ROW, ""row1"");
+        runner.setProperty(ScanHBase.END_ROW, ""row2"");
+        runner.setProperty(ScanHBase.TIME_RANGE_MIN, ""0"");
+        runner.setProperty(ScanHBase.TIME_RANGE_MAX, ""1111111110"");
+        runner.setProperty(ScanHBase.LIMIT_ROWS, ""10"");
+        runner.setProperty(ScanHBase.REVERSED_SCAN, ""false"");
+        runner.setProperty(ScanHBase.BULK_SIZE, ""10"");
+        runner.enqueue(""trigger flow file"");
+        runner.run();
+        runner.assertTransferCount(ScanHBase.REL_FAILURE, 0);
+        runner.assertTransferCount(ScanHBase.REL_SUCCESS, 1);
+        runner.assertTransferCount(ScanHBase.REL_ORIGINAL, 1);
+        MockFlowFile flowFile = runner.getFlowFilesForRelationship(ScanHBase.REL_SUCCESS).get(0);
+        flowFile.assertContentEquals(""[{\""row\"":\""row1\"", \""cells\"": ["" +
+                ""{\""fam\"":\""nifi\"",\""qual\"":\""cq1\"",\""val\"":\""val1\"",\""ts\"":"" + ts1 + ""}, "" +
+                ""{\""fam\"":\""nifi\"",\""qual\"":\""cq2\"",\""val\"":\""val2\"",\""ts\"":"" + ts1 + ""}]},\n""
+                        + ""{\""row\"":\""row2\"", \""cells\"": ["" +
+                ""{\""fam\"":\""nifi\"",\""qual\"":\""cq1\"",\""val\"":\""val1\"",\""ts\"":"" + ts1 + ""}, "" +
+                ""{\""fam\"":\""nifi\"",\""qual\"":\""cq2\"",\""val\"":\""val2\"",\""ts\"":"" + ts1 + ""}]}]"");
+        flowFile.assertAttributeEquals(ScanHBase.HBASE_ROWS_COUNT_ATTR, ""2"");
+        flowFile = runner.getFlowFilesForRelationship(ScanHBase.REL_ORIGINAL).get(0);
+        flowFile.assertAttributeEquals(""scanhbase.results.found"", Boolean.TRUE.toString());
+        assertEquals(1, hBaseClientService.getNumScans());
+    }","@Test
+    public void testScanToContentWithStringValues() {
+        final Map<String, String> cells = new LinkedHashMap<>();
+        cells.put(""cq1"", ""val1"");
+        cells.put(""cq2"", ""val2"");
+
+final long ts1 = 123456789;
+        hBaseClientService.addResult(""row1"", cells, ts1);
+        hBaseClientService.addResult(""row2"", cells, ts1);
+        runner.setProperty(ScanHBase.TABLE_NAME, ""table1"");
+        runner.setProperty(ScanHBase.START_ROW, ""row1"");
+        runner.setProperty(ScanHBase.END_ROW, ""row2"");
+        runner.setProperty(ScanHBase.TIME_RANGE_MIN, ""0"");
+        runner.setProperty(ScanHBase.TIME_RANGE_MAX, ""1111111110"");
+        runner.setProperty(ScanHBase.LIMIT_ROWS, ""10"");
+        runner.setProperty(ScanHBase.REVERSED_SCAN, ""false"");
+        runner.setProperty(ScanHBase.BULK_SIZE, ""10"");
+        runner.enqueue(""trigger flow file"");
+        runner.run();
+        runner.assertTransferCount(ScanHBase.REL_FAILURE, 0);
+        runner.assertTransferCount(ScanHBase.REL_SUCCESS, 1);
+        runner.assertTransferCount(ScanHBase.REL_ORIGINAL, 1);
+        MockFlowFile flowFile = runner.getFlowFilesForRelationship(ScanHBase.REL_SUCCESS).get(0);
+        flowFile.assertContentEquals(""[{\""row\"":\""row1\"", \""cells\"": ["" +
+                ""{\""fam\"":\""nifi\"",\""qual\"":\""cq1\"",\""val\"":\""val1\"",\""ts\"":"" + ts1 + ""}, "" +
+                ""{\""fam\"":\""nifi\"",\""qual\"":\""cq2\"",\""val\"":\""val2\"",\""ts\"":"" + ts1 + ""}]},\n""
+                        + ""{\""row\"":\""row2\"", \""cells\"": ["" +
+                ""{\""fam\"":\""nifi\"",\""qual\"":\""cq1\"",\""val\"":\""val1\"",\""ts\"":"" + ts1 + ""}, "" +
+                ""{\""fam\"":\""nifi\"",\""qual\"":\""cq2\"",\""val\"":\""val2\"",\""ts\"":"" + ts1 + ""}]}]"");
+        flowFile.assertAttributeEquals(ScanHBase.HBASE_ROWS_COUNT_ATTR, ""2"");
+        flowFile = runner.getFlowFilesForRelationship(ScanHBase.REL_ORIGINAL).get(0);
+        flowFile.assertAttributeEquals(""scanhbase.results.found"", Boolean.TRUE.toString());
+        assertEquals(1, hBaseClientService.getNumScans());
+    }",change_data_structure,,,
+"@Test
+    public void testNotifyCounters() throws Exception {
+        doAnswer(successfulReplace).when(cache).replace(any(), any(), any());
+        final WaitNotifyProtocol protocol = new WaitNotifyProtocol(cache);
+        final String signalId = ""signal-id"";
+        protocol.notify(signalId, ""a"", 1, null);
+        protocol.notify(signalId, ""a"", 1, null);
+
+AtomicCacheEntry<String, String, Long> cacheEntry = cacheEntries.get(""signal-id"");
+        assertEquals(2, cacheEntry.getRevision().orElse(-1L).longValue());
+        assertEquals(""{\""counts\"":{\""a\"":2},\""attributes\"":{},\""releasableCount\"":0}"", cacheEntry.getValue());
+
+protocol.notify(signalId, ""a"", 10, null);
+
+cacheEntry = cacheEntries.get(""signal-id"");
+        assertEquals(3, cacheEntry.getRevision().orElse(-1L).longValue());
+        assertEquals(""{\""counts\"":{\""a\"":12},\""attributes\"":{},\""releasableCount\"":0}"", cacheEntry.getValue());
+
+protocol.notify(signalId, ""b"", 2, null);
+        protocol.notify(signalId, ""c"", 3, null);
+
+cacheEntry = cacheEntries.get(""signal-id"");
+        assertEquals(5, cacheEntry.getRevision().orElse(-1L).longValue());
+        assertEquals(""{\""counts\"":{\""a\"":12,\""b\"":2,\""c\"":3},\""attributes\"":{},\""releasableCount\"":0}"", cacheEntry.getValue());
+
+final Map<String, Integer> deltas = new HashMap<>();
+        deltas.put(""a"", 10);
+        deltas.put(""b"", 25);
+        protocol.notify(""signal-id"", deltas, null);
+
+cacheEntry = cacheEntries.get(""signal-id"");
+        assertEquals(6, cacheEntry.getRevision().orElse(-1L).longValue());
+        assertEquals(""{\""counts\"":{\""a\"":22,\""b\"":27,\""c\"":3},\""attributes\"":{},\""releasableCount\"":0}"", cacheEntry.getValue());
+
+protocol.notify(""signal-id"", ""b"", 0, null);
+        cacheEntry = cacheEntries.get(""signal-id"");
+        assertEquals(7, cacheEntry.getRevision().orElse(-1L).longValue());
+        assertEquals(""{\""counts\"":{\""a\"":22,\""b\"":0,\""c\"":3},\""attributes\"":{},\""releasableCount\"":0}"", cacheEntry.getValue());
+
+}","@Test
+    public void testNotifyCounters() throws Exception {
+        doAnswer(successfulReplace).when(cache).replace(any(), any(), any());
+        final WaitNotifyProtocol protocol = new WaitNotifyProtocol(cache);
+        final String signalId = ""signal-id"";
+        protocol.notify(signalId, ""a"", 1, null);
+        protocol.notify(signalId, ""a"", 1, null);
+
+AtomicCacheEntry<String, String, Long> cacheEntry = cacheEntries.get(""signal-id"");
+        assertEquals(2, cacheEntry.getRevision().orElse(-1L).longValue());
+        assertValueEquals(""{\""counts\"":{\""a\"":2},\""attributes\"":{},\""releasableCount\"":0}"", cacheEntry.getValue());
+        protocol.notify(signalId, ""a"", 10, null);
+
+cacheEntry = cacheEntries.get(""signal-id"");
+        assertEquals(3, cacheEntry.getRevision().orElse(-1L).longValue());
+        assertValueEquals(""{\""counts\"":{\""a\"":12},\""attributes\"":{},\""releasableCount\"":0}"", cacheEntry.getValue());
+        protocol.notify(signalId, ""b"", 2, null);
+        protocol.notify(signalId, ""c"", 3, null);
+
+cacheEntry = cacheEntries.get(""signal-id"");
+        assertEquals(5, cacheEntry.getRevision().orElse(-1L).longValue());
+        assertValueEquals(""{\""counts\"":{\""a\"":12,\""b\"":2,\""c\"":3},\""attributes\"":{},\""releasableCount\"":0}"", cacheEntry.getValue());
+        final Map<String, Integer> deltas = new HashMap<>();
+        deltas.put(""a"", 10);
+        deltas.put(""b"", 25);
+        protocol.notify(""signal-id"", deltas, null);
+
+cacheEntry = cacheEntries.get(""signal-id"");
+        assertEquals(6, cacheEntry.getRevision().orElse(-1L).longValue());
+        assertValueEquals(""{\""counts\"":{\""a\"":22,\""b\"":27,\""c\"":3},\""attributes\"":{},\""releasableCount\"":0}"", cacheEntry.getValue());
+
+protocol.notify(""signal-id"", ""b"", 0, null);
+        cacheEntry = cacheEntries.get(""signal-id"");
+        assertEquals(7, cacheEntry.getRevision().orElse(-1L).longValue());
+        assertValueEquals(""{\""counts\"":{\""a\"":22,\""b\"":0,\""c\"":3},\""attributes\"":{},\""releasableCount\"":0}"", cacheEntry.getValue());
+
+}",change_data_structure,,,
+"@Test
+    public void testAddField2() {
+        final Map<String, Object> config = Collections.emptyMap();
+        final JsonBuilderFactory factory = Json.createBuilderFactory(config);
+        final JsonObjectBuilder builder = factory.createObjectBuilder();
+        Map<String, String> values = new HashMap<String, String>();
+        values.put(""TestKeyString1"", ""StringValue1"");
+        values.put(""TestKeyString2"", ""StringValue2"");
+        AzureLogAnalyticsProvenanceReportingTask.addField(builder, factory, ""TestKeyString"", values, true);
+        javax.json.JsonObject actualJson = builder.build();
+        String expectedjsonString = ""{\""TestKeyString\"":{\""TestKeyString2\"":\""StringValue2\"",\""TestKeyString1\"":\""StringValue1\""}}"";
+        JsonObject expectedJson = new Gson().fromJson(expectedjsonString, JsonObject.class);
+        assertEquals(expectedJson.toString(), actualJson.toString());
+    }","@Test
+    public void testAddField2() {
+        final Map<String, Object> config = Collections.emptyMap();
+        final JsonBuilderFactory factory = Json.createBuilderFactory(config);
+        final JsonObjectBuilder builder = factory.createObjectBuilder();
+        Map<String, String> values = new LinkedHashMap<String, String>();
+        values.put(""TestKeyString1"", ""StringValue1"");
+        values.put(""TestKeyString2"", ""StringValue2"");
+        AzureLogAnalyticsProvenanceReportingTask.addField(builder, factory, ""TestKeyString"", values, true);
+        javax.json.JsonObject actualJson = builder.build();
+        String expectedjsonString = ""{\""TestKeyString\"":{\""TestKeyString1\"":\""StringValue1\"",\""TestKeyString2\"":\""StringValue2\""}}"";
+        JsonObject expectedJson = new Gson().fromJson(expectedjsonString, JsonObject.class);
+        assertEquals(expectedJson.toString(), actualJson.toString());
+    }",change_data_structure,,,
+"@Test
+    public void testInferTypeWithMapNonStringKeys() {
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, ""Hello"");
+        map.put(2, ""World"");
+
+RecordDataType expected = (RecordDataType)RecordFieldType.RECORD.getRecordDataType(new SimpleRecordSchema(Arrays.asList(
+                new RecordField(""1"", RecordFieldType.STRING.getDataType()),
+                new RecordField(""2"", RecordFieldType.STRING.getDataType())
+        )));
+        DataType actual = DataTypeUtils.inferDataType(map, null);
+        assertEquals(expected, actual);
+    }","@Test
+    public void testInferTypeWithMapNonStringKeys() {
+        Map<Integer, String> map = new LinkedHashMap<>();
+        map.put(1, ""Hello"");
+        map.put(2, ""World"");
+
+RecordDataType expected = (RecordDataType)RecordFieldType.RECORD.getRecordDataType(new SimpleRecordSchema(Arrays.asList(
+                new RecordField(""1"", RecordFieldType.STRING.getDataType()),
+                new RecordField(""2"", RecordFieldType.STRING.getDataType())
+        )));
+        DataType actual = DataTypeUtils.inferDataType(map, null);
+        assertEquals(expected, actual);
+    }",change_data_structure,,,
+"@Test
+    public void testInferTypeWithMapStringKeys() {
+        Map<String, String> map = new HashMap<>();
+        map.put(""a"", ""Hello"");
+        map.put(""b"", ""World"");
+
+RecordDataType expected = (RecordDataType)RecordFieldType.RECORD.getRecordDataType(new SimpleRecordSchema(Arrays.asList(
+                new RecordField(""a"", RecordFieldType.STRING.getDataType()),
+                new RecordField(""b"", RecordFieldType.STRING.getDataType())
+        )));
+        DataType actual = DataTypeUtils.inferDataType(map, null);
+        assertEquals(expected, actual);
+    }","@Test
+    public void testInferTypeWithMapStringKeys() {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put(""a"", ""Hello"");
+        map.put(""b"", ""World"");
+
+RecordDataType expected = (RecordDataType)RecordFieldType.RECORD.getRecordDataType(new SimpleRecordSchema(Arrays.asList(
+                new RecordField(""a"", RecordFieldType.STRING.getDataType()),
+                new RecordField(""b"", RecordFieldType.STRING.getDataType())
+        )));
+        DataType actual = DataTypeUtils.inferDataType(map, null);
+        assertEquals(expected, actual);
+    }",change_data_structure,,,
+"@Test
+    public void testAliasConflictingAliasValues() {
+        final List<RecordField> fields = new ArrayList<>();
+        fields.add(new RecordField(""foo"", RecordFieldType.STRING.getDataType(), null, set(""bar"", ""baz"")));
+
+final RecordSchema schema = new SimpleRecordSchema(fields);
+        final Map<String, Object> values = new HashMap<>();
+        values.put(""baz"", 1);
+        values.put(""bar"", 33);
+
+final Record record = new MapRecord(schema, values);
+        assertEquals(33, record.getValue(""foo""));
+        assertEquals(33, record.getValue(""bar""));
+        assertEquals(33, record.getValue(""baz""));
+    }","@Test
+    public void testAliasConflictingAliasValues() {
+        final List<RecordField> fields = new ArrayList<>();
+        fields.add(new RecordField(""foo"", RecordFieldType.STRING.getDataType(), null, set(""bar"", ""baz"")));
+
+final RecordSchema schema = new SimpleRecordSchema(fields);
+        final Map<String, Object> values = new LinkedHashMap<>();
+        values.put(""baz"", 1);
+        values.put(""bar"", 33);
+
+final Record record = new MapRecord(schema, values);
+        assertEquals(33, record.getValue(""foo""));
+        assertEquals(33, record.getValue(""bar""));
+        assertEquals(33, record.getValue(""baz""));
+    }",change_data_structure,,,
+"@Test
+  public void testGetPluginsToLoad()
+      throws IOException {
+
+String pluginsDirs = _tempDir + ""/plugins/d1;"" + _tempDir + ""/plugins/d2;"";
+    String pluginsToInclude = ""p1;p2;p3""; 
+    File pluginsDir = new File(_tempDir + ""/plugins"");
+    pluginsDir.mkdir();
+    File subPluginsDir1 = new File(pluginsDir + ""/d1"");
+    subPluginsDir1.mkdir();
+    File subPluginsDir2 = new File(pluginsDir + ""/d2"");
+    subPluginsDir2.mkdir();
+    _p1 = new File(pluginsDir + ""/d1/p1/p1.jar"");
+    FileUtils.touch(_p1);
+    _p1Copy = new File(pluginsDir + ""/d2/p1/p1.jar"");
+    FileUtils.touch(_p1Copy);
+    _p2 = new File(pluginsDir + ""/d2/p2/p2.jar"");
+    FileUtils.touch(_p2);
+    _p3 = new File(pluginsDir + ""/d2/p3/p3.jar"");
+    FileUtils.touch(_p3);
+    _p4 = new File(pluginsDir + ""/d2/p4/p4.jar"");
+    FileUtils.touch(_p4);
+    HashMap<String, File> actualPluginsMap = PluginManager.get().getPluginsToLoad(pluginsDirs, pluginsToInclude);
+    Assert.assertEquals(actualPluginsMap.size(), 3);
+
+ArrayList<String> actualPluginNames = new ArrayList<>();
+    ArrayList<String> actualPluginPaths = new ArrayList<>();
+
+for (Map.Entry<String, File> entry : actualPluginsMap.entrySet()) {
+      actualPluginNames.add(entry.getKey());
+      actualPluginPaths.add(entry.getValue().getAbsolutePath());
+    }","@Test
+  public void testGetPluginsToLoad()
+      throws IOException {
+
+String pluginsDirs = _tempDir + ""/plugins/d1;"" + _tempDir + ""/plugins/d2;"";
+    String pluginsToInclude = ""p1;p2;p3""; 
+    File pluginsDir = new File(_tempDir + ""/plugins"");
+    pluginsDir.mkdir();
+    File subPluginsDir1 = new File(pluginsDir + ""/d1"");
+    subPluginsDir1.mkdir();
+    File subPluginsDir2 = new File(pluginsDir + ""/d2"");
+    subPluginsDir2.mkdir();
+    _p1 = new File(pluginsDir + ""/d1/p1/p1.jar"");
+    FileUtils.touch(_p1);
+    _p1Copy = new File(pluginsDir + ""/d2/p1/p1.jar"");
+    FileUtils.touch(_p1Copy);
+    _p2 = new File(pluginsDir + ""/d2/p2/p2.jar"");
+    FileUtils.touch(_p2);
+    _p3 = new File(pluginsDir + ""/d2/p3/p3.jar"");
+    FileUtils.touch(_p3);
+    _p4 = new File(pluginsDir + ""/d2/p4/p4.jar"");
+    FileUtils.touch(_p4);
+    HashMap<String, File> actualPluginsMap = PluginManager.get().getPluginsToLoad(pluginsDirs, pluginsToInclude);
+    Assert.assertEquals(actualPluginsMap.size(), 3);
+
+HashMap<String, String> actualPluginNamesAndPaths = new HashMap<>();
+    for (Map.Entry<String, File> entry : actualPluginsMap.entrySet()) {
+      actualPluginNamesAndPaths.put(entry.getKey(), entry.getValue().getAbsolutePath());
+    }
+    HashMap<String, String> expectedPluginNamesAndPaths = new HashMap<>();
+    expectedPluginNamesAndPaths.put(""p1"", _p1.getParentFile().getAbsolutePath());
+    expectedPluginNamesAndPaths.put(""p2"", _p2.getParentFile().getAbsolutePath());
+    expectedPluginNamesAndPaths.put(""p3"", _p3.getParentFile().getAbsolutePath());
+
+Assert.assertEquals(actualPluginNamesAndPaths, expectedPluginNamesAndPaths);
+  }",change_data_structure,,,
+"@Test
+  @Sql(scripts = ""/controller/test-release.sql"", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+  @Sql(scripts = ""/controller/cleanup.sql"", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+  public void testReleaseBuild() {
+    String appId = ""someAppId"";
+    AppDTO app =
+        restTemplate.getForObject(""http:
+    ClusterDTO cluster = restTemplate.getForObject(
+        ""http:
+        ClusterDTO.class);
+    NamespaceDTO namespace =
+        restTemplate.getForObject(""http:
+            + ""/clusters/"" + cluster.getName() + ""/namespaces/application"", NamespaceDTO.class);
+    Assert.assertEquals(""someAppId"", app.getAppId());
+    Assert.assertEquals(""default"", cluster.getName());
+    Assert.assertEquals(""application"", namespace.getNamespaceName());
+    ItemDTO[] items =
+        restTemplate.getForObject(
+            ""http:
+                + cluster.getName() + ""/namespaces/"" + namespace.getNamespaceName() + ""/items"",
+            ItemDTO[].class);
+    Assert.assertEquals(3, items.length);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+    parameters.add(""name"", ""someReleaseName"");
+    parameters.add(""comment"", ""someComment"");
+    parameters.add(""operator"", ""test"");
+    HttpEntity<MultiValueMap<String, String>> entity =
+        new HttpEntity<>(parameters, headers);
+    ResponseEntity<ReleaseDTO> response = restTemplate.postForEntity(
+        ""http:
+            + ""/namespaces/"" + namespace.getNamespaceName() + ""/releases"",
+        entity, ReleaseDTO.class);
+    Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+    ReleaseDTO release = response.getBody();
+    Assert.assertEquals(""someReleaseName"", release.getName());
+    Assert.assertEquals(""someComment"", release.getComment());
+    Assert.assertEquals(""someAppId"", release.getAppId());
+    Assert.assertEquals(""default"", release.getClusterName());
+    Assert.assertEquals(""application"", release.getNamespaceName());
+
+Map<String, String> configurations = new HashMap<>();
+    configurations.put(""k1"", ""v1"");
+    configurations.put(""k2"", ""v2"");
+    configurations.put(""k3"", ""v3"");
+    Assert.assertEquals(GSON.toJson(configurations), release.getConfigurations());
+  }","@Test
+  @Sql(scripts = ""/controller/test-release.sql"", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+  @Sql(scripts = ""/controller/cleanup.sql"", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+  public void testReleaseBuild() {
+    String appId = ""someAppId"";
+    AppDTO app =
+        restTemplate.getForObject(""http:
+    ClusterDTO cluster = restTemplate.getForObject(
+        ""http:
+        ClusterDTO.class);
+    NamespaceDTO namespace =
+        restTemplate.getForObject(""http:
+            + ""/clusters/"" + cluster.getName() + ""/namespaces/application"", NamespaceDTO.class);
+    Assert.assertEquals(""someAppId"", app.getAppId());
+    Assert.assertEquals(""default"", cluster.getName());
+    Assert.assertEquals(""application"", namespace.getNamespaceName());
+    ItemDTO[] items =
+        restTemplate.getForObject(
+            ""http:
+                + cluster.getName() + ""/namespaces/"" + namespace.getNamespaceName() + ""/items"",
+            ItemDTO[].class);
+    Assert.assertEquals(3, items.length);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+    parameters.add(""name"", ""someReleaseName"");
+    parameters.add(""comment"", ""someComment"");
+    parameters.add(""operator"", ""test"");
+    HttpEntity<MultiValueMap<String, String>> entity =
+        new HttpEntity<>(parameters, headers);
+    ResponseEntity<ReleaseDTO> response = restTemplate.postForEntity(
+        ""http:
+            + ""/namespaces/"" + namespace.getNamespaceName() + ""/releases"",
+        entity, ReleaseDTO.class);
+    Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+    ReleaseDTO release = response.getBody();
+    Assert.assertEquals(""someReleaseName"", release.getName());
+    Assert.assertEquals(""someComment"", release.getComment());
+    Assert.assertEquals(""someAppId"", release.getAppId());
+    Assert.assertEquals(""default"", release.getClusterName());
+    Assert.assertEquals(""application"", release.getNamespaceName());
+
+Map<String, String> configurations = new LinkedHashMap<>();
+    configurations.put(""k1"", ""v1"");
+    configurations.put(""k2"", ""v2"");
+    configurations.put(""k3"", ""v3"");
+    Assert.assertEquals(GSON.toJson(configurations), release.getConfigurations());
+  }",change_data_structure,,,
+"@Test
+  public void testWhenHasReleaseMsgAndHasRepeatMsg() throws Exception {
+    String someMsgContent = ""msg1"";
+    ReleaseMessage someMsg = assembleReleaseMsg(1, someMsgContent);
+    String anotherMsgContent = ""msg2"";
+    ReleaseMessage anotherMsg = assembleReleaseMsg(2, anotherMsgContent);
+    ReleaseMessage anotherRepeatMsg = assembleReleaseMsg(3, anotherMsgContent);
+    when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(0L))
+        .thenReturn(Arrays.asList(someMsg, anotherMsg, anotherRepeatMsg));
+    releaseMessageServiceWithCache.afterPropertiesSet();
+    verify(bizConfig).releaseMessageCacheScanInterval();
+    ReleaseMessage latestReleaseMsg =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessageForMessages(Sets.newHashSet(someMsgContent, anotherMsgContent));
+    assertNotNull(latestReleaseMsg);
+    assertEquals(3, latestReleaseMsg.getId());
+    assertEquals(anotherMsgContent, latestReleaseMsg.getMessage());
+
+List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessagesGroupByMessages(Sets.newHashSet(someMsgContent, anotherMsgContent));
+
+assertEquals(2, latestReleaseMsgGroupByMsgContent.size());
+    assertEquals(1, latestReleaseMsgGroupByMsgContent.get(1).getId());
+    assertEquals(someMsgContent, latestReleaseMsgGroupByMsgContent.get(1).getMessage());
+    assertEquals(3, latestReleaseMsgGroupByMsgContent.get(0).getId());
+    assertEquals(anotherMsgContent, latestReleaseMsgGroupByMsgContent.get(0).getMessage());
+
+}","@Test
+  public void testWhenHasReleaseMsgAndHasRepeatMsg() throws Exception {
+    String someMsgContent = ""msg1"";
+    ReleaseMessage someMsg = assembleReleaseMsg(1, someMsgContent);
+    String anotherMsgContent = ""msg2"";
+    ReleaseMessage anotherMsg = assembleReleaseMsg(2, anotherMsgContent);
+    ReleaseMessage anotherRepeatMsg = assembleReleaseMsg(3, anotherMsgContent);
+    when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(0L))
+        .thenReturn(Arrays.asList(someMsg, anotherMsg, anotherRepeatMsg));
+    releaseMessageServiceWithCache.afterPropertiesSet();
+    verify(bizConfig).releaseMessageCacheScanInterval();
+    ReleaseMessage latestReleaseMsg =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessageForMessages(Sets.newHashSet(someMsgContent, anotherMsgContent));
+    assertNotNull(latestReleaseMsg);
+    assertEquals(3, latestReleaseMsg.getId());
+    assertEquals(anotherMsgContent, latestReleaseMsg.getMessage());
+
+List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessagesGroupByMessages(Sets.newLinkedHashSet(
+                    Arrays.asList(someMsgContent, anotherMsgContent))
+            );
+
+assertEquals(2, latestReleaseMsgGroupByMsgContent.size());
+    assertEquals(3, latestReleaseMsgGroupByMsgContent.get(1).getId());
+    assertEquals(anotherMsgContent, latestReleaseMsgGroupByMsgContent.get(1).getMessage());
+    assertEquals(1, latestReleaseMsgGroupByMsgContent.get(0).getId());
+    assertEquals(someMsgContent, latestReleaseMsgGroupByMsgContent.get(0).getMessage());
+
+}",change_data_structure,,,
+"@Test
+    public void buildUrl() {
+        Map<String, String> map = new HashMap<>();
+        map.put(password, passwordValue);
+        map.put(username, usernameValue);
+        String s = HttpUtil.buildUrl(url + PORT, map);
+        Assert.assertEquals(url + PORT + suffix, s);
+    }","@Test
+    public void buildUrl() {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put(password, passwordValue);
+        map.put(username, usernameValue);
+        String s = HttpUtil.buildUrl(url + PORT, map);
+        Assert.assertEquals(url + PORT + suffix, s);
+    }",change_data_structure,,,
+"@Test
+    public void test_WHEN_MoreToFormatInLabelsAndName_THEN_ShouldReturnCorrectSample() {
+        final Map<String, String> labels = new HashMap<String, String>();
+        labels.put(""service"", ""${0}_${1}"");
+        labels.put(""status"", ""s_${1}"");
+        final MapperConfig mapperConfig = new MapperConfig(
+                ""app.okhttpclient.client.HttpClient.*.*"",
+                ""app.okhttpclient.client.HttpClient.${0}"",
+                labels
+        );
+        final List<MapperConfig> mapperConfigs = Arrays.asList(
+                new MapperConfig(""client-nope.*.*.*""),
+                mapperConfig,
+                new MapperConfig(""app.okhttpclient.client.HttpClient.*.total"") 
+        );
+        final CustomMappingSampleBuilder converter = new CustomMappingSampleBuilder(mapperConfigs);
+        final Collector.MetricFamilySamples.Sample expectedResult = new Collector.MetricFamilySamples.Sample(
+                ""app_okhttpclient_client_HttpClient_greatService"", Arrays.asList(""service"", ""status""), Arrays.asList(""greatService_400"", ""s_400""), 1d);
+        final Collector.MetricFamilySamples.Sample result = converter.createSample(
+                ""app.okhttpclient.client.HttpClient.greatService.400"", """", Collections.<String>emptyList(), Collections.<String>emptyList(), 1d);
+        assertEquals(expectedResult, result);
+    }","@Test
+    public void test_WHEN_MoreToFormatInLabelsAndName_THEN_ShouldReturnCorrectSample() {
+        final Map<String, String> labels = new LinkedHashMap<String, String>();
+        labels.put(""service"", ""${0}_${1}"");
+        labels.put(""status"", ""s_${1}"");
+        final MapperConfig mapperConfig = new MapperConfig(
+                ""app.okhttpclient.client.HttpClient.*.*"",
+                ""app.okhttpclient.client.HttpClient.${0}"",
+                labels
+        );
+        final List<MapperConfig> mapperConfigs = Arrays.asList(
+                new MapperConfig(""client-nope.*.*.*""),
+                mapperConfig,
+                new MapperConfig(""app.okhttpclient.client.HttpClient.*.total"") 
+        );
+        final CustomMappingSampleBuilder converter = new CustomMappingSampleBuilder(mapperConfigs);
+        final Collector.MetricFamilySamples.Sample expectedResult = new Collector.MetricFamilySamples.Sample(
+                ""app_okhttpclient_client_HttpClient_greatService"", Arrays.asList(""service"", ""status""), Arrays.asList(""greatService_400"", ""s_400""), 1d);
+        final Collector.MetricFamilySamples.Sample result = converter.createSample(
+                ""app.okhttpclient.client.HttpClient.greatService.400"", """", Collections.<String>emptyList(), Collections.<String>emptyList(), 1d);
+        assertEquals(expectedResult, result);
+    }",change_data_structure,,,
+"@Test
+  public void testFormatStorageExtendedErrorInformation() {
+    String expectedStr0 =
+        ""StorageExceptionExtendedErrorInformation: {ErrorCode= 403, ErrorMessage= Server refuses""
+            + "" to authorize the request, AdditionalDetails= {}}"";
+    String expectedStr1 =
+        ""StorageExceptionExtendedErrorInformation: {ErrorCode= 403, ErrorMessage= Server refuses""
+            + "" to authorize the request, AdditionalDetails= { key1= helloworld,key2= ,key3=""
+            + "" fakemessage}}"";
+    StorageExtendedErrorInformation info = new StorageExtendedErrorInformation();
+    info.setErrorCode(""403"");
+    info.setErrorMessage(""Server refuses to authorize the request"");
+    String formatedStr = SnowflakeAzureClient.FormatStorageExtendedErrorInformation(info);
+    assertEquals(expectedStr0, formatedStr);
+
+HashMap<String, String[]> map = new HashMap<>();
+    map.put(""key1"", new String[] {""hello"", ""world""});
+    map.put(""key2"", new String[] {});
+    map.put(""key3"", new String[] {""fake"", ""message""});
+    info.setAdditionalDetails(map);
+    formatedStr = SnowflakeAzureClient.FormatStorageExtendedErrorInformation(info);
+    assertEquals(expectedStr1, formatedStr);
+  }","@Test
+  public void testFormatStorageExtendedErrorInformation() {
+    String expectedStr0 =
+        ""StorageExceptionExtendedErrorInformation: {ErrorCode= 403, ErrorMessage= Server refuses""
+            + "" to authorize the request, AdditionalDetails= {}}"";
+    String expectedStr1 =
+        ""StorageExceptionExtendedErrorInformation: {ErrorCode= 403, ErrorMessage= Server refuses""
+            + "" to authorize the request, AdditionalDetails= { key1= helloworld,key2= ,key3=""
+            + "" fakemessage}}"";
+    StorageExtendedErrorInformation info = new StorageExtendedErrorInformation();
+    info.setErrorCode(""403"");
+    info.setErrorMessage(""Server refuses to authorize the request"");
+    String formatedStr = SnowflakeAzureClient.FormatStorageExtendedErrorInformation(info);
+    assertEquals(expectedStr0, formatedStr);
+
+LinkedHashMap<String, String[]> map = new LinkedHashMap<>();
+    map.put(""key1"", new String[] {""hello"", ""world""});
+    map.put(""key2"", new String[] {});
+    map.put(""key3"", new String[] {""fake"", ""message""});
+    info.setAdditionalDetails(map);
+    formatedStr = SnowflakeAzureClient.FormatStorageExtendedErrorInformation(info);
+    assertEquals(expectedStr1, formatedStr);
+  }",change_data_structure,,,
+"@Test 
+	void shouldCreateIsInSet() {
+
+CriteriaDefinition criteria = Criteria.where(""foo"").in(new HashSet<>(Arrays.asList(""a"", ""b"", ""c"")));
+
+assertThat(serializeToCqlSafely(criteria)).isEqualTo(""foo IN {'a','b','c'}"");
+	}","@Test 
+	void shouldCreateIsInSet() {
+
+CriteriaDefinition criteria = Criteria.where(""foo"").in(new LinkedHashSet<>(Arrays.asList(""a"", ""b"", ""c"")));
+
+assertThat(serializeToCqlSafely(criteria)).isEqualTo(""foo IN {'a','b','c'}"");
+	}",change_data_structure,,,
+"public void testConnectedComponents() {
+
+System.out.println(""graph is "" + graph.toString());
+    List<Set<Integer>> ccs = graph.getConnectedComponents();
+    for (Set<Integer> cc : ccs) {
+      System.out.println(""Connected component: "" + cc);
+    }
+    assertEquals(ccs.size(), 4);
+    assertEquals(CollectionUtils.sorted(ccs.get(0)),
+                 Arrays.asList(1, 2, 3, 4));
+  }","public void testConnectedComponents() {
+
+System.out.println(""graph is "" + graph.toString());
+    Set<Set<Integer>> ccs = new HashSet<>(graph.getConnectedComponents());
+    for (Set<Integer> cc : ccs) {
+      System.out.println(""Connected component: "" + cc);
+    } 
+    Set<Integer> edge1 = new HashSet<>(Arrays.asList(1, 2, 3, 4));
+    Set<Integer> edge2 = new HashSet<>(Arrays.asList(5, 6, 7));
+    Set<Integer> edge3 = new HashSet<>(Arrays.asList(8));
+    Set<Integer> edge4 = new HashSet<>(Arrays.asList(9,10));
+    Set<Set<Integer>> expectedCcs = new HashSet<>(Arrays.asList(edge1,edge2,edge3,edge4));
+    assertEquals(expectedCcs, ccs);
+  }",change_data_structure,,,
+"@Test
+  public void testAddRemove() {
+    CollectionValuedMap<Integer, Integer> fooMap = new CollectionValuedMap<>();
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        fooMap.add(new Integer(i), new Integer(j));
+      }
+    }
+    fooMap.remove(new Integer(2));
+    Assert.assertEquals(""{0=[0, 1, 2, 3], 1=[0, 1, 2, 3], 3=[0, 1, 2, 3]}"", fooMap.toString());
+  }","@Test
+  public void testAddRemove() {
+    CollectionValuedMap<Integer, Integer> fooMap = new CollectionValuedMap<>();
+    CollectionValuedMap<Integer, Integer> expectedMap = new CollectionValuedMap<>();
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        fooMap.add(new Integer(i), new Integer(j));
+        if (i!=2){
+          expectedMap.add(new Integer(i), new Integer(j));
+        }
+      }
+    }
+    fooMap.remove(new Integer(2));
+    Assert.assertEquals(expectedMap,fooMap);
+  }",change_data_structure,,,
+"@Test
+  public void testToStringWithCollections() {
+    java.util.List<Integer> list = Arrays.asList(1, 2, 3);
+    Set<Integer> set = new HashSet<>(list);
+    assertThat(Type.List.of(Type.Int).toString(list)).isEqualTo(""[1,2,3]"");
+    assertThat(Type.Set.of(Type.Int).toString(set)).isEqualTo(""{1,2,3}"");
+    assertThat(Type.Map.of(Type.Int, Type.Int).toString(ImmutableMap.of(1, 1, 2, 2)))
+        .isEqualTo(""{1:1,2:2}"");
+  }","@Test
+  public void testToStringWithCollections() {
+    java.util.List<Integer> list = Arrays.asList(1, 2, 3);
+    java.util.TreeSet<Integer> set = new TreeSet(list);
+    java.util.Map<Integer, Integer> m = new TreeMap<>();
+    m.put(1, 1);
+    m.put(2, 2);
+    String mapString = Type.Map.of(Type.Int, Type.Int).toString(ImmutableMap.of(1, 1, 2, 2));
+    assertThat(Type.List.of(Type.Int).toString(list)).isEqualTo(""[1,2,3]"");
+    assertThat(Type.Set.of(Type.Int).toString(set)).isEqualTo(""{1,2,3}"");
+    assertThat(Type.Map.of(Type.Int, Type.Int).toString(m)).isEqualTo(""{1:1,2:2}"");
+  }",change_data_structure,,,
+"@Test
+    public void testInvocationOnMixedModeCluster() {
+        Affinity expectedStrongAffinity = Affinity.NONE;
+
+final StatelessEJBLocator<Echo> statelessEJBLocator = StatelessEJBLocator.create(Echo.class, STATELESS_IDENTIFIER, expectedStrongAffinity);
+        Echo proxy = EJBClient.createProxy(statelessEJBLocator);
+        Assert.assertNotNull(""Received a null proxy"", proxy);
+
+logger.info(""Invoking on proxy..."");
+        final String message = ""hello!"";
+        try {
+            proxy.echo(message);
+        } catch (RuntimeException e) {
+
+}
+
+Map<String, List<ServiceURL>> results = getTestResult();
+
+validateResults(results);
+    }
+
+private Map<String, List<ServiceURL>> getTestResult() {
+
+return null;
+    }
+
+private void validateResults(Map<String, List<ServiceURL>> results) {
+
+final Set<String> EXPECTED_NODE1_URLS = new HashSet<String>(Arrays.asList(
+                ""service:ejb.jboss:remote:
+                ""service:ejb.jboss:remote:
+                ""service:ejb.jboss:remote:
+                ""service:ejb.jboss:remote:
+        ));
+
+final Set<String> EXPECTED_NODE2_URLS = new HashSet<String>(Arrays.asList(
+                ""service:ejb.jboss:remote:
+                ""service:ejb.jboss:remote:
+                ""service:ejb.jboss:remote:
+                ""service:ejb.jboss:remote:
+        ));
+
+Set<String> actual_node1_urls = new HashSet<String>();
+        Set<String> actual_node2_urls = new HashSet<String>();
+
+for (Map.Entry<String, List<ServiceURL>> entry : results.entrySet()) {
+            String node = entry.getKey();
+            List<ServiceURL> listServiceURLs = (List<ServiceURL>) entry.getValue();
+            if (node.equals(""node1"")) {
+                for (ServiceURL serviceURL : listServiceURLs) {
+                    actual_node1_urls.add(serviceURL.toString());
+                }
+            } else if (node.equals(""node2"")) {
+                for (ServiceURL serviceURL : listServiceURLs) {
+                    actual_node2_urls.add(serviceURL.toString());
+                }
+            }
+        }
+        Assert.assertEquals(""ServiceURLs do not match for node1"", actual_node1_urls, EXPECTED_NODE1_URLS);
+        Assert.assertEquals(""ServiceURLs do not match for node2"", actual_node2_urls, EXPECTED_NODE2_URLS);
+    }","@Test
+    public void testInvocationOnMixedModeCluster() {
+        Affinity expectedStrongAffinity = Affinity.NONE;
+
+final StatelessEJBLocator<Echo> statelessEJBLocator = StatelessEJBLocator.create(Echo.class, STATELESS_IDENTIFIER, expectedStrongAffinity);
+        Echo proxy = EJBClient.createProxy(statelessEJBLocator);
+        Assert.assertNotNull(""Received a null proxy"", proxy);
+
+logger.info(""Invoking on proxy..."");
+        final String message = ""hello!"";
+        try {
+            proxy.echo(message);
+        } catch (RuntimeException e) {
+
+}
+
+Map<String, List<ServiceURL>> results = getTestResult();
+
+validateResults(results);
+    }
+
+private Map<String, List<ServiceURL>> getTestResult() {
+
+return null;
+    }
+
+private void validateResults(Map<String, List<ServiceURL>> results) {
+
+final HashSet<HashSet<String>> EXPECTED_NODE1_URLS = new HashSet<HashSet<String>>(Arrays.asList(
+                new HashSet<String> (Arrays.asList(""service:ejb.jboss:remote:
+                new HashSet<String> (Arrays.asList(""service:ejb.jboss:remote:
+                new HashSet<String> (Arrays.asList(""service:ejb.jboss:remote:
+                new HashSet<String> (Arrays.asList(""service:ejb.jboss:remote:
+        ));
+
+final HashSet<HashSet<String>> EXPECTED_NODE2_URLS = new HashSet<HashSet<String>>(Arrays.asList(
+                new HashSet<String> (Arrays.asList(""service:ejb.jboss:remote:
+                new HashSet<String> (Arrays.asList(""service:ejb.jboss:remote:
+                new HashSet<String> (Arrays.asList(""service:ejb.jboss:remote:
+                new HashSet<String> (Arrays.asList(""service:ejb.jboss:remote:
+        ));
+
+HashSet<HashSet<String>> actual_node1_urls = new HashSet<HashSet<String>>();
+        HashSet<HashSet<String>> actual_node2_urls = new HashSet<HashSet<String>>();
+
+for (Map.Entry<String, List<ServiceURL>> entry : results.entrySet()) {
+            String node = entry.getKey();
+            List<ServiceURL> listServiceURLs = (List<ServiceURL>) entry.getValue();
+            if (node.equals(""node1"")) {
+                for (ServiceURL serviceURL : listServiceURLs) {
+                    actual_node1_urls.add(new HashSet<String> (Arrays.asList(serviceURL.toString().split("";""))));
+                }
+            } else if (node.equals(""node2"")) {
+                for (ServiceURL serviceURL : listServiceURLs) {
+                    actual_node2_urls.add(new HashSet<String> (Arrays.asList(serviceURL.toString().split("";""))));
+                }
+            }
+        }
+        Assert.assertEquals(""ServiceURLs do not match for node1"", actual_node1_urls, EXPECTED_NODE1_URLS);
+        Assert.assertEquals(""ServiceURLs do not match for node2"", actual_node2_urls, EXPECTED_NODE2_URLS);
+    }",change_data_structure,,,
+"@Test
+    public void test() throws Exception {
+        Path output = Files.createTempFile(""cli-boot-output"", "".txt"");
+        output.toFile().deleteOnExit();
+        Path file = Files.createTempFile(""cli-boot"", "".txt"");
+        file.toFile().deleteOnExit();
+        Path warnFile = Files.createTempFile(""cli-boot-warn"", "".txt"");
+        warnFile.toFile().deleteOnExit();
+        Path errorFile = Files.createTempFile(""cli-boot-error"", "".txt"");
+        errorFile.toFile().deleteOnExit();
+        Path fooFile = Files.createTempFile(""cli-boot-foo"", "".txt"");
+        fooFile.toFile().deleteOnExit();
+        Path propertiesFile = Files.createTempFile(""cli-boot-error"", "".txt"");
+        propertiesFile.toFile().deleteOnExit();
+        StringBuilder props = new StringBuilder();
+        String propFoo = ""tests.foo"";
+        WildFlySecurityManager.setPropertyPrivileged(propFoo, ""foo"");
+        String propError = ""tests.errors"";
+        String propWarning = ""tests.warnings"";
+        props.append(propError + ""="" + escapePath(errorFile.toString()) + ""\n"");
+        props.append(propWarning + ""="" + escapePath(warnFile.toString()) + ""\n"");
+        props.append(propFoo + ""="" + escapePath(fooFile.toString()) + ""\n"");
+        Files.write(propertiesFile, props.toString().getBytes());
+        WildFlySecurityManager.setPropertyPrivileged(""org.wildfly.internal.cli.boot.hook.script.output.file"", output.toString());
+        WildFlySecurityManager.setPropertyPrivileged(""org.wildfly.internal.cli.boot.hook.script.warn.file"", warnFile.toString());
+        WildFlySecurityManager.setPropertyPrivileged(""org.wildfly.internal.cli.boot.hook.script.error.file"", errorFile.toString());
+        WildFlySecurityManager.setPropertyPrivileged(""org.wildfly.internal.cli.boot.hook.script.properties"", propertiesFile.toString());
+        BootScriptInvoker invoker = new BootScriptInvoker();
+        Set<String> operations = new HashSet<>();
+        operations.add(""op1"");
+        operations.add(""op2"");
+        Set<String> echos = new HashSet<>();
+        echos.add(""echo TestWarning > ${"" + propWarning + ""}"");
+        echos.add(""echo TestError > ${"" + propError + ""}"");
+        echos.add(""echo TestFoo >> ${"" + propFoo + ""}"");
+        echos.add(""echo TestFoo2 >> ${"" + propFoo + ""}"");
+        StringBuilder builder = new StringBuilder();
+        for (String s : operations) {
+            builder = builder.append("":"" + s + ""\n"");
+        }
+        for (String s : echos) {
+            builder = builder.append(s + ""\n"");
+        }
+        Files.write(file, builder.toString().getBytes());
+        TestClient client = new TestClient();
+        StringBuilder outContent = new StringBuilder();
+        boolean failure = false;
+        try {
+            try {
+                invoker.runCliScript(client, file.toFile());
+                failure = true;
+            } catch (Exception ex) {
+
+}
+            if (failure) {
+                throw new Exception(""Test should have failed"");
+            }
+        } finally {
+            for (String l : Files.readAllLines(output)) {
+                outContent.append(l).append(""\n"");
+                System.out.println(l);
+            }
+        }
+        assertTrue(client.seen.containsAll(operations));
+        assertTrue(outContent.toString().contains(""success""));
+        assertTrue(Files.readAllLines(warnFile).get(0).equals(""TestWarning""));
+        assertTrue(Files.readAllLines(errorFile).get(0).equals(""TestError""));
+        assertTrue(Files.readAllLines(fooFile).get(0).equals(""TestFoo""));
+        assertTrue(Files.readAllLines(fooFile).get(1).equals(""TestFoo2""));
+
+assertNull(WildFlySecurityManager.getPropertyPrivileged(propError, null));
+        assertNull(WildFlySecurityManager.getPropertyPrivileged(propWarning, null));
+        assertEquals(""foo"", WildFlySecurityManager.getPropertyPrivileged(propFoo, null));
+    }","@Test
+    public void test() throws Exception {
+        Path output = Files.createTempFile(""cli-boot-output"", "".txt"");
+        output.toFile().deleteOnExit();
+        Path file = Files.createTempFile(""cli-boot"", "".txt"");
+        file.toFile().deleteOnExit();
+        Path warnFile = Files.createTempFile(""cli-boot-warn"", "".txt"");
+        warnFile.toFile().deleteOnExit();
+        Path errorFile = Files.createTempFile(""cli-boot-error"", "".txt"");
+        errorFile.toFile().deleteOnExit();
+        Path fooFile = Files.createTempFile(""cli-boot-foo"", "".txt"");
+        fooFile.toFile().deleteOnExit();
+        Path propertiesFile = Files.createTempFile(""cli-boot-error"", "".txt"");
+        propertiesFile.toFile().deleteOnExit();
+        StringBuilder props = new StringBuilder();
+        String propFoo = ""tests.foo"";
+        WildFlySecurityManager.setPropertyPrivileged(propFoo, ""foo"");
+        String propError = ""tests.errors"";
+        String propWarning = ""tests.warnings"";
+        props.append(propError + ""="" + escapePath(errorFile.toString()) + ""\n"");
+        props.append(propWarning + ""="" + escapePath(warnFile.toString()) + ""\n"");
+        props.append(propFoo + ""="" + escapePath(fooFile.toString()) + ""\n"");
+        Files.write(propertiesFile, props.toString().getBytes());
+        WildFlySecurityManager.setPropertyPrivileged(""org.wildfly.internal.cli.boot.hook.script.output.file"", output.toString());
+        WildFlySecurityManager.setPropertyPrivileged(""org.wildfly.internal.cli.boot.hook.script.warn.file"", warnFile.toString());
+        WildFlySecurityManager.setPropertyPrivileged(""org.wildfly.internal.cli.boot.hook.script.error.file"", errorFile.toString());
+        WildFlySecurityManager.setPropertyPrivileged(""org.wildfly.internal.cli.boot.hook.script.properties"", propertiesFile.toString());
+        BootScriptInvoker invoker = new BootScriptInvoker();
+        Set<String> operations = new HashSet<>();
+        operations.add(""op1"");
+        operations.add(""op2"");
+        Set<String> echos = new LinkedHashSet<>();
+        echos.add(""echo TestWarning > ${"" + propWarning + ""}"");
+        echos.add(""echo TestError > ${"" + propError + ""}"");
+        echos.add(""echo TestFoo >> ${"" + propFoo + ""}"");
+        echos.add(""echo TestFoo2 >> ${"" + propFoo + ""}"");
+        StringBuilder builder = new StringBuilder();
+        for (String s : operations) {
+            builder = builder.append("":"" + s + ""\n"");
+        }
+        for (String s : echos) {
+            builder = builder.append(s + ""\n"");
+        }
+        Files.write(file, builder.toString().getBytes());
+        TestClient client = new TestClient();
+        StringBuilder outContent = new StringBuilder();
+        boolean failure = false;
+        try {
+            try {
+                invoker.runCliScript(client, file.toFile());
+                failure = true;
+            } catch (Exception ex) {
+
+}
+            if (failure) {
+                throw new Exception(""Test should have failed"");
+            }
+        } finally {
+            for (String l : Files.readAllLines(output)) {
+                outContent.append(l).append(""\n"");
+                System.out.println(l);
+            }
+        }
+        assertTrue(client.seen.containsAll(operations));
+        assertTrue(outContent.toString().contains(""success""));
+        assertTrue(Files.readAllLines(warnFile).get(0).equals(""TestWarning""));
+        assertTrue(Files.readAllLines(errorFile).get(0).equals(""TestError""));
+        assertTrue(Files.readAllLines(fooFile).get(0).equals(""TestFoo""));
+        assertTrue(Files.readAllLines(fooFile).get(1).equals(""TestFoo2""));
+
+assertNull(WildFlySecurityManager.getPropertyPrivileged(propError, null));
+        assertNull(WildFlySecurityManager.getPropertyPrivileged(propWarning, null));
+        assertEquals(""foo"", WildFlySecurityManager.getPropertyPrivileged(propFoo, null));
+    }",change_data_structure,,,
+"@Test
+    public void buildV1StoredIndex() {
+        final String fieldName = ""testFiledName"";
+        V1StoredIndex index = new V1StoredIndex(fieldName);
+        final Map<Integer, UnsignedByteArray> data = initData();
+        List<UnsignedByteArray> elements = new ArrayList<>(data.size());
+        for(Map.Entry<Integer, UnsignedByteArray> entry : data.entrySet()) {
+            index.addDocument(entry.getKey(), Collections.singletonList(entry.getValue()));
+            elements.add(entry.getValue());
+        }
+        VariableLengthByteArrayIndexedList indexedList =
+                new VariableLengthByteArrayIndexedList(elements);
+        index.setDatabaseDocumentsCount(data.size());
+        OutputStreamWritable outputStreamWritable = index.buildWritable();
+        assert (outputStreamWritable.getSizeInBytes() == getSizeInBytes(fieldName, indexedList));
+    }
+
+private Map<Integer, UnsignedByteArray> initData() {
+        Map<Integer, UnsignedByteArray> data = new HashMap<>();
+        data.put(0, UnsignedByteArrays.from(""NEW""));
+        data.put(1, UnsignedByteArrays.from(""USED""));
+        return data;
+    }
+    private long getSizeInBytes(String fieldName, VariableLengthByteArrayIndexedList valueIndex) {
+        return 4L + 
+                (long) fieldName.length() +
+                8 + 
+                valueIndex.getSizeInBytes();
+    }","@Test
+    public void buildV1StoredIndex() {
+        final String fieldName = ""testFiledName"";
+        V1StoredIndex index = new V1StoredIndex(fieldName);
+        final Map<Integer, UnsignedByteArray> data = initData();
+        List<UnsignedByteArray> elements = new ArrayList<>(data.size());
+        for(Map.Entry<Integer, UnsignedByteArray> entry : data.entrySet()) {
+            index.addDocument(entry.getKey(), Collections.singletonList(entry.getValue()));
+            elements.add(entry.getValue());
+        }
+        VariableLengthByteArrayIndexedList indexedList =
+                new VariableLengthByteArrayIndexedList(elements);
+        index.setDatabaseDocumentsCount(data.size());
+        OutputStreamWritable outputStreamWritable = index.buildWritable();
+        assert (outputStreamWritable.getSizeInBytes() == getSizeInBytes(fieldName, indexedList));
+    }
+
+private Map<Integer, UnsignedByteArray> initData() {
+        Map<Integer, UnsignedByteArray> data = new TreeMap<>();
+        data.put(0, UnsignedByteArrays.from(""NEW""));
+        data.put(1, UnsignedByteArrays.from(""USED""));
+        return data;
+    }
+    private long getSizeInBytes(String fieldName, VariableLengthByteArrayIndexedList valueIndex) {
+        return 4L + 
+                (long) fieldName.length() +
+                8 + 
+                valueIndex.getSizeInBytes();
+    }",change_data_structure,,,

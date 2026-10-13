@@ -1,0 +1,2098 @@
+Unnamed: 0,Category,PR Link,date,After Sept 2021,After April 2023,class_name,test_name,Flaky Code,Fixed Flaky Code,Details,diff,added_deleted_lines,deleted_lines,added_lines,deleted_tokens,added_tokens,Auto_labels,categories,generations_without_labels_GPT-3,time_taken_with_GPT-3,generations_with_labels_GPT-3, Ground Truth Tests_EXEC,Gens_exec_result,CodeBLEU,Project Name,Edit Distance
+250,ID,https://github.com/apache/shenyu/pull/4040,22-Oct,y,n,ShenyuClientRegisterDivideServiceImplTest,testBuildHandle,"@Test
+    public void testBuildHandle() {
+        shenyuClientRegisterDivideService = spy(shenyuClientRegisterDivideService);
+
+final String returnStr = ""[{protocol:'http:
+                + ""{protocol:'http:
+                + ""{protocol:'http:
+        final String expected = ""[{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+                + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+                + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+        List<URIRegisterDTO> list = new ArrayList<>();
+        list.add(URIRegisterDTO.builder().protocol(""http:
+        list.add(URIRegisterDTO.builder().protocol(""http:
+        SelectorDO selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        String actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));
+        List<DivideUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertEquals(resultList.size(), 3);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().protocol(""http:
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+
+assertEquals(resultList.size(), 3);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().protocol(""http:
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().anyMatch(r -> !r.isStatus() ), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().protocol(""http:
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().anyMatch(r -> r.isStatus() && r.getUpstreamUrl().equals(""localhost:8091"")), true);
+        assertEquals(resultList.stream().anyMatch(r -> !r.isStatus() && r.getUpstreamUrl().equals(""localhost:8092"")), true);
+        doReturn(true).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        assertEquals(actual, null);
+        list.clear();
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+    }","@Test
+    public void testBuildHandle() {
+        shenyuClientRegisterDivideService = spy(shenyuClientRegisterDivideService);
+
+final String returnStr = ""[{protocol:'http:
+                + ""{protocol:'http:
+                + ""{protocol:'http:
+        final String expected = ""[{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+                + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+                + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+        List<URIRegisterDTO> list = new ArrayList<>();
+        list.add(URIRegisterDTO.builder().protocol(""http:
+        list.add(URIRegisterDTO.builder().protocol(""http:
+        SelectorDO selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        String actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        JsonParser parser = new JsonParser();
+        assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));
+        List<DivideUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertEquals(resultList.size(), 3);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().protocol(""http:
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+
+assertEquals(resultList.size(), 3);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().protocol(""http:
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().anyMatch(r -> !r.isStatus() ), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().protocol(""http:
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().anyMatch(r -> r.isStatus() && r.getUpstreamUrl().equals(""localhost:8091"")), true);
+        assertEquals(resultList.stream().anyMatch(r -> !r.isStatus() && r.getUpstreamUrl().equals(""localhost:8092"")), true);
+        doReturn(true).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        assertEquals(actual, null);
+        list.clear();
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+    }",Blank,"  @Test
+      public void testBuildHandle() {
+          shenyuClientRegisterDivideService = spy(shenyuClientRegisterDivideService);
+  
+  final String returnStr = ""[{protocol:'http:
+                  + ""{protocol:'http:
+                  + ""{protocol:'http:
+          final String expected = ""[{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+                  + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+                  + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+          List<URIRegisterDTO> list = new ArrayList<>();
+          list.add(URIRegisterDTO.builder().protocol(""http:
+          list.add(URIRegisterDTO.builder().protocol(""http:
+          SelectorDO selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+          String actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
++         JsonParser parser = new JsonParser();
+-         assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));
++         assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));
+          List<DivideUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+          assertEquals(resultList.size(), 3);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+          list.clear();
+          list.add(URIRegisterDTO.builder().protocol(""http:
+          selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+          actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+  
+  assertEquals(resultList.size(), 3);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+          list.clear();
+          list.add(URIRegisterDTO.builder().protocol(""http:
+          doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+          selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+          assertEquals(resultList.size(), 2);
+          assertEquals(resultList.stream().anyMatch(r -> !r.isStatus() ), true);
+          list.clear();
+          list.add(URIRegisterDTO.builder().protocol(""http:
+          doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+          selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+          assertEquals(resultList.size(), 2);
+          assertEquals(resultList.stream().anyMatch(r -> r.isStatus() && r.getUpstreamUrl().equals(""localhost:8091"")), true);
+          assertEquals(resultList.stream().anyMatch(r -> !r.isStatus() && r.getUpstreamUrl().equals(""localhost:8092"")), true);
+          doReturn(true).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+          actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+          assertEquals(actual, null);
+          list.clear();
+          doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+          actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+          assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+      }","+         JsonParser parser = new JsonParser();
+-         assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));
++         assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));","-         assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));","+         JsonParser parser = new JsonParser();
++         assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));",,"JsonParser parser = new JsonParser();
+        (parser.parse)parser.parse()",change_data_format,['change_data_format'],"    @Test
+    public void testBuildHandle() {
+        shenyuClientRegisterDivideService = spy(shenyuClientRegisterDivideService);
+
+        final String returnStr = ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http\""}"";
+        final String expected = ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http\""}"";
+        List<URIRegisterDTO> list = new ArrayList<>();
+        list.add(URIRegisterDTO.builder().protocol(""http"").build());
+        SelectorDO selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        String actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));
+        List<DivideUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertEquals(resultList.size(), 1);
+        assertTrue(resultList.stream().allMatch(r -> r.isStatus()));
+        list.clear();
+        list.add(URIRegisterDTO.builder().protocol(""http"").build());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertEquals(resultList.size(), 1);
+        assertTrue(resultList.stream().allMatch(r -> r.isStatus()));
+        list.clear();
+        list.add(URIRegisterDTO.builder().protocol(""http"").build());
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertEquals(resultList.size(), 1);
+        assertTrue(resultList.stream().allMatch(r -> !r.isStatus()));
+        list.clear();
+        list.add(URIRegisterDTO.builder().protocol(""http"").build());
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertEquals(resultList.size(), 1);
+        assertTrue(resultList.stream().allMatch(r -> r.isStatus()));
+        doReturn(true).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        assertEquals(actual, null);
+        list.clear();
+        doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+        assertTrue(resultList.stream().allMatch(r -> !r.isStatus()));
+    }
+",10.98392916,"@Test
+public void testBuildHandle() {
+    shenyuClientRegisterDivideService = spy(shenyuClientRegisterDivideService);
+
+    final String returnStr = ""[{\""protocol\"":\""http\""}, {\""protocol\"":\""http\""}, {\""protocol\"":\""http\""}]"";
+    final String expected = ""[{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http\""}, {\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http\""}, {\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http\""}]"";
+    List<URIRegisterDTO> list = new ArrayList<>();
+    list.add(URIRegisterDTO.builder().protocol(""http"").build());
+    list.add(URIRegisterDTO.builder().protocol(""http"").build());
+    SelectorDO selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+    String actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+    assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));
+    List<DivideUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+    assertEquals(resultList.size(), 3);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+    list.clear();
+    list.add(URIRegisterDTO.builder().protocol(""http"").build());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+    actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+
+    assertEquals(resultList.size(), 3);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+    list.clear();
+    list.add(URIRegisterDTO.builder().protocol(""http"").build());
+    doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+    assertEquals(resultList.size(), 2);
+    assertEquals(resultList.stream().anyMatch(r -> !r.isStatus() ), true);
+    list.clear();
+    list.add(URIRegisterDTO.builder().protocol(""http"").build());
+    doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+    assertEquals(resultList.size(), 2);
+    assertEquals(resultList.stream().anyMatch(r -> r.isStatus() && r.getUpstreamUrl().equals(""localhost:8091"")), true);
+    assertEquals(resultList.stream().anyMatch(r -> !r.isStatus() && r.getUpstreamUrl().equals(""localhost:8092"")), true);
+    doReturn(true).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+    actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+    assertEquals(actual, null);
+    list.clear();
+    doReturn(false).when(shenyuClientRegisterDivideService).doSubmit(any(), any());
+    actual = shenyuClientRegisterDivideService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, DivideUpstream.class);
+    assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+}
+",Pass,fail,79,shenyu,24
+251,ID,https://github.com/apache/shenyu/pull/4043,22-Oct,y,n,ShenyuClientRegisterDubboServiceImplTest,testBuildHandle,"@Test
+    public void testBuildHandle() {
+        shenyuClientRegisterDubboService = spy(shenyuClientRegisterDubboService);
+
+final String returnStr = ""[{protocol:'dubbo:
+                + ""{protocol:'dubbo:
+        final String expected = ""[{\""port\"":0,\""weight\"":50,\""warmup\"":10,\""protocol\"":\""dubbo:
+                + ""\""status\"":true,\""timestamp\"":1637826588267},{\""port\"":0,\""weight\"":50,\""warmup\"":10,\""protocol\"":\""dubbo:
+                + ""\""upstreamUrl\"":\""localhost:8091\"",\""status\"":false,\""timestamp\"":1637826588267}]"";
+
+List<URIRegisterDTO> list = new ArrayList<>();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8090).build());
+        SelectorDO selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+        String actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+        assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));
+        List<DubboUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+        assertEquals(resultList.size(), 2);
+
+list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8092).build());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+        assertEquals(resultList.size(), 3);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8091).build());
+        doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().protocol(""http:
+        doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().anyMatch(r -> !r.isStatus()), true);
+        list.clear();
+        doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+        assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+    }","@Test
+    public void testBuildHandle() {
+        shenyuClientRegisterDubboService = spy(shenyuClientRegisterDubboService);
+
+final String returnStr = ""[{protocol:'dubbo:
+                + ""{protocol:'dubbo:
+        final String expected = ""[{\""port\"":0,\""weight\"":50,\""warmup\"":10,\""protocol\"":\""dubbo:
+                + ""\""status\"":true,\""timestamp\"":1637826588267},{\""port\"":0,\""weight\"":50,\""warmup\"":10,\""protocol\"":\""dubbo:
+                + ""\""upstreamUrl\"":\""localhost:8091\"",\""status\"":false,\""timestamp\"":1637826588267}]"";
+
+List<URIRegisterDTO> list = new ArrayList<>();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8090).build());
+        SelectorDO selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+        String actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+        JsonParser parser = new JsonParser();
+        assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));
+        List<DubboUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+        assertEquals(resultList.size(), 2);
+
+list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8092).build());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+        assertEquals(resultList.size(), 3);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8091).build());
+        doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().protocol(""http:
+        doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().anyMatch(r -> !r.isStatus()), true);
+        list.clear();
+        doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+        actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+        assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+    }",Blank,"  @Test
+      public void testBuildHandle() {
+          shenyuClientRegisterDubboService = spy(shenyuClientRegisterDubboService);
+  
+  final String returnStr = ""[{protocol:'dubbo:
+                  + ""{protocol:'dubbo:
+          final String expected = ""[{\""port\"":0,\""weight\"":50,\""warmup\"":10,\""protocol\"":\""dubbo:
+                  + ""\""status\"":true,\""timestamp\"":1637826588267},{\""port\"":0,\""weight\"":50,\""warmup\"":10,\""protocol\"":\""dubbo:
+                  + ""\""upstreamUrl\"":\""localhost:8091\"",\""status\"":false,\""timestamp\"":1637826588267}]"";
+  
+  List<URIRegisterDTO> list = new ArrayList<>();
+          list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8090).build());
+          SelectorDO selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+          String actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
++         JsonParser parser = new JsonParser();
+-         assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));
++         assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));
+          List<DubboUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+          assertEquals(resultList.size(), 2);
+  
+  list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8092).build());
+          selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+          actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+          assertEquals(resultList.size(), 3);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+          list.clear();
+          list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8091).build());
+          doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+          selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+          assertEquals(resultList.size(), 2);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+          list.clear();
+          list.add(URIRegisterDTO.builder().protocol(""http:
+          doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+          selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+          assertEquals(resultList.size(), 2);
+          assertEquals(resultList.stream().anyMatch(r -> !r.isStatus()), true);
+          list.clear();
+          doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+          actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+          assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+      }","+         JsonParser parser = new JsonParser();
+-         assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));
++         assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));","-         assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));","+         JsonParser parser = new JsonParser();
++         assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));",,"JsonParser parser = new JsonParser();
+        (parser.parse)parser.parse()",change_data_format,['change_data_format'],"@Test
+public void testBuildHandle() {
+    shenyuClientRegisterDubboService = spy(shenyuClientRegisterDubboService);
+
+    final String returnStr = ""[{\""protocol\"":\""dubbo\"",\""status\"":true,\""timestamp\"":0},{\""protocol\"":\""dubbo\"",\""upstreamUrl\"":\""localhost:8091\"",\""status\"":false,\""timestamp\"":0}]"";
+    final String expected = ""[{\""port\"":0,\""weight\"":50,\""warmup\"":10,\""protocol\"":\""dubbo\"",\""status\"":true,\""timestamp\"":0},{\""port\"":0,\""weight\"":50,\""warmup\"":10,\""protocol\"":\""dubbo\"",\""upstreamUrl\"":\""localhost:8091\"",\""status\"":false,\""timestamp\"":0}]"";
+
+    List<URIRegisterDTO> list = new ArrayList<>();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8090).build());
+    SelectorDO selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+    String actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+    assertEquals(expected, actual);
+}
+",4.124494791,"@Test
+public void testBuildHandle() {
+    shenyuClientRegisterDubboService = spy(shenyuClientRegisterDubboService);
+
+    final String returnStr = ""[{\""protocol\"":\""dubbo\"",\""port\"":0,\""weight\"":50,\""warmup\"":10,\""status\"":true,\""timestamp\"":0},{\""protocol\"":\""dubbo\"",\""port\"":0,\""weight\"":50,\""warmup\"":10,\""upstreamUrl\"":\""localhost:8091\"",\""status\"":false,\""timestamp\"":0}]"";
+
+    final String expected = ""[{\""port\"":0,\""weight\"":50,\""warmup\"":10,\""protocol\"":\""dubbo\"",\""status\"":true,\""timestamp\"":0},{\""port\"":0,\""weight\"":50,\""warmup\"":10,\""protocol\"":\""dubbo\"",\""upstreamUrl\"":\""localhost:8091\"",\""status\"":false,\""timestamp\"":0}]"";
+
+    List<URIRegisterDTO> list = new ArrayList<>();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8090).build());
+
+    SelectorDO selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+    String actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+    assertEquals(expected, actual);
+    List<DubboUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+    assertEquals(resultList.size(), 2);
+
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8092).build());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+    actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+    assertEquals(resultList.size(), 3);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+    list.clear();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8091).build());
+    doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+    assertEquals(resultList.size(), 2);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+    list.clear();
+    list.add(URIRegisterDTO.builder().protocol(""http"").appName(""test1"").rpcType(RpcTypeEnum.DUBBO.getName()).host(LOCALHOST).port(8091).build());
+    doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+    assertEquals(resultList.size(), 2);
+    assertEquals(resultList.stream().anyMatch(r -> !r.isStatus()), true);
+    list.clear();
+    doReturn(false).when(shenyuClientRegisterDubboService).doSubmit(any(), any());
+    actual = shenyuClientRegisterDubboService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, DubboUpstream.class);
+    assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+}
+",Pass,fail,80,shenyu,18
+252,ID,https://github.com/apache/shenyu/pull/4043,22-Oct,y,n,ShenyuClientRegisterGrpcServiceImplTest,testBuildHandle,"@Test
+    public void testBuildHandle() {
+        shenyuClientRegisterGrpcService = spy(shenyuClientRegisterGrpcService);
+
+final String returnStr = ""[{upstreamUrl='localhost:8090',weight=1,status=true,timestamp=1637826588267},""
+                + ""{upstreamUrl='localhost:8091',weight=2,status=true,timestamp=1637826588267}]"";
+        final String expected = ""[{\""weight\"":1,\""upstreamUrl\"":\""localhost:8090\"",\""status\"":true,\""timestamp\"":1637826588267},""
+                + ""{\""weight\"":2,\""upstreamUrl\"":\""localhost:8091\"",\""status\"":true,\""timestamp\"":1637826588267}]"";
+
+List<URIRegisterDTO> list = new ArrayList<>();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).build());
+        list.add(URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8091).build());
+        SelectorDO selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+        String actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+        assertEquals(actual, expected);
+        List<GrpcUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+        assertEquals(resultList.size(), 2);
+
+list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8092).build());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn("""");
+        doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+        actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+        assertEquals(resultList.size(), 3);
+        assertEquals(resultList.stream().anyMatch(r -> r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).build());
+        doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).eventType(EventType.DELETED).build());
+        doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().anyMatch(r -> !r.isStatus() && r.getUpstreamUrl().equals(""localhost:8090"")), true);
+        assertEquals(resultList.stream().anyMatch(r -> r.isStatus() && !r.getUpstreamUrl().equals(""localhost:8090"")), true);
+        list.clear();
+        doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+        actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+        assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+    }","@Test
+    public void testBuildHandle() {
+        shenyuClientRegisterGrpcService = spy(shenyuClientRegisterGrpcService);
+
+final String returnStr = ""[{upstreamUrl='localhost:8090',weight=1,status=true,timestamp=1637826588267},""
+                + ""{upstreamUrl='localhost:8091',weight=2,status=true,timestamp=1637826588267}]"";
+        final String expected = ""[{\""weight\"":1,\""upstreamUrl\"":\""localhost:8090\"",\""status\"":true,\""timestamp\"":1637826588267},""
+                + ""{\""weight\"":2,\""upstreamUrl\"":\""localhost:8091\"",\""status\"":true,\""timestamp\"":1637826588267}]"";
+
+List<URIRegisterDTO> list = new ArrayList<>();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).build());
+        list.add(URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8091).build());
+        SelectorDO selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+        String actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+        JsonParser parser = new JsonParser();
+        assertEquals(parser.parse(expected), parser.parse(actual));
+        List<GrpcUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+        assertEquals(resultList.size(), 2);
+
+list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8092).build());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn("""");
+        doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+        actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+        assertEquals(resultList.size(), 3);
+        assertEquals(resultList.stream().anyMatch(r -> r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).build());
+        doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).eventType(EventType.DELETED).build());
+        doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().anyMatch(r -> !r.isStatus() && r.getUpstreamUrl().equals(""localhost:8090"")), true);
+        assertEquals(resultList.stream().anyMatch(r -> r.isStatus() && !r.getUpstreamUrl().equals(""localhost:8090"")), true);
+        list.clear();
+        doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+        actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+        assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+    }",Blank,"  @Test
+      public void testBuildHandle() {
+          shenyuClientRegisterGrpcService = spy(shenyuClientRegisterGrpcService);
+  
+  final String returnStr = ""[{upstreamUrl='localhost:8090',weight=1,status=true,timestamp=1637826588267},""
+                  + ""{upstreamUrl='localhost:8091',weight=2,status=true,timestamp=1637826588267}]"";
+          final String expected = ""[{\""weight\"":1,\""upstreamUrl\"":\""localhost:8090\"",\""status\"":true,\""timestamp\"":1637826588267},""
+                  + ""{\""weight\"":2,\""upstreamUrl\"":\""localhost:8091\"",\""status\"":true,\""timestamp\"":1637826588267}]"";
+  
+  List<URIRegisterDTO> list = new ArrayList<>();
+          list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).build());
+          list.add(URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8091).build());
+          SelectorDO selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+          String actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+-         assertEquals(actual, expected);
++         JsonParser parser = new JsonParser();
++         assertEquals(parser.parse(expected), parser.parse(actual));
+          List<GrpcUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+          assertEquals(resultList.size(), 2);
+  
+  list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8092).build());
+          selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn("""");
+          doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+          actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+          assertEquals(resultList.size(), 3);
+          assertEquals(resultList.stream().anyMatch(r -> r.isStatus()), true);
+          list.clear();
+          list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).build());
+          doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+          selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+          assertEquals(resultList.size(), 2);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+          list.clear();
+          list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).eventType(EventType.DELETED).build());
+          doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+          selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+          assertEquals(resultList.size(), 2);
+          assertEquals(resultList.stream().anyMatch(r -> !r.isStatus() && r.getUpstreamUrl().equals(""localhost:8090"")), true);
+          assertEquals(resultList.stream().anyMatch(r -> r.isStatus() && !r.getUpstreamUrl().equals(""localhost:8090"")), true);
+          list.clear();
+          doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+          actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+          assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+      }","-         assertEquals(actual, expected);
++         JsonParser parser = new JsonParser();
++         assertEquals(parser.parse(expected), parser.parse(actual));","-         assertEquals(actual, expected);","+         JsonParser parser = new JsonParser();
++         assertEquals(parser.parse(expected), parser.parse(actual));",ctulexctd,"JsonParser parser = new JsonParser();
+        prser.prse(expected)arsr.pars(actual)",change_data_format,['change_data_format'],"@Test
+public void testBuildHandle() {
+    shenyuClientRegisterGrpcService = spy(shenyuClientRegisterGrpcService);
+
+    final String returnStr = ""[{upstreamUrl='localhost:8090',weight=1,status=true,timestamp=1637826588267},""
+            + ""{upstreamUrl='localhost:8091',weight=2,status=true,timestamp=1637826588267}]"";
+    final String expected = ""[{\""weight\"":1,\""upstreamUrl\"":\""localhost:8090\"",\""status\"":true,\""timestamp\"":1637826588267},""
+            + ""{\""weight\"":2,\""upstreamUrl\"":\""localhost:8091\"",\""status\"":true,\""timestamp\"":1637826588267}]"";
+
+    List<URIRegisterDTO> list = new ArrayList<>();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).build());
+    list.add(URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8091).build());
+    SelectorDO selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+    String actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+    assertEquals(actual, expected);
+    List<GrpcUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+    assertEquals(resultList.size(), 2);
+}
+",5.19223094,"@Test
+public void testBuildHandle() {
+    shenyuClientRegisterGrpcService = spy(shenyuClientRegisterGrpcService);
+
+    final String returnStr = ""[{\""upstreamUrl\"":\""localhost:8090\"",\""weight\"":1,\""status\"":true,\""timestamp\"":1637826588267},""
+            + ""{\""upstreamUrl\"":\""localhost:8091\"",\""weight\"":2,\""status\"":true,\""timestamp\"":1637826588267}]"";
+    final String expected = ""[{\""weight\"":1,\""upstreamUrl\"":\""localhost:8090\"",\""status\"":true,\""timestamp\"":1637826588267},""
+            + ""{\""weight\"":2,\""upstreamUrl\"":\""localhost:8091\"",\""status\"":true,\""timestamp\"":1637826588267}]"";
+
+    List<URIRegisterDTO> list = new ArrayList<>();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).build());
+    list.add(URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8091).build());
+    SelectorDO selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+    String actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+    assertEquals(actual, expected);
+    List<GrpcUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+    assertEquals(resultList.size(), 2);
+
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8092).build());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn("""");
+    doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+    actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+    assertEquals(resultList.size(), 3);
+    assertTrue(resultList.stream().anyMatch(r -> r.isStatus()));
+    list.clear();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).build());
+    doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+    assertEquals(resultList.size(), 2);
+    assertTrue(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()));
+    assertTrue(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()));
+    list.clear();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.GRPC.getName()).host(""localhost"").port(8090).eventType(EventType.DELETED).build());
+    doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+    assertEquals(resultList.size(), 2);
+    assertTrue(resultList.stream().anyMatch(r -> !r.isStatus() && r.getUpstreamUrl().equals(""localhost:8090"")));
+    assertTrue(resultList.stream().anyMatch(r -> r.isStatus() && !r.getUpstreamUrl().equals(""localhost:8090"")));
+    list.clear();
+    doReturn(false).when(shenyuClientRegisterGrpcService).doSubmit(any(), any());
+    actual = shenyuClientRegisterGrpcService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, GrpcUpstream.class);
+    assertTrue(resultList.stream().allMatch(r -> !r.isStatus()));
+}
+",Pass,fail,79,shenyu,27
+253,ID,https://github.com/apache/shenyu/pull/4043,22-Oct,y,n,ShenyuClientRegisterSofaServiceImplTest,testRuleHandler,"@Test
+    public void testRuleHandler() {
+        assertEquals(""{\""retries\"":0,\""loadBalance\"":\""random\"",\""timeout\"":3000}"",
+                shenyuClientRegisterSofaService.ruleHandler());
+    }","@Test
+    public void testRuleHandler() {
+        JsonParser parser = new JsonParser();
+        assertEquals(parser.parse(""{\""retries\"":0,\""loadBalance\"":\""random\"",\""timeout\"":3000}""), parser.parse(shenyuClientRegisterSofaService.ruleHandler()));
+    }",Blank,"  @Test
+      public void testRuleHandler() {
+-         assertEquals(""{\""retries\"":0,\""loadBalance\"":\""random\"",\""timeout\"":3000}"",
+-                 shenyuClientRegisterSofaService.ruleHandler());
++         JsonParser parser = new JsonParser();
++         assertEquals(parser.parse(""{\""retries\"":0,\""loadBalance\"":\""random\"",\""timeout\"":3000}""), parser.parse(shenyuClientRegisterSofaService.ruleHandler()));
+      }","-         assertEquals(""{\""retries\"":0,\""loadBalance\"":\""random\"",\""timeout\"":3000}"",
+-                 shenyuClientRegisterSofaService.ruleHandler());
++         JsonParser parser = new JsonParser();
++         assertEquals(parser.parse(""{\""retries\"":0,\""loadBalance\"":\""random\"",\""timeout\"":3000}""), parser.parse(shenyuClientRegisterSofaService.ruleHandler()));","-         assertEquals(""{\""retries\"":0,\""loadBalance\"":\""random\"",\""timeout\"":3000}"",
+-                 shenyuClientRegisterSofaService.ruleHandler());","+         JsonParser parser = new JsonParser();
++         assertEquals(parser.parse(""{\""retries\"":0,\""loadBalance\"":\""random\"",\""timeout\"":3000}""), parser.parse(shenyuClientRegisterSofaService.ruleHandler()));",,"JsonParser parser = new JsonParser();
+        parser.parse()
+parser.parse()",change_data_format,['change_data_format'],"@Test
+public void testRuleHandler() {
+    String expected = ""{\""retries\"":0,\""loadBalance\"":\""random\"",\""timeout\"":3000}"";
+    String actual = shenyuClientRegisterSofaService.ruleHandler();
+    assertEquals(expected, actual);
+}",1.477859259,"@Test
+public void testRuleHandler() {
+    assertEquals(""{\""retries\"":0,\""loadBalance\"":\""random\"",\""timeout\"":3000}"",
+            shenyuClientRegisterSofaService.ruleHandler());
+}
+",Pass,fail,26,shenyu,7
+254,ID,https://github.com/apache/shenyu/pull/4043,22-Oct,y,n,ShenyuClientRegisterSpringCloudServiceImplTest,testBuildHandle,"@Test
+    public void testBuildHandle() {
+        shenyuClientRegisterSpringCloudService = spy(shenyuClientRegisterSpringCloudService);
+
+final String returnStr = ""{serviceId:'test1',gray:false,divideUpstreams:[""
+                + ""{weight:50,warmup:10,protocol:'http:
+                + ""{weight:50,warmup:10,protocol:'http:
+        final String expected = ""{\""serviceId\"":\""test1\"",\""gray\"":false,\""divideUpstreams\"":[""
+                + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+                + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+        final URIRegisterDTO dto1 = URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.SPRING_CLOUD.getName()).host(HOST).port(8090).build();
+        final URIRegisterDTO dto2 = URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.SPRING_CLOUD.getName()).host(HOST).port(8091).build();
+
+List<URIRegisterDTO> list = new ArrayList<>();
+        list.add(dto1);
+        SelectorDO selectorDO = mock(SelectorDO.class);
+        doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        String actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+        assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));
+        SpringCloudSelectorHandle handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+        assertEquals(handle.getDivideUpstreams().size(), 2);
+        assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(dto1);
+        list.add(dto2);
+        selectorDO = mock(SelectorDO.class);
+        doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+        handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+        assertEquals(handle.getDivideUpstreams().size(), 2);
+        assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(dto1);
+        selectorDO = mock(SelectorDO.class);
+        doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+        when(selectorDO.getHandle()).thenReturn(""{serviceId:'test1',gray:false,divideUpstreams:[]}"");
+        actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+        handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+        assertEquals(handle.getDivideUpstreams().size(), 1);
+        assertEquals(handle.getDivideUpstreams().stream().anyMatch(r -> r.isStatus() && r.getUpstreamUrl().equals(CommonUpstreamUtils.buildUrl(dto1.getHost(), dto1.getPort()))), true);
+        list.clear();
+        dto1.setEventType(EventType.DELETED);
+        list.add(dto1);
+        selectorDO = mock(SelectorDO.class);
+        doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+        when(selectorDO.getHandle()).thenReturn(""{serviceId:'test1',gray:false,divideUpstreams:[]}"");
+        actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+        handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+        assertEquals(handle.getDivideUpstreams().size(), 1);
+        assertEquals(handle.getDivideUpstreams().stream().anyMatch(r -> !r.isStatus() && r.getUpstreamUrl().equals(CommonUpstreamUtils.buildUrl(dto1.getHost(), dto1.getPort()))), true);
+        list.clear();
+        doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+        actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+        handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+        assertEquals(handle.getDivideUpstreams().stream().allMatch(r -> !r.isStatus()), true);
+    }","@Test
+    public void testBuildHandle() {
+        shenyuClientRegisterSpringCloudService = spy(shenyuClientRegisterSpringCloudService);
+
+final String returnStr = ""{serviceId:'test1',gray:false,divideUpstreams:[""
+                + ""{weight:50,warmup:10,protocol:'http:
+                + ""{weight:50,warmup:10,protocol:'http:
+        final String expected = ""{\""serviceId\"":\""test1\"",\""gray\"":false,\""divideUpstreams\"":[""
+                + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+                + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+        final URIRegisterDTO dto1 = URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.SPRING_CLOUD.getName()).host(HOST).port(8090).build();
+        final URIRegisterDTO dto2 = URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.SPRING_CLOUD.getName()).host(HOST).port(8091).build();
+
+List<URIRegisterDTO> list = new ArrayList<>();
+        list.add(dto1);
+        SelectorDO selectorDO = mock(SelectorDO.class);
+        doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        String actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+        JsonParser parser = new JsonParser();
+        assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));
+        SpringCloudSelectorHandle handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+        assertEquals(handle.getDivideUpstreams().size(), 2);
+        assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(dto1);
+        list.add(dto2);
+        selectorDO = mock(SelectorDO.class);
+        doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+        handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+        assertEquals(handle.getDivideUpstreams().size(), 2);
+        assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(dto1);
+        selectorDO = mock(SelectorDO.class);
+        doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+        when(selectorDO.getHandle()).thenReturn(""{serviceId:'test1',gray:false,divideUpstreams:[]}"");
+        actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+        handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+        assertEquals(handle.getDivideUpstreams().size(), 1);
+        assertEquals(handle.getDivideUpstreams().stream().anyMatch(r -> r.isStatus() && r.getUpstreamUrl().equals(CommonUpstreamUtils.buildUrl(dto1.getHost(), dto1.getPort()))), true);
+        list.clear();
+        dto1.setEventType(EventType.DELETED);
+        list.add(dto1);
+        selectorDO = mock(SelectorDO.class);
+        doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+        when(selectorDO.getHandle()).thenReturn(""{serviceId:'test1',gray:false,divideUpstreams:[]}"");
+        actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+        handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+        assertEquals(handle.getDivideUpstreams().size(), 1);
+        assertEquals(handle.getDivideUpstreams().stream().anyMatch(r -> !r.isStatus() && r.getUpstreamUrl().equals(CommonUpstreamUtils.buildUrl(dto1.getHost(), dto1.getPort()))), true);
+        list.clear();
+        doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+        actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+        handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+        assertEquals(handle.getDivideUpstreams().stream().allMatch(r -> !r.isStatus()), true);
+    }",Blank,"  @Test
+      public void testBuildHandle() {
+          shenyuClientRegisterSpringCloudService = spy(shenyuClientRegisterSpringCloudService);
+  
+  final String returnStr = ""{serviceId:'test1',gray:false,divideUpstreams:[""
+                  + ""{weight:50,warmup:10,protocol:'http:
+                  + ""{weight:50,warmup:10,protocol:'http:
+          final String expected = ""{\""serviceId\"":\""test1\"",\""gray\"":false,\""divideUpstreams\"":[""
+                  + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+                  + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http:
+          final URIRegisterDTO dto1 = URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.SPRING_CLOUD.getName()).host(HOST).port(8090).build();
+          final URIRegisterDTO dto2 = URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.SPRING_CLOUD.getName()).host(HOST).port(8091).build();
+  
+  List<URIRegisterDTO> list = new ArrayList<>();
+          list.add(dto1);
+          SelectorDO selectorDO = mock(SelectorDO.class);
+          doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          String actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
++         JsonParser parser = new JsonParser();
+-         assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));
++         assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));
+          SpringCloudSelectorHandle handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+          assertEquals(handle.getDivideUpstreams().size(), 2);
+          assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+          assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+          list.clear();
+          list.add(dto1);
+          list.add(dto2);
+          selectorDO = mock(SelectorDO.class);
+          doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+          handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+          assertEquals(handle.getDivideUpstreams().size(), 2);
+          assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+          assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+          list.clear();
+          list.add(dto1);
+          selectorDO = mock(SelectorDO.class);
+          doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+          when(selectorDO.getHandle()).thenReturn(""{serviceId:'test1',gray:false,divideUpstreams:[]}"");
+          actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+          handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+          assertEquals(handle.getDivideUpstreams().size(), 1);
+          assertEquals(handle.getDivideUpstreams().stream().anyMatch(r -> r.isStatus() && r.getUpstreamUrl().equals(CommonUpstreamUtils.buildUrl(dto1.getHost(), dto1.getPort()))), true);
+          list.clear();
+          dto1.setEventType(EventType.DELETED);
+          list.add(dto1);
+          selectorDO = mock(SelectorDO.class);
+          doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+          when(selectorDO.getHandle()).thenReturn(""{serviceId:'test1',gray:false,divideUpstreams:[]}"");
+          actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+          handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+          assertEquals(handle.getDivideUpstreams().size(), 1);
+          assertEquals(handle.getDivideUpstreams().stream().anyMatch(r -> !r.isStatus() && r.getUpstreamUrl().equals(CommonUpstreamUtils.buildUrl(dto1.getHost(), dto1.getPort()))), true);
+          list.clear();
+          doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+          actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+          handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+          assertEquals(handle.getDivideUpstreams().stream().allMatch(r -> !r.isStatus()), true);
+      }","+         JsonParser parser = new JsonParser();
+-         assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));
++         assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));","-         assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));","+         JsonParser parser = new JsonParser();
++         assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));",,"JsonParser parser = new JsonParser();
+        (parser.parse)parser.parse()",change_data_format,['change_data_format'],"// Fixed test case
+@Test
+public void testBuildHandle() {
+    shenyuClientRegisterSpringCloudService = spy(shenyuClientRegisterSpringCloudService);
+
+    final String returnStr = ""{\""serviceId\"":\""test1\"",\""gray\"":false,\""divideUpstreams\"":["" +
+            ""{\""weight\"":50,\""warmup:10,\""protocol\"":\""http\""},"" +
+            ""{\""weight\"":50,\""warmup:10,\""protocol\"":\""http\""}]}"";
+    final String expected = ""{\""serviceId\"":\""test1\"",\""gray\"":false,\""divideUpstreams\"":["" +
+            ""{\""weight\"":50,\""warmup:10,\""protocol\"":\""http\""},"" +
+            ""{\""weight\"":50,\""warmup:10,\""protocol\"":\""http\""}]}"";
+    final URIRegisterDTO dto1 = URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.SPRING_CLOUD.getName()).host(HOST).port(8090).build();
+    final URIRegisterDTO dto2 = URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.SPRING_CLOUD.getName()).host(HOST).port(8091).build();
+
+    List<URIRegisterDTO> list = new ArrayList<>();
+    list.add(dto1);
+    SelectorDO selectorDO = mock(SelectorDO.class);
+    doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    String actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+    assertEquals(expected, actual);
+}
+",5.899251938,"@Test
+public void testBuildHandle() {
+    shenyuClientRegisterSpringCloudService = spy(shenyuClientRegisterSpringCloudService);
+
+    final String returnStr = ""{\""serviceId\"":\""test1\"",\""gray\"":false,\""divideUpstreams\"":[""
+            + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http\""},""
+            + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http\""}]"";
+    final String expected = ""{\""serviceId\"":\""test1\"",\""gray\"":false,\""divideUpstreams\"":[""
+            + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http\""},""
+            + ""{\""weight\"":50,\""warmup\"":10,\""protocol\"":\""http\""}]"";
+    final URIRegisterDTO dto1 = URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.SPRING_CLOUD.getName()).host(HOST).port(8090).build();
+    final URIRegisterDTO dto2 = URIRegisterDTO.builder().appName(""test2"").rpcType(RpcTypeEnum.SPRING_CLOUD.getName()).host(HOST).port(8091).build();
+
+    List<URIRegisterDTO> list = new ArrayList<>();
+    list.add(dto1);
+    SelectorDO selectorDO = mock(SelectorDO.class);
+    doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    String actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+    assertEquals(expected.replaceAll(""\\d{13}"", ""0""), actual.replaceAll(""\\d{13}"", ""0""));
+    SpringCloudSelectorHandle handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+    assertEquals(handle.getDivideUpstreams().size(), 2);
+    assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+    assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+    list.clear();
+    list.add(dto1);
+    list.add(dto2);
+    selectorDO = mock(SelectorDO.class);
+    doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+    handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+    assertEquals(handle.getDivideUpstreams().size(), 2);
+    assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+    assertEquals(handle.getDivideUpstreams().stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+    list.clear();
+    list.add(dto1);
+    selectorDO = mock(SelectorDO.class);
+    doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+    when(selectorDO.getHandle()).thenReturn(""{\""serviceId\"":\""test1\"",\""gray\"":false,\""divideUpstreams\"":[]}"");
+    actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+    handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+    assertEquals(handle.getDivideUpstreams().size(), 1);
+    assertEquals(handle.getDivideUpstreams().stream().anyMatch(r -> r.isStatus() && r.getUpstreamUrl().equals(CommonUpstreamUtils.buildUrl(dto1.getHost(), dto1.getPort())), true);
+    list.clear();
+    dto1.setEventType(EventType.DELETED);
+    list.add(dto1);
+    selectorDO = mock(SelectorDO.class);
+    doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+    when(selectorDO.getHandle()).thenReturn(""{\""serviceId\"":\""test1\"",\""gray\"":false,\""divideUpstreams\"":[]}"");
+    actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+    handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+    assertEquals(handle.getDivideUpstreams().size(), 1);
+    assertEquals(handle.getDivideUpstreams().stream().anyMatch(r -> !r.isStatus() && r.getUpstreamUrl().equals(CommonUpstreamUtils.buildUrl(dto1.getHost(), dto1.getPort())), true);
+    list.clear();
+    doReturn(false).when(shenyuClientRegisterSpringCloudService).doSubmit(any(), any());
+    actual = shenyuClientRegisterSpringCloudService.buildHandle(list, selectorDO);
+    handle = GsonUtils.getInstance().fromJson(actual, SpringCloudSelectorHandle.class);
+    assertEquals(handle.getDivideUpstreams().stream().allMatch(r -> !r.isStatus()), true);
+}
+",Pass,fail,78,shenyu,18
+255,ID,https://github.com/apache/shenyu/pull/4043,22-Oct,y,n,ShenyuClientRegisterTarsServiceImplTest,testBuildHandle,"@Test
+    public void testBuildHandle() {
+        shenyuClientRegisterTarsService = spy(shenyuClientRegisterTarsService);
+
+final String returnStr = ""[{upstreamUrl:'localhost:8090',weight:1,warmup:10,status:true,timestamp:1637826588267},""
+                + ""{upstreamUrl:'localhost:8091',weight:2,warmup:10,status:true,timestamp:1637826588267}]"";
+        final String expected = ""[{\""weight\"":1,\""warmup\"":10,\""upstreamUrl\"":\""localhost:8090\"",\""status\"":true,\""timestamp\"":1637826588267},""
+                + ""{\""weight\"":2,\""warmup\"":10,\""upstreamUrl\"":\""localhost:8091\"",\""status\"":false,\""timestamp\"":1637826588267}]"";
+        List<URIRegisterDTO> list = new ArrayList<>();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8090).build());
+        SelectorDO selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+        String actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+        assertEquals(actual.replaceAll(""\\d{13}"", ""0""), expected.replaceAll(""\\d{13}"", ""0""));
+        List<TarsUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8092).build());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+        actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+        assertEquals(resultList.size(), 3);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8090).build());
+        doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(""[]"");
+        actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+        assertEquals(resultList.size(), 1);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        list.clear();
+        doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+        actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+        assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+    }","@Test
+    public void testBuildHandle() {
+        shenyuClientRegisterTarsService = spy(shenyuClientRegisterTarsService);
+
+final String returnStr = ""[{upstreamUrl:'localhost:8090',weight:1,warmup:10,status:true,timestamp:1637826588267},""
+                + ""{upstreamUrl:'localhost:8091',weight:2,warmup:10,status:true,timestamp:1637826588267}]"";
+        final String expected = ""[{\""weight\"":1,\""warmup\"":10,\""upstreamUrl\"":\""localhost:8090\"",\""status\"":true,\""timestamp\"":1637826588267},""
+                + ""{\""weight\"":2,\""warmup\"":10,\""upstreamUrl\"":\""localhost:8091\"",\""status\"":false,\""timestamp\"":1637826588267}]"";
+        List<URIRegisterDTO> list = new ArrayList<>();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8090).build());
+        SelectorDO selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+        String actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+        JsonParser parser = new JsonParser();
+        assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));
+        List<TarsUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+        assertEquals(resultList.size(), 2);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8092).build());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(returnStr);
+        doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+        actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+        assertEquals(resultList.size(), 3);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+        list.clear();
+        list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8090).build());
+        doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+        selectorDO = mock(SelectorDO.class);
+        when(selectorDO.getHandle()).thenReturn(""[]"");
+        actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+        assertEquals(resultList.size(), 1);
+        assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+        list.clear();
+        doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+        actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+        resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+        assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+    }",Blank,"  @Test
+      public void testBuildHandle() {
+          shenyuClientRegisterTarsService = spy(shenyuClientRegisterTarsService);
+  
+  final String returnStr = ""[{upstreamUrl:'localhost:8090',weight:1,warmup:10,status:true,timestamp:1637826588267},""
+                  + ""{upstreamUrl:'localhost:8091',weight:2,warmup:10,status:true,timestamp:1637826588267}]"";
+          final String expected = ""[{\""weight\"":1,\""warmup\"":10,\""upstreamUrl\"":\""localhost:8090\"",\""status\"":true,\""timestamp\"":1637826588267},""
+                  + ""{\""weight\"":2,\""warmup\"":10,\""upstreamUrl\"":\""localhost:8091\"",\""status\"":false,\""timestamp\"":1637826588267}]"";
+          List<URIRegisterDTO> list = new ArrayList<>();
+          list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8090).build());
+          SelectorDO selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+          String actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+-         assertEquals(actual.replaceAll(""\\d{13}"", ""0""), expected.replaceAll(""\\d{13}"", ""0""));
++         JsonParser parser = new JsonParser();
++         assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));
+          List<TarsUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+          assertEquals(resultList.size(), 2);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+          list.clear();
+          list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8092).build());
+          selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(returnStr);
+          doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+          actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+          assertEquals(resultList.size(), 3);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+          list.clear();
+          list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8090).build());
+          doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+          selectorDO = mock(SelectorDO.class);
+          when(selectorDO.getHandle()).thenReturn(""[]"");
+          actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+          assertEquals(resultList.size(), 1);
+          assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+                  .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+          list.clear();
+          doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+          actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+          resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+          assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+      }","-         assertEquals(actual.replaceAll(""\\d{13}"", ""0""), expected.replaceAll(""\\d{13}"", ""0""));
++         JsonParser parser = new JsonParser();
++         assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));","-         assertEquals(actual.replaceAll(""\\d{13}"", ""0""), expected.replaceAll(""\\d{13}"", ""0""));","+         JsonParser parser = new JsonParser();
++         assertEquals(parser.parse(expected.replaceAll(""\\d{13}"", ""0"")), parser.parse(actual.replaceAll(""\\d{13}"", ""0"")));",ctulexctd,"JsonParser parser = new JsonParser();
+        prser.prse(expected)arsr.pars(actual)",change_data_format,['change_data_format'],"@Test
+public void testBuildHandle() {
+    shenyuClientRegisterTarsService = spy(shenyuClientRegisterTarsService);
+
+    final String returnStr = ""[{upstreamUrl:'localhost:8090',weight:1,warmup:10,status:true,timestamp:1637826588267},""
+            + ""{upstreamUrl:'localhost:8091',weight:2,warmup:10,status:true,timestamp:1637826588267}]"";
+    final String expected = ""[{\""weight\"":1,\""warmup\"":10,\""upstreamUrl\"":\""localhost:8090\"",\""status\"":true,\""timestamp\"":1637826588267},""
+            + ""{\""weight\"":2,\""warmup\"":10,\""upstreamUrl\"":\""localhost:8091\"",\""status\"":false,\""timestamp\"":1637826588267}]"";
+    List<URIRegisterDTO> list = new ArrayList<>();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8090).build());
+    SelectorDO selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+    String actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+    assertEquals(actual.replaceAll(""\\d{13}"", ""0""), expected.replaceAll(""\\d{13}"", ""0""));
+    List<TarsUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+    assertEquals(resultList.size(), 2);
+    assertTrue(resultList.stream().allMatch(r -> r.isStatus()));
+    list.clear();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8092).build());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+    actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+    assertEquals(resultList.size(), 2);
+    assertTrue(resultList.stream().allMatch(r -> r.isStatus()));
+    list.clear();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8090).build());
+    doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(""[]"");
+    actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+    assertEquals(resultList.size(), 1);
+    assertTrue(resultList.stream().allMatch(r -> r.isStatus()));
+    list.clear();
+    doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+    actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+    assertTrue(resultList.stream().allMatch(r -> !r.isStatus()));
+}
+",13.09931588,"@Test
+public void testBuildHandle() {
+    shenyuClientRegisterTarsService = spy(shenyuClientRegisterTarsService);
+
+    final String returnStr = ""[{\""upstreamUrl\"":\""localhost:8090\"",\""weight\"":1,\""warmup\"":10,\""status\"":true,\""timestamp\"":1637826588267},""
+            + ""{\""upstreamUrl\"":\""localhost:8091\"",\""weight\"":2,\""warmup\"":10,\""status\"":true,\""timestamp\"":1637826588267}]"";
+    final String expected = ""[{\""weight\"":1,\""warmup\"":10,\""upstreamUrl\"":\""localhost:8090\"",\""status\"":true,\""timestamp\"":1637826588267},""
+            + ""{\""weight\"":2,\""warmup\"":10,\""upstreamUrl\"":\""localhost:8091\"",\""status\"":false,\""timestamp\"":1637826588267}]"";
+    List<URIRegisterDTO> list = new ArrayList<>();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8090).build());
+    SelectorDO selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+    String actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+    assertEquals(actual.replaceAll(""\\d{13}"", ""0""), expected.replaceAll(""\\d{13}"", ""0""));
+    List<TarsUpstream> resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+    assertEquals(resultList.size(), 2);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+    list.clear();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8092).build());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(returnStr);
+    doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+    actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+    assertEquals(resultList.size(), 3);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .noneMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> !r.isStatus()), true);
+    list.clear();
+    list.add(URIRegisterDTO.builder().appName(""test1"").rpcType(RpcTypeEnum.TARS.getName()).host(""localhost"").port(8090).build());
+    doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+    selectorDO = mock(SelectorDO.class);
+    when(selectorDO.getHandle()).thenReturn(""[]"");
+    actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+    assertEquals(resultList.size(), 1);
+    assertEquals(resultList.stream().filter(r -> list.stream().map(dto -> CommonUpstreamUtils.buildUrl(dto.getHost(), dto.getPort()))
+            .anyMatch(url -> url.equals(r.getUpstreamUrl()))).allMatch(r -> r.isStatus()), true);
+    list.clear();
+    doReturn(false).when(shenyuClientRegisterTarsService).doSubmit(any(), any());
+    actual = shenyuClientRegisterTarsService.buildHandle(list, selectorDO);
+    resultList = GsonUtils.getInstance().fromCurrentList(actual, TarsUpstream.class);
+    assertEquals(resultList.stream().allMatch(r -> !r.isStatus()), true);
+}
+",Pass,fail,88,shenyu,11
+260,ID,https://github.com/apolloconfig/apollo/pull/4311,22-Apr,y,n,ReleaseControllerTest,testReleaseBuild,"@Test
+  @Sql(scripts = ""/controller/test-release.sql"", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+  @Sql(scripts = ""/controller/cleanup.sql"", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+  public void testReleaseBuild() {
+    String appId = ""someAppId"";
+    AppDTO app =
+        restTemplate.getForObject(""http:
+    ClusterDTO cluster = restTemplate.getForObject(
+        ""http:
+        ClusterDTO.class);
+    NamespaceDTO namespace =
+        restTemplate.getForObject(""http:
+            + ""/clusters/"" + cluster.getName() + ""/namespaces/application"", NamespaceDTO.class);
+    Assert.assertEquals(""someAppId"", app.getAppId());
+    Assert.assertEquals(""default"", cluster.getName());
+    Assert.assertEquals(""application"", namespace.getNamespaceName());
+    ItemDTO[] items =
+        restTemplate.getForObject(
+            ""http:
+                + cluster.getName() + ""/namespaces/"" + namespace.getNamespaceName() + ""/items"",
+            ItemDTO[].class);
+    Assert.assertEquals(3, items.length);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+    parameters.add(""name"", ""someReleaseName"");
+    parameters.add(""comment"", ""someComment"");
+    parameters.add(""operator"", ""test"");
+    HttpEntity<MultiValueMap<String, String>> entity =
+        new HttpEntity<>(parameters, headers);
+    ResponseEntity<ReleaseDTO> response = restTemplate.postForEntity(
+        ""http:
+            + ""/namespaces/"" + namespace.getNamespaceName() + ""/releases"",
+        entity, ReleaseDTO.class);
+    Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+    ReleaseDTO release = response.getBody();
+    Assert.assertEquals(""someReleaseName"", release.getName());
+    Assert.assertEquals(""someComment"", release.getComment());
+    Assert.assertEquals(""someAppId"", release.getAppId());
+    Assert.assertEquals(""default"", release.getClusterName());
+    Assert.assertEquals(""application"", release.getNamespaceName());
+
+Map<String, String> configurations = new HashMap<>();
+    configurations.put(""k1"", ""v1"");
+    configurations.put(""k2"", ""v2"");
+    configurations.put(""k3"", ""v3"");
+    Assert.assertEquals(GSON.toJson(configurations), release.getConfigurations());
+  }","@Test
+  @Sql(scripts = ""/controller/test-release.sql"", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+  @Sql(scripts = ""/controller/cleanup.sql"", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+  public void testReleaseBuild() {
+    String appId = ""someAppId"";
+    AppDTO app =
+        restTemplate.getForObject(""http:
+    ClusterDTO cluster = restTemplate.getForObject(
+        ""http:
+        ClusterDTO.class);
+    NamespaceDTO namespace =
+        restTemplate.getForObject(""http:
+            + ""/clusters/"" + cluster.getName() + ""/namespaces/application"", NamespaceDTO.class);
+    Assert.assertEquals(""someAppId"", app.getAppId());
+    Assert.assertEquals(""default"", cluster.getName());
+    Assert.assertEquals(""application"", namespace.getNamespaceName());
+    ItemDTO[] items =
+        restTemplate.getForObject(
+            ""http:
+                + cluster.getName() + ""/namespaces/"" + namespace.getNamespaceName() + ""/items"",
+            ItemDTO[].class);
+    Assert.assertEquals(3, items.length);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+    parameters.add(""name"", ""someReleaseName"");
+    parameters.add(""comment"", ""someComment"");
+    parameters.add(""operator"", ""test"");
+    HttpEntity<MultiValueMap<String, String>> entity =
+        new HttpEntity<>(parameters, headers);
+    ResponseEntity<ReleaseDTO> response = restTemplate.postForEntity(
+        ""http:
+            + ""/namespaces/"" + namespace.getNamespaceName() + ""/releases"",
+        entity, ReleaseDTO.class);
+    Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+    ReleaseDTO release = response.getBody();
+    Assert.assertEquals(""someReleaseName"", release.getName());
+    Assert.assertEquals(""someComment"", release.getComment());
+    Assert.assertEquals(""someAppId"", release.getAppId());
+    Assert.assertEquals(""default"", release.getClusterName());
+    Assert.assertEquals(""application"", release.getNamespaceName());
+
+Map<String, String> configurations = new LinkedHashMap<>();
+    configurations.put(""k1"", ""v1"");
+    configurations.put(""k2"", ""v2"");
+    configurations.put(""k3"", ""v3"");
+    Assert.assertEquals(GSON.toJson(configurations), release.getConfigurations());
+  }",Blank,"  @Test
+    @Sql(scripts = ""/controller/test-release.sql"", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = ""/controller/cleanup.sql"", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+    public void testReleaseBuild() {
+      String appId = ""someAppId"";
+      AppDTO app =
+          restTemplate.getForObject(""http:
+      ClusterDTO cluster = restTemplate.getForObject(
+          ""http:
+          ClusterDTO.class);
+      NamespaceDTO namespace =
+          restTemplate.getForObject(""http:
+              + ""/clusters/"" + cluster.getName() + ""/namespaces/application"", NamespaceDTO.class);
+      Assert.assertEquals(""someAppId"", app.getAppId());
+      Assert.assertEquals(""default"", cluster.getName());
+      Assert.assertEquals(""application"", namespace.getNamespaceName());
+      ItemDTO[] items =
+          restTemplate.getForObject(
+              ""http:
+                  + cluster.getName() + ""/namespaces/"" + namespace.getNamespaceName() + ""/items"",
+              ItemDTO[].class);
+      Assert.assertEquals(3, items.length);
+      HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+      MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+      parameters.add(""name"", ""someReleaseName"");
+      parameters.add(""comment"", ""someComment"");
+      parameters.add(""operator"", ""test"");
+      HttpEntity<MultiValueMap<String, String>> entity =
+          new HttpEntity<>(parameters, headers);
+      ResponseEntity<ReleaseDTO> response = restTemplate.postForEntity(
+          ""http:
+              + ""/namespaces/"" + namespace.getNamespaceName() + ""/releases"",
+          entity, ReleaseDTO.class);
+      Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+      ReleaseDTO release = response.getBody();
+      Assert.assertEquals(""someReleaseName"", release.getName());
+      Assert.assertEquals(""someComment"", release.getComment());
+      Assert.assertEquals(""someAppId"", release.getAppId());
+      Assert.assertEquals(""default"", release.getClusterName());
+      Assert.assertEquals(""application"", release.getNamespaceName());
+  
+- Map<String, String> configurations = new HashMap<>();
++ Map<String, String> configurations = new LinkedHashMap<>();
+      configurations.put(""k1"", ""v1"");
+      configurations.put(""k2"", ""v2"");
+      configurations.put(""k3"", ""v3"");
+      Assert.assertEquals(GSON.toJson(configurations), release.getConfigurations());
+    }","- Map<String, String> configurations = new HashMap<>();
++ Map<String, String> configurations = new LinkedHashMap<>();","- Map<String, String> configurations = new HashMap<>();","+ Map<String, String> configurations = new LinkedHashMap<>();",,Linked,change_data_structure,['change_data_structure'],"@Test
+@Sql(scripts = ""/controller/test-release.sql"", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = ""/controller/cleanup.sql"", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+public void testReleaseBuild() {
+    String appId = ""someAppId"";
+    AppDTO app = restTemplate.getForObject(""http://..."", AppDTO.class);
+    ClusterDTO cluster = restTemplate.getForObject(""http://..."", ClusterDTO.class);
+    NamespaceDTO namespace = restTemplate.getForObject(""http:..."", NamespaceDTO.class);
+    Assert.assertEquals(""someAppId"", app.getAppId());
+    Assert.assertEquals(""default"", cluster.getName());
+    Assert.assertEquals(""application"", namespace.getNamespaceName());
+    ItemDTO[] items = restTemplate.getForObject(""http:..."", ItemDTO[].class);
+    Assert.assertEquals(3, items.length);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+    parameters.add(""name"", ""someReleaseName"");
+    parameters.add(""comment"", ""someComment"");
+    parameters.add(""operator"", ""test"");
+    HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(parameters, headers);
+    ResponseEntity<ReleaseDTO> response = restTemplate.postForEntity(""http:..."", entity, ReleaseDTO.class);
+    Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+    ReleaseDTO release = response.getBody();
+    Assert.assertEquals(""someReleaseName"", release.getName());
+    Assert.assertEquals(""someComment"", release.getComment());
+    Assert.assertEquals(""someAppId"", release.getAppId());
+    Assert.assertEquals(""default"", release.getClusterName());
+    Assert.assertEquals(""application"", release.getNamespaceName());
+
+    Map<String, String> configurations = new HashMap<>();
+    configurations.put(""k1"", ""v1"");
+    configurations.put(""k2"", ""v2"");
+    configurations.put(""k3"", ""v3"");
+    Assert.assertEquals(GSON.toJson(configurations), release.getConfigurations());
+}
+",5.911565781,"@Test
+@Sql(scripts = ""/controller/test-release.sql"", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = ""/controller/cleanup.sql"", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+public void testReleaseBuild() {
+    String appId = ""someAppId"";
+    AppDTO app = restTemplate.getForObject(""http://..."", AppDTO.class);
+    ClusterDTO cluster = restTemplate.getForObject(""http:..."", ClusterDTO.class);
+    NamespaceDTO namespace = restTemplate.getForObject(""http:...""
+            + ""/clusters/"" + cluster.getName() + ""/namespaces/application"", NamespaceDTO.class);
+    Assert.assertEquals(""someAppId"", app.getAppId());
+    Assert.assertEquals(""default"", cluster.getName());
+    Assert.assertEquals(""application"", namespace.getNamespaceName());
+    ItemDTO[] items = restTemplate.getForObject(""http:...""
+            + cluster.getName() + ""/namespaces/"" + namespace.getNamespaceName() + ""/items"",
+            ItemDTO[].class);
+    Assert.assertEquals(3, items.length);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+    parameters.add(""name"", ""someReleaseName"");
+    parameters.add(""comment"", ""someComment"");
+    parameters.add(""operator"", ""test"");
+    HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(parameters, headers);
+    ResponseEntity<ReleaseDTO> response = restTemplate.postForEntity(""http:...""
+            + ""/namespaces/"" + namespace.getNamespaceName() + ""/releases"",
+        entity, ReleaseDTO.class);
+    Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+    ReleaseDTO release = response.getBody();
+    Assert.assertEquals(""someReleaseName"", release.getName());
+    Assert.assertEquals(""someComment"", release.getComment());
+    Assert.assertEquals(""someAppId"", release.getAppId());
+    Assert.assertEquals(""default"", release.getClusterName());
+    Assert.assertEquals(""application"", release.getNamespaceName());
+
+    Map<String, String> configurations = new HashMap<>();
+    configurations.put(""k1"", ""v1"");
+    configurations.put(""k2"", ""v2"");
+    configurations.put(""k3"", ""v3"");
+    Assert.assertEquals(GSON.toJson(configurations), release.getConfigurations());
+}
+",Pass,fail,77,apollo,10
+262,ID,https://github.com/apolloconfig/apollo/pull/4599,22-Oct,y,n,NamespaceBranchServiceTest,testUpdateBranchGrayRulesWithUpdateOnce,"@Test
+  @Sql(scripts = ""/sql/namespace-branch-test.sql"", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+  @Sql(scripts = ""/sql/clean.sql"", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  public void testUpdateBranchGrayRulesWithUpdateOnce() {
+    GrayReleaseRule rule = instanceGrayReleaseRule();
+    namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, rule);
+    GrayReleaseRule
+        activeRule =
+        namespaceBranchService.findBranchGrayRules(testApp, testCluster, testNamespace, testBranchName);
+    Assert.assertNotNull(activeRule);
+    Assert.assertEquals(rule.getAppId(), activeRule.getAppId());
+    Assert.assertEquals(rule.getRules(), activeRule.getRules());
+    Assert.assertEquals(Long.valueOf(0), activeRule.getReleaseId());
+    Page<ReleaseHistory> releaseHistories = releaseHistoryService.findReleaseHistoriesByNamespace
+        (testApp, testCluster, testNamespace, pageable);
+    ReleaseHistory releaseHistory = releaseHistories.getContent().get(0);
+    Assert.assertEquals(1, releaseHistories.getTotalElements());
+    Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, releaseHistory.getOperation());
+    Assert.assertEquals(0, releaseHistory.getReleaseId());
+    Assert.assertEquals(0, releaseHistory.getPreviousReleaseId());
+    Assert.assertTrue(releaseHistory.getOperationContext().contains(rule.getRules()));
+  }","@Test
+  @Sql(scripts = ""/sql/namespace-branch-test.sql"", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+  @Sql(scripts = ""/sql/clean.sql"", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  public void testUpdateBranchGrayRulesWithUpdateOnce() {
+    GrayReleaseRule rule = instanceGrayReleaseRule();
+    namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, rule);
+    GrayReleaseRule
+        activeRule =
+        namespaceBranchService.findBranchGrayRules(testApp, testCluster, testNamespace, testBranchName);
+    Assert.assertNotNull(activeRule);
+    Assert.assertEquals(rule.getAppId(), activeRule.getAppId());
+    Assert.assertEquals(rule.getRules(), activeRule.getRules());
+    Assert.assertEquals(Long.valueOf(0), activeRule.getReleaseId());
+    Page<ReleaseHistory> releaseHistories = releaseHistoryService.findReleaseHistoriesByNamespace
+        (testApp, testCluster, testNamespace, pageable);
+    ReleaseHistory releaseHistory = releaseHistories.getContent().get(0);
+    Assert.assertEquals(1, releaseHistories.getTotalElements());
+    Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, releaseHistory.getOperation());
+    Assert.assertEquals(0, releaseHistory.getReleaseId());
+    Assert.assertEquals(0, releaseHistory.getPreviousReleaseId());
+    Assert.assertTrue(containRules(releaseHistory.getOperationContext(), rule.getRules()));
+  }",Blank,"  @Test
+    @Sql(scripts = ""/sql/namespace-branch-test.sql"", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = ""/sql/clean.sql"", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void testUpdateBranchGrayRulesWithUpdateOnce() {
+      GrayReleaseRule rule = instanceGrayReleaseRule();
+      namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, rule);
+      GrayReleaseRule
+          activeRule =
+          namespaceBranchService.findBranchGrayRules(testApp, testCluster, testNamespace, testBranchName);
+      Assert.assertNotNull(activeRule);
+      Assert.assertEquals(rule.getAppId(), activeRule.getAppId());
+      Assert.assertEquals(rule.getRules(), activeRule.getRules());
+      Assert.assertEquals(Long.valueOf(0), activeRule.getReleaseId());
+      Page<ReleaseHistory> releaseHistories = releaseHistoryService.findReleaseHistoriesByNamespace
+          (testApp, testCluster, testNamespace, pageable);
+      ReleaseHistory releaseHistory = releaseHistories.getContent().get(0);
+      Assert.assertEquals(1, releaseHistories.getTotalElements());
+      Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, releaseHistory.getOperation());
+      Assert.assertEquals(0, releaseHistory.getReleaseId());
+      Assert.assertEquals(0, releaseHistory.getPreviousReleaseId());
+-     Assert.assertTrue(releaseHistory.getOperationContext().contains(rule.getRules()));
++     Assert.assertTrue(containRules(releaseHistory.getOperationContext(), rule.getRules()));
+    }","-     Assert.assertTrue(releaseHistory.getOperationContext().contains(rule.getRules()));
++     Assert.assertTrue(containRules(releaseHistory.getOperationContext(), rule.getRules()));",-     Assert.assertTrue(releaseHistory.getOperationContext().contains(rule.getRules()));,"+     Assert.assertTrue(containRules(releaseHistory.getOperationContext(), rule.getRules()));",.contains(,"containRules(,",change_assertion,['change_assertion'],"@Test
+@Sql(scripts = ""/sql/namespace-branch-test.sql"", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = ""/sql/clean.sql"", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+public void testUpdateBranchGrayRulesWithUpdateOnce() {
+  GrayReleaseRule rule = instanceGrayReleaseRule();
+  namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, rule);
+  await().atMost(5, SECONDS).untilAsserted(() -> {
+    GrayReleaseRule activeRule = namespaceBranchService.findBranchGrayRules(testApp, testCluster, testNamespace, testBranchName);
+    assertNotNull(activeRule);
+    assertEquals(rule.getAppId(), activeRule.getAppId());
+    assertEquals(rule.getRules(), activeRule.getRules());
+    assertEquals(Long.valueOf(0), activeRule.getReleaseId());
+  });
+  Page<ReleaseHistory> releaseHistories = releaseHistoryService.findReleaseHistoriesByNamespace(testApp, testCluster, testNamespace, pageable);
+  ReleaseHistory releaseHistory = releaseHistories.getContent().get(0);
+  assertEquals(1, releaseHistories.getTotalElements());
+  assertEquals(ReleaseOperation.APPLY_GRAY_RULES, releaseHistory.getOperation());
+  assertEquals(0, releaseHistory.getReleaseId());
+  assertEquals(0, releaseHistory.getPreviousReleaseId());
+  assertTrue(releaseHistory.getOperationContext().contains(rule.getRules()));
+}
+",5.617996216,"@Test
+@Sql(scripts = ""/sql/namespace-branch-test.sql"", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = ""/sql/clean.sql"", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+public void testUpdateBranchGrayRulesWithUpdateOnce() {
+  GrayReleaseRule rule = instanceGrayReleaseRule();
+  namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, rule);
+  GrayReleaseRule
+      activeRule =
+      namespaceBranchService.findBranchGrayRules(testApp, testCluster, testNamespace, testBranchName);
+  Assert.assertNotNull(activeRule);
+  Assert.assertEquals(rule.getAppId(), activeRule.getAppId());
+  Assert.assertEquals(rule.getRules(), activeRule.getRules());
+  Assert.assertEquals(Long.valueOf(0), activeRule.getReleaseId());
+  Page<ReleaseHistory> releaseHistories = releaseHistoryService.findReleaseHistoriesByNamespace
+      (testApp, testCluster, testNamespace, pageable);
+  ReleaseHistory releaseHistory = releaseHistories.getContent().get(0);
+  Assert.assertEquals(1, releaseHistories.getTotalElements());
+  Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, releaseHistory.getOperation());
+  Assert.assertEquals(0, releaseHistory.getReleaseId());
+  Assert.assertEquals(0, releaseHistory.getPreviousReleaseId());
+  assertTrue(releaseHistory.getOperationContext().contains(rule.getRules()));
+}
+",Pass,fail,65,apollo,2
+263,ID,https://github.com/apolloconfig/apollo/pull/4599,22-Oct,y,n,NamespaceBranchServiceTest,testUpdateBranchGrayRulesWithUpdateTwice,"@Test
+  @Sql(scripts = ""/sql/namespace-branch-test.sql"", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+  @Sql(scripts = ""/sql/clean.sql"", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  public void testUpdateBranchGrayRulesWithUpdateTwice() {
+    GrayReleaseRule firstRule = instanceGrayReleaseRule();
+    namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, firstRule);
+    GrayReleaseRule secondRule = instanceGrayReleaseRule();
+    secondRule.setRules(""[{\""clientAppId\"":\""branch-test\"",\""clientIpList\"":[\""10.38.57.112\""],\""clientLabelList\"":[\""branch-test\""]}]"");
+    namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, secondRule);
+    GrayReleaseRule
+        activeRule =
+        namespaceBranchService.findBranchGrayRules(testApp, testCluster, testNamespace, testBranchName);
+    Assert.assertNotNull(secondRule);
+    Assert.assertEquals(secondRule.getAppId(), activeRule.getAppId());
+    Assert.assertEquals(secondRule.getRules(), activeRule.getRules());
+    Assert.assertEquals(Long.valueOf(0), activeRule.getReleaseId());
+    Page<ReleaseHistory> releaseHistories = releaseHistoryService.findReleaseHistoriesByNamespace
+        (testApp, testCluster, testNamespace, pageable);
+    ReleaseHistory firstReleaseHistory = releaseHistories.getContent().get(1);
+    ReleaseHistory secondReleaseHistory = releaseHistories.getContent().get(0);
+    Assert.assertEquals(2, releaseHistories.getTotalElements());
+    Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, firstReleaseHistory.getOperation());
+    Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, secondReleaseHistory.getOperation());
+    Assert.assertTrue(firstReleaseHistory.getOperationContext().contains(firstRule.getRules()));
+    Assert.assertFalse(firstReleaseHistory.getOperationContext().contains(secondRule.getRules()));
+    Assert.assertTrue(secondReleaseHistory.getOperationContext().contains(firstRule.getRules()));
+    Assert.assertTrue(secondReleaseHistory.getOperationContext().contains(secondRule.getRules()));}","@Test
+  @Sql(scripts = ""/sql/namespace-branch-test.sql"", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+  @Sql(scripts = ""/sql/clean.sql"", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  public void testUpdateBranchGrayRulesWithUpdateTwice() {
+    GrayReleaseRule firstRule = instanceGrayReleaseRule();
+    namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, firstRule);
+    GrayReleaseRule secondRule = instanceGrayReleaseRule();
+    secondRule.setRules(""[{\""clientAppId\"":\""branch-test\"",\""clientIpList\"":[\""10.38.57.112\""],\""clientLabelList\"":[\""branch-test\""]}]"");
+    namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, secondRule);
+    GrayReleaseRule
+        activeRule =
+        namespaceBranchService.findBranchGrayRules(testApp, testCluster, testNamespace, testBranchName);
+    Assert.assertNotNull(secondRule);
+    Assert.assertEquals(secondRule.getAppId(), activeRule.getAppId());
+    Assert.assertEquals(secondRule.getRules(), activeRule.getRules());
+    Assert.assertEquals(Long.valueOf(0), activeRule.getReleaseId());
+    Page<ReleaseHistory> releaseHistories = releaseHistoryService.findReleaseHistoriesByNamespace
+        (testApp, testCluster, testNamespace, pageable);
+    ReleaseHistory firstReleaseHistory = releaseHistories.getContent().get(1);
+    ReleaseHistory secondReleaseHistory = releaseHistories.getContent().get(0);
+    Assert.assertEquals(2, releaseHistories.getTotalElements());
+    Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, firstReleaseHistory.getOperation());
+    Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, secondReleaseHistory.getOperation());
+    Assert.assertTrue(containRules(firstReleaseHistory.getOperationContext(), firstRule.getRules()));
+    Assert.assertFalse(containRules(firstReleaseHistory.getOperationContext(), secondRule.getRules()));
+    Assert.assertTrue(containRules(secondReleaseHistory.getOperationContext(), firstRule.getRules()));
+    Assert.assertTrue(containRules(secondReleaseHistory.getOperationContext(), secondRule.getRules()));
+  }",Blank,"  @Test
+    @Sql(scripts = ""/sql/namespace-branch-test.sql"", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = ""/sql/clean.sql"", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void testUpdateBranchGrayRulesWithUpdateTwice() {
+      GrayReleaseRule firstRule = instanceGrayReleaseRule();
+      namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, firstRule);
+      GrayReleaseRule secondRule = instanceGrayReleaseRule();
+      secondRule.setRules(""[{\""clientAppId\"":\""branch-test\"",\""clientIpList\"":[\""10.38.57.112\""],\""clientLabelList\"":[\""branch-test\""]}]"");
+      namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, secondRule);
+      GrayReleaseRule
+          activeRule =
+          namespaceBranchService.findBranchGrayRules(testApp, testCluster, testNamespace, testBranchName);
+      Assert.assertNotNull(secondRule);
+      Assert.assertEquals(secondRule.getAppId(), activeRule.getAppId());
+      Assert.assertEquals(secondRule.getRules(), activeRule.getRules());
+      Assert.assertEquals(Long.valueOf(0), activeRule.getReleaseId());
+      Page<ReleaseHistory> releaseHistories = releaseHistoryService.findReleaseHistoriesByNamespace
+          (testApp, testCluster, testNamespace, pageable);
+      ReleaseHistory firstReleaseHistory = releaseHistories.getContent().get(1);
+      ReleaseHistory secondReleaseHistory = releaseHistories.getContent().get(0);
+      Assert.assertEquals(2, releaseHistories.getTotalElements());
+      Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, firstReleaseHistory.getOperation());
+      Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, secondReleaseHistory.getOperation());
+-     Assert.assertTrue(firstReleaseHistory.getOperationContext().contains(firstRule.getRules()));
++     Assert.assertTrue(containRules(firstReleaseHistory.getOperationContext(), firstRule.getRules()));
+-     Assert.assertFalse(firstReleaseHistory.getOperationContext().contains(secondRule.getRules()));
++     Assert.assertFalse(containRules(firstReleaseHistory.getOperationContext(), secondRule.getRules()));
+-     Assert.assertTrue(secondReleaseHistory.getOperationContext().contains(firstRule.getRules()));
++     Assert.assertTrue(containRules(secondReleaseHistory.getOperationContext(), firstRule.getRules()));
+-     Assert.assertTrue(secondReleaseHistory.getOperationContext().contains(secondRule.getRules()));}
++     Assert.assertTrue(containRules(secondReleaseHistory.getOperationContext(), secondRule.getRules()));
++   }","-     Assert.assertTrue(firstReleaseHistory.getOperationContext().contains(firstRule.getRules()));
++     Assert.assertTrue(containRules(firstReleaseHistory.getOperationContext(), firstRule.getRules()));
+-     Assert.assertFalse(firstReleaseHistory.getOperationContext().contains(secondRule.getRules()));
++     Assert.assertFalse(containRules(firstReleaseHistory.getOperationContext(), secondRule.getRules()));
+-     Assert.assertTrue(secondReleaseHistory.getOperationContext().contains(firstRule.getRules()));
++     Assert.assertTrue(containRules(secondReleaseHistory.getOperationContext(), firstRule.getRules()));
+-     Assert.assertTrue(secondReleaseHistory.getOperationContext().contains(secondRule.getRules()));}
++     Assert.assertTrue(containRules(secondReleaseHistory.getOperationContext(), secondRule.getRules()));
++   }","-     Assert.assertTrue(firstReleaseHistory.getOperationContext().contains(firstRule.getRules()));
+-     Assert.assertFalse(firstReleaseHistory.getOperationContext().contains(secondRule.getRules()));
+-     Assert.assertTrue(secondReleaseHistory.getOperationContext().contains(firstRule.getRules()));
+-     Assert.assertTrue(secondReleaseHistory.getOperationContext().contains(secondRule.getRules()));}","+     Assert.assertTrue(containRules(firstReleaseHistory.getOperationContext(), firstRule.getRules()));
++     Assert.assertFalse(containRules(firstReleaseHistory.getOperationContext(), secondRule.getRules()));
++     Assert.assertTrue(containRules(secondReleaseHistory.getOperationContext(), firstRule.getRules()));
++     Assert.assertTrue(containRules(secondReleaseHistory.getOperationContext(), secondRule.getRules()));
++   }",".contains(  
+.contains(  
+.contains(  
+.contains(","containRules(,   
+containRules(,   
+containRules(,   
+containRules(,",change_assertion,['change_assertion'],"@Test
+@Sql(scripts = ""/sql/namespace-branch-test.sql"", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = ""/sql/clean.sql"", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+public void testUpdateBranchGrayRulesWithUpdateTwice() {
+  GrayReleaseRule firstRule = instanceGrayReleaseRule();
+  namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, firstRule);
+  GrayReleaseRule secondRule = instanceGrayReleaseRule();
+  secondRule.setRules(""[{\""clientAppId\"":\""branch-test\"",\""clientIpList\"":[\""10.38.57.112\""],\""clientLabelList\"":[\""branch-test\""]}]"");
+  namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, secondRule);
+  GrayReleaseRule
+      activeRule =
+      namespaceBranchService.findBranchGrayRules(testApp, testCluster, testNamespace, testBranchName);
+  Assert.assertNotNull(secondRule);
+  Assert.assertEquals(secondRule.getAppId(), activeRule.getAppId());
+  Assert.assertEquals(secondRule.getRules(), activeRule.getRules());
+  Assert.assertEquals(Long.valueOf(0), activeRule.getReleaseId());
+  Page<ReleaseHistory> releaseHistories = releaseHistoryService.findReleaseHistoriesByNamespace
+      (testApp, testCluster, testNamespace, pageable);
+  ReleaseHistory firstReleaseHistory = releaseHistories.getContent().get(1);
+  ReleaseHistory secondReleaseHistory = releaseHistories.getContent().get(0);
+  Assert.assertEquals(2, releaseHistories.getTotalElements());
+  Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, firstReleaseHistory.getOperation());
+  Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, secondReleaseHistory.getOperation());
+  Assert.assertTrue(firstReleaseHistory.getOperationContext().contains(firstRule.getRules()));
+  Assert.assertTrue(firstReleaseHistory.getOperationContext().contains(secondRule.getRules()));
+  Assert.assertTrue(secondReleaseHistory.getOperationContext().contains(firstRule.getRules()));
+  Assert.assertTrue(secondReleaseHistory.getOperationContext().contains(secondRule.getRules());
+}",7.199751377,"@Test
+@Sql(scripts = ""/sql/namespace-branch-test.sql"", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = ""/sql/clean.sql"", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+public void testUpdateBranchGrayRulesWithUpdateTwice() {
+  GrayReleaseRule firstRule = instanceGrayReleaseRule();
+  namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, firstRule);
+  GrayReleaseRule secondRule = instanceGrayReleaseRule();
+  secondRule.setRules(""[{\""clientAppId\"":\""branch-test\"",\""clientIpList\"":[\""10.38.57.112\""],\""clientLabelList\"":[\""branch-test\""]}]"");
+  namespaceBranchService.updateBranchGrayRules(testApp, testCluster, testNamespace, testBranchName, secondRule);
+  GrayReleaseRule activeRule = namespaceBranchService.findBranchGrayRules(testApp, testCluster, testNamespace, testBranchName);
+  Assert.assertNotNull(activeRule);
+  Assert.assertEquals(secondRule.getAppId(), activeRule.getAppId());
+  Assert.assertEquals(secondRule.getRules(), activeRule.getRules());
+  Assert.assertEquals(Long.valueOf(0), activeRule.getReleaseId());
+  Page<ReleaseHistory> releaseHistories = releaseHistoryService.findReleaseHistoriesByNamespace(testApp, testCluster, testNamespace, pageable);
+  ReleaseHistory firstReleaseHistory = releaseHistories.getContent().get(0);
+  ReleaseHistory secondReleaseHistory = releaseHistories.getContent().get(1);
+  Assert.assertEquals(2, releaseHistories.getTotalElements());
+  Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, firstReleaseHistory.getOperation());
+  Assert.assertEquals(ReleaseOperation.APPLY_GRAY_RULES, secondReleaseHistory.getOperation());
+  Assert.assertTrue(firstReleaseHistory.getOperationContext().contains(firstRule.getRules()));
+  Assert.assertTrue(firstReleaseHistory.getOperationContext().contains(secondRule.getRules()));
+  Assert.assertTrue(secondReleaseHistory.getOperationContext().contains(firstRule.getRules()));
+  Assert.assertTrue(secondReleaseHistory.getOperationContext().contains(secondRule.getRules());
+}",Pass,fail,86,apollo,13
+265,ID,https://github.com/apolloconfig/apollo/pull/4314,22-Apr,y,n,ReleaseMessageServiceWithCacheTest,testWhenReleaseMsgSizeBiggerThan500,"@Test
+  public void testWhenReleaseMsgSizeBiggerThan500() throws Exception {
+    String someMsgContent = ""msg1"";
+    List<ReleaseMessage> firstBatchReleaseMsg = new ArrayList<>(500);
+    for (int i = 0; i < 500; i++) {
+      firstBatchReleaseMsg.add(assembleReleaseMsg(i + 1, someMsgContent));
+    }
+    String antherMsgContent = ""msg2"";
+    ReleaseMessage antherMsg = assembleReleaseMsg(501, antherMsgContent);
+    when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(0L))
+        .thenReturn(firstBatchReleaseMsg);
+    when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(500L))
+        .thenReturn(Collections.singletonList(antherMsg));
+    releaseMessageServiceWithCache.afterPropertiesSet();
+    verify(releaseMessageRepository, times(1)).findFirst500ByIdGreaterThanOrderByIdAsc(500L);
+    ReleaseMessage latestReleaseMsg =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessageForMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
+    assertNotNull(latestReleaseMsg);
+    assertEquals(501, latestReleaseMsg.getId());
+    assertEquals(antherMsgContent, latestReleaseMsg.getMessage());
+
+List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessagesGroupByMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
+
+assertEquals(2, latestReleaseMsgGroupByMsgContent.size());
+    assertEquals(500, latestReleaseMsgGroupByMsgContent.get(1).getId());
+    assertEquals(501, latestReleaseMsgGroupByMsgContent.get(0).getId());
+  }","@Test
+  public void testWhenReleaseMsgSizeBiggerThan500() throws Exception {
+    String someMsgContent = ""msg1"";
+    List<ReleaseMessage> firstBatchReleaseMsg = new ArrayList<>(500);
+    for (int i = 0; i < 500; i++) {
+      firstBatchReleaseMsg.add(assembleReleaseMsg(i + 1, someMsgContent));
+    }
+    String antherMsgContent = ""msg2"";
+    ReleaseMessage antherMsg = assembleReleaseMsg(501, antherMsgContent);
+    when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(0L))
+        .thenReturn(firstBatchReleaseMsg);
+    when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(500L))
+        .thenReturn(Collections.singletonList(antherMsg));
+    releaseMessageServiceWithCache.afterPropertiesSet();
+    verify(releaseMessageRepository, times(1)).findFirst500ByIdGreaterThanOrderByIdAsc(500L);
+    ReleaseMessage latestReleaseMsg =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessageForMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
+    assertNotNull(latestReleaseMsg);
+    assertEquals(501, latestReleaseMsg.getId());
+    assertEquals(antherMsgContent, latestReleaseMsg.getMessage());
+
+List<String> msgContentList = Arrays.asList(someMsgContent, antherMsgContent);
+    List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessagesGroupByMessages(Sets.newLinkedHashSet(msgContentList));
+
+assertEquals(2, latestReleaseMsgGroupByMsgContent.size());
+    assertEquals(500, latestReleaseMsgGroupByMsgContent.get(0).getId());
+    assertEquals(501, latestReleaseMsgGroupByMsgContent.get(1).getId());
+  }",Blank,"  @Test
+    public void testWhenReleaseMsgSizeBiggerThan500() throws Exception {
+      String someMsgContent = ""msg1"";
+      List<ReleaseMessage> firstBatchReleaseMsg = new ArrayList<>(500);
+      for (int i = 0; i < 500; i++) {
+        firstBatchReleaseMsg.add(assembleReleaseMsg(i + 1, someMsgContent));
+      }
+      String antherMsgContent = ""msg2"";
+      ReleaseMessage antherMsg = assembleReleaseMsg(501, antherMsgContent);
+      when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(0L))
+          .thenReturn(firstBatchReleaseMsg);
+      when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(500L))
+          .thenReturn(Collections.singletonList(antherMsg));
+      releaseMessageServiceWithCache.afterPropertiesSet();
+      verify(releaseMessageRepository, times(1)).findFirst500ByIdGreaterThanOrderByIdAsc(500L);
+      ReleaseMessage latestReleaseMsg =
+          releaseMessageServiceWithCache
+              .findLatestReleaseMessageForMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
+      assertNotNull(latestReleaseMsg);
+      assertEquals(501, latestReleaseMsg.getId());
+      assertEquals(antherMsgContent, latestReleaseMsg.getMessage());
+  
++ List<String> msgContentList = Arrays.asList(someMsgContent, antherMsgContent);
+- List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
++     List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
+          releaseMessageServiceWithCache
+-             .findLatestReleaseMessagesGroupByMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
++             .findLatestReleaseMessagesGroupByMessages(Sets.newLinkedHashSet(msgContentList));
+  
+  assertEquals(2, latestReleaseMsgGroupByMsgContent.size());
+-     assertEquals(500, latestReleaseMsgGroupByMsgContent.get(1).getId());
++     assertEquals(500, latestReleaseMsgGroupByMsgContent.get(0).getId());
+-     assertEquals(501, latestReleaseMsgGroupByMsgContent.get(0).getId());
++     assertEquals(501, latestReleaseMsgGroupByMsgContent.get(1).getId());
+    }","+ List<String> msgContentList = Arrays.asList(someMsgContent, antherMsgContent);
+- List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
++     List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
+-             .findLatestReleaseMessagesGroupByMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
++             .findLatestReleaseMessagesGroupByMessages(Sets.newLinkedHashSet(msgContentList));
+-     assertEquals(500, latestReleaseMsgGroupByMsgContent.get(1).getId());
++     assertEquals(500, latestReleaseMsgGroupByMsgContent.get(0).getId());
+-     assertEquals(501, latestReleaseMsgGroupByMsgContent.get(0).getId());
++     assertEquals(501, latestReleaseMsgGroupByMsgContent.get(1).getId());","- List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
+-             .findLatestReleaseMessagesGroupByMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
+-     assertEquals(500, latestReleaseMsgGroupByMsgContent.get(1).getId());
+-     assertEquals(501, latestReleaseMsgGroupByMsgContent.get(0).getId());","+ List<String> msgContentList = Arrays.asList(someMsgContent, antherMsgContent);
++     List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
++             .findLatestReleaseMessagesGroupByMessages(Sets.newLinkedHashSet(msgContentList));
++     assertEquals(500, latestReleaseMsgGroupByMsgContent.get(0).getId());
++     assertEquals(501, latestReleaseMsgGroupByMsgContent.get(1).getId());","soeM, antherMgConten  
+  
+  
+1  
+0","List<String> msgContentList = Arrays.asList(someMsgContent, antherMsgContent);
+      
+  
+LinkedLi  
+  
+  
+0  
+1",change_data_structure,['change_data_structure'],"@Test
+public void testWhenReleaseMsgSizeBiggerThan500() throws Exception {
+  String someMsgContent = ""msg1"";
+  List<ReleaseMessage> firstBatchReleaseMsg = new ArrayList<>(500);
+  for (int i = 0; i < 500; i++) {
+    firstBatchReleaseMsg.add(assembleReleaseMsg(i + 1, someMsgContent));
+  }
+  String antherMsgContent = ""msg2"";
+  ReleaseMessage antherMsg = assembleReleaseMsg(501, antherMsgContent);
+  when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(0L))
+      .thenReturn(firstBatchReleaseMsg);
+  when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(500L))
+      .thenReturn(Collections.singletonList(antherMsg));
+  releaseMessageServiceWithCache.afterPropertiesSet();
+  verify(releaseMessageRepository, times(1)).findFirst500ByIdGreaterThanOrderByIdAsc(0L);
+  verify(releaseMessageRepository, times(1)).findFirst500ByIdGreaterThanOrderByIdAsc(500L);
+  ReleaseMessage latestReleaseMsg =
+      releaseMessageServiceWithCache
+          .findLatestReleaseMessageForMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
+  assertNotNull(latestReleaseMsg);
+  assertEquals(501, latestReleaseMsg.getId());
+  assertEquals(antherMsgContent, latestReleaseMsg.getMessage());
+
+  List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
+      releaseMessageServiceWithCache
+          .findLatestReleaseMessagesGroupByMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
+
+  assertEquals(2, latestReleaseMsgGroupByMsgContent.size());
+  assertEquals(501, latestReleaseMsgGroupByMsgContent.get(0).getId());
+  assertEquals(500, latestReleaseMsgGroupByMsgContent.get(1).getId());
+}",7.20222497,"@Test
+public void testWhenReleaseMsgSizeBiggerThan500() throws Exception {
+    String someMsgContent = ""msg1"";
+    List<ReleaseMessage> firstBatchReleaseMsg = new ArrayList<>(500);
+    for (int i = 0; i < 500; i++) {
+      firstBatchReleaseMsg.add(assembleReleaseMsg(i + 1, someMsgContent));
+    }
+    String antherMsgContent = ""msg2"";
+    ReleaseMessage antherMsg = assembleReleaseMsg(501, antherMsgContent);
+    when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(0L))
+        .thenReturn(firstBatchReleaseMsg);
+    when(releaseMessageRepository.findFirst500ByIdGreaterThanOrderByIdAsc(500L))
+        .thenReturn(Arrays.asList(anotherMsg)); // changed to Arrays.asList(anotherMsg)
+    releaseMessageServiceWithCache.afterPropertiesSet();
+    verify(releaseMessageRepository, times(1)).findFirst500ByIdGreaterThanOrderByIdAsc(500L);
+    ReleaseMessage latestReleaseMsg =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessageForMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
+    assertNotNull(latestReleaseMsg);
+    assertEquals(501, latestReleaseMsg.getId());
+    assertEquals(antherMsgContent, latestReleaseMsg.getMessage());
+
+    List<ReleaseMessage> latestReleaseMsgGroupByMsgContent =
+        releaseMessageServiceWithCache
+            .findLatestReleaseMessagesGroupByMessages(Sets.newHashSet(someMsgContent, antherMsgContent));
+
+    assertEquals(2, latestReleaseMsgGroupByMsgContent.size());
+    assertEquals(500, latestReleaseMsgGroupByMsgContent.get(1).getId());
+    assertEquals(501, latestReleaseMsgGroupByMsgContent.get(0).getId());
+}
+",Pass,fail,84,apollo,14
+477,ID,https://github.com/stleary/JSON-java/pull/788,01-Oct,y,y,JSONMLTest,testToJSONObject_reversibility,"@Test
+    public void testToJSONObject_reversibility() {
+        final String originalXml = ""<readResult><errors someAttr=\""arrtValue\""><code>400</code></errors><errors><code>402</code></errors></readResult>"";
+        final JSONObject originalObject=JSONML.toJSONObject(originalXml,false);
+        final String originalJson = originalObject.toString();
+        final String xml = JSONML.toString(originalObject);
+        final JSONObject revertedObject = JSONML.toJSONObject(xml, false);
+        final String newJson = revertedObject.toString();
+        assertTrue(""JSON Objects are not similar"",originalObject.similar(revertedObject));
+        assertEquals(""original JSON does not equal the new JSON"",originalJson, newJson);}","@Test
+    public void testToJSONObject_reversibility() {
+        final String originalXml = ""<readResult><errors someAttr=\""arrtValue\""><code>400</code></errors><errors><code>402</code></errors></readResult>"";
+        final JSONObject originalObject=JSONML.toJSONObject(originalXml,false);
+        final String originalJson = originalObject.toString();
+        final String xml = JSONML.toString(originalObject);
+        final JSONObject revertedObject = JSONML.toJSONObject(xml, false);
+        final String newJson = revertedObject.toString();
+        assertTrue(""JSON Objects are not similar"", originalObject.similar(revertedObject));
+        assertTrue(""JSON Strings are not similar"", new JSONObject(originalJson).similar(new JSONObject(newJson)));
+    }",Blank,"  @Test
+      public void testToJSONObject_reversibility() {
+          final String originalXml = ""<readResult><errors someAttr=\""arrtValue\""><code>400</code></errors><errors><code>402</code></errors></readResult>"";
+          final JSONObject originalObject=JSONML.toJSONObject(originalXml,false);
+          final String originalJson = originalObject.toString();
+          final String xml = JSONML.toString(originalObject);
+          final JSONObject revertedObject = JSONML.toJSONObject(xml, false);
+          final String newJson = revertedObject.toString();
+-         assertTrue(""JSON Objects are not similar"",originalObject.similar(revertedObject));
++         assertTrue(""JSON Objects are not similar"", originalObject.similar(revertedObject));
+-         assertEquals(""original JSON does not equal the new JSON"",originalJson, newJson);}
++         assertTrue(""JSON Strings are not similar"", new JSONObject(originalJson).similar(new JSONObject(newJson)));
++     }","-         assertTrue(""JSON Objects are not similar"",originalObject.similar(revertedObject));
++         assertTrue(""JSON Objects are not similar"", originalObject.similar(revertedObject));
+-         assertEquals(""original JSON does not equal the new JSON"",originalJson, newJson);}
++         assertTrue(""JSON Strings are not similar"", new JSONObject(originalJson).similar(new JSONObject(newJson)));
++     }","-         assertTrue(""JSON Objects are not similar"",originalObject.similar(revertedObject));
+-         assertEquals(""original JSON does not equal the new JSON"",originalJson, newJson);}","+         assertTrue(""JSON Objects are not similar"", originalObject.similar(revertedObject));
++         assertTrue(""JSON Strings are not similar"", new JSONObject(originalJson).similar(new JSONObject(newJson)));
++     }","Eqalsoriginal does not equal the new JONoriginalJson,s",Tretrings are not similar SONObject(rigialJson).similar(new JSONObject(newJson)),change_assertion,['change_assertion'],"@Test
+public void testToJSONObject_reversibility() {
+    final String originalXml = ""<readResult><errors someAttr=\""arrtValue\""><code>400</code></errors><errors><code>402</code></errors></readResult>"";
+    final JSONObject originalObject=JSONML.toJSONObject(originalXml,false);
+    final String originalJson = originalObject.toString();
+    final String xml = JSONML.toString(originalObject);
+    final JSONObject revertedObject = JSONML.toJSONObject(xml, false);
+    final String newJson = revertedObject.toString();
+    assertTrue(""JSON Objects are not similar"",originalObject.similar(revertedObject));
+    assertEquals(""original JSON does not equal the new JSON"",originalJson, newJson);
+}
+",2.745151281,"@Test
+public void testToJSONObject_reversibility() {
+    final String originalXml = ""<readResult><errors someAttr=\""arrtValue\""><code>400</code></errors><errors><code>402</code></errors></readResult>"";
+    final JSONObject originalObject = JSONML.toJSONObject(originalXml, false);
+    final String originalJson = originalObject.toString();
+    final String xml = JSONML.toString(originalObject);
+    final JSONObject revertedObject = JSONML.toJSONObject(xml, false);
+    final String newJson = revertedObject.toString();
+    assertTrue(""JSON Objects are not similar"", originalObject.similar(revertedObject));
+    assertThat(originalJson, equalTo(newJson));
+}
+",Pass,fail,81,JSON-java,12
